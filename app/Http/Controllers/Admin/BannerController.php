@@ -50,7 +50,7 @@ class BannerController extends Controller
                 if (!Storage::disk('public')->exists('banner')) {
                     Storage::disk('public')->makeDirectory('banner');
                 }
-                $bannerImage = Image::make($image)->resize(1200, 1300)->save(storage_path('banner'));
+                $bannerImage = Image::make($image)->resize(1170, 480)->save(storage_path('banner'));
                 Storage::disk('public')->put('banner/'. $imageName, $bannerImage);
             } else {
                 $imageName = "default.png";
@@ -114,7 +114,7 @@ class BannerController extends Controller
                 }
                 //Saving image
                 
-                $bannerImage = Image::make($image)->resize(1200, 1300)->save(storage_path('banner'));
+                $bannerImage = Image::make($image)->resize(1170, 480)->save(storage_path('banner'));
                 Storage::disk('public')->put('banner/'. $imageName, $bannerImage);
             } else {
                 //If someone update without changing image

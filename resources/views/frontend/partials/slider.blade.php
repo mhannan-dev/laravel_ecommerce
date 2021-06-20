@@ -14,7 +14,7 @@ $banners = Banner::where('status', 1)->get();
                 <div class="container">
                     <a href="#">
                     @if (!empty($banner['banner_image']))
-                    <img style="width:100%" src="themes/images/carousel/1.png" alt="{{ $banner['alt']}}" />    
+                    <img style="width:100%" src="{{ url('storage/banner/'.$banner['banner_image']) }}" alt="{{ $banner['alt']}}" />    
                     @else
                     <img style="width:100%" src="{{url('/storage/product/no_image.png')}}" alt="{{ $banner['alt']}}" />    
                     @endif
