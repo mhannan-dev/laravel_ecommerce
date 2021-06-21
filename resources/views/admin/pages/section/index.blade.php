@@ -65,7 +65,7 @@ Product Sections
                                   section_id="{{ $section['id'] }}" href="javascript:void(0)">Active
                                 </a>
                                 @else
-                                <a class="update_section_status" id="section_{{ $section->id }}"
+                                <a class="update_section_status" id="section_{{ $section['id'] }}"
                                   section_id="{{ $section['id'] }}" href="javascript:void(0)">InActive
                                 </a>
                                 @endif
@@ -116,7 +116,6 @@ Product Sections
         $(".update_section_status").click(function () {
             var status = $(this).text();
             var section_id = $(this).attr("section_id");
-
             $.ajax({
                 type: 'post',
                 url: '/admin/catalogue/update-section-status',
@@ -124,7 +123,7 @@ Product Sections
                 success: function (resp) {
                     if (resp['status'] == 0) {
                         $("#section_"+section_id).html(
-                          "<a href='javascript:void(0)' class='section_status'>InActive</a>"
+                          "<a href='javascript:void(0)' class='section_status'>In Active</a>"
                           )
                     } else if (resp['status'] == 1) {
                         $("#section_"+section_id).html(

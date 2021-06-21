@@ -121,8 +121,8 @@ Product Category
 @section('scripts')
 <script type="text/javascript">
     //Jquery ready function
-    
-        
+
+
         $(document).on("click",".category_status", function(){
             var status = $(this).text();
             var category_id = $(this).attr("category_id");
@@ -136,7 +136,7 @@ Product Category
                 success: function(resp) {
                     if (resp['status'] == 0) {
                         $("#category_" + category_id).html(
-                            "<a href='javascript:void(0)' class='category_status'>Inactive</a>"
+                            "<a href='javascript:void(0)' class='category_status'>In Active</a>"
                         )
                     } else if (resp['status'] == 1) {
                         $("#category_" + category_id).html(
@@ -149,6 +149,6 @@ Product Category
                 }
             });
         });
-    
+
 </script>
 @endsection

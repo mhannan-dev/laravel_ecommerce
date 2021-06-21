@@ -59,9 +59,10 @@ Product Category
                                         <td>{{ $banner['title'] }}</td>
                                         <td width="30%">
                                             @if (!empty($banner['banner_image']))
-                                            <img style="width: 60px;" src="{{ url('storage/banner/'.$banner['banner_image']) }}" alt="{{ $banner->title }}">
+
+                                            <img style="width: 60px;" src="{{ asset('/storage/banner/' . $banner->banner_image) }}" alt="{{ $banner->title }}">
                                             @else
-                                            <img style="width: 60px; border: 3px solid red" src="{{url('/storage/banner/no_image.png')}}" alt="No Image">
+                                            <img style="width: 60px; border: 3px solid red" src="{{ url('/storage/banner/no_image.png') }}" alt="No Image">
                                             @endif
                                         </td>
                                         <td>@if ($banner->status == 1 )

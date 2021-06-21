@@ -12,7 +12,13 @@ use Illuminate\Support\Facades\Artisan;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', 'Frontend\IndexController@index')->name('frontend.home');
+Route::namespace('Frontend')->group(function(){
+    //Home page route
+    Route::get('/', 'IndexController@index')->name('frontend.home');
+    // Product listing page route
+    Route::get('/{url}', 'ProductController@listing')->name('listing');
+});
+
 Auth::routes();
 Route::prefix('/admin')->namespace('Admin')->group(function(){
     Route::match(['GET','POST'], '/', 'AdminController@login');

@@ -1,7 +1,9 @@
 <?php
 namespace App\Models;
+
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+
 class Category extends Model
 {
     protected $table = 'categories';
@@ -40,5 +42,20 @@ class Category extends Model
     {
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = Str::slug($value);
+    }
+    //Getting categoryDetails to show category wise products
+    public static function categoryDetails($url)
+    {
+        $categoryDetails = Category::select('id','title','slug')
+            ->with('subcategories',function ($query) {
+                $query->select('id','parent_id')->where('status', 1);
+            })->where('slug', $url)->first()->toArray();
+        $catIds = array();
+        $catIds[] = $categoryDetails['id'];
+        foreach ($categoryDetails['subcategories'] as $key => $sub_cat) {
+            $catIds = $sub_cat['id'];
+        }
+        return array('catIds' => $catIds, 'categoryDetails' => $categoryDetails );
+
     }
 }
