@@ -17,11 +17,15 @@ class ProductController extends Controller
     public function listing($url)
     {
         $data['title'] = "Listing";
-        $categoryCount = Category::where(['slug', $url, 'status' => 1])->count();
-        if ($categoryCount > 0) {
-            //echo "Category exist"; die;
+        $categoryCount = Category::where(['slug' => $url, 'status' => 1])->count();
+        if($categoryCount>0) {
             $categoryDetails = Category::categoryDetails($url);
-        } else {
+            // echo '<pre>';
+            // echo '======================<br>';
+            // print_r($categoryDetails);
+            // echo '<br>======================<br>';
+            // exit();
+        }else{
             abort(404);
         }
     }

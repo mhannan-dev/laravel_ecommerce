@@ -36,10 +36,10 @@ $sections = Section::with('categories')->where('status', 1)->get();
                                         @foreach ($section['categories'] as $category)
                                         <li class="divider"></li>
                                         <li class="nav-header">
-                                            <a href="">{!! $category['title'] !!}</a>
+                                            <a href="{{ route('listing', $category['slug']) }}">{!! $category['title'] !!}</a>
                                         </li>
                                         @foreach ($category['subcategories'] as $subcategory)
-                                        <li><a href="#">{!! $subcategory->title !!}</a></li>
+                                        <li><a href="{{ route('listing', $subcategory['slug']) }}">{!! $subcategory->title !!}</a></li>
                                         @endforeach
                                         @endforeach
                                     </ul>
