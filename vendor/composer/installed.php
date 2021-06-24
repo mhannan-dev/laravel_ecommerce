@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'ed3b0e9978b7f8e30e8f9e6c2347b1df1c4b2b00',
+    'reference' => '9f834793067910fb3251d66909cdd20a0b32725f',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -422,7 +422,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'ed3b0e9978b7f8e30e8f9e6c2347b1df1c4b2b00',
+      'reference' => '9f834793067910fb3251d66909cdd20a0b32725f',
     ),
     'laravel/tinker' => 
     array (
@@ -462,12 +462,12 @@
     ),
     'league/flysystem' => 
     array (
-      'pretty_version' => '1.1.3',
-      'version' => '1.1.3.0',
+      'pretty_version' => '1.1.4',
+      'version' => '1.1.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9be3b16c877d477357c015cec057548cf9b2a14a',
+      'reference' => 'f3ad69181b8afed2c9edf7be5a2918144ff4ea32',
     ),
     'league/mime-type-detection' => 
     array (
@@ -655,12 +655,12 @@
     ),
     'phpunit/phpunit' => 
     array (
-      'pretty_version' => '8.5.16',
-      'version' => '8.5.16.0',
+      'pretty_version' => '8.5.17',
+      'version' => '8.5.17.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'cc66f2fc61296be66c99931a862200e7456b9a01',
+      'reference' => '79067856d85421c56d413bd238d4e2cd6b0e54da',
     ),
     'psr/container' => 
     array (
@@ -723,8 +723,8 @@
     array (
       'provided' => 
       array (
-        0 => '1.0.0',
-        1 => '1.0',
+        0 => '1.0',
+        1 => '1.0.0',
       ),
     ),
     'psr/simple-cache' => 
