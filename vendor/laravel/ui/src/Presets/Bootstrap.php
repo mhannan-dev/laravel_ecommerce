@@ -2,8 +2,6 @@
 
 namespace Laravel\Ui\Presets;
 
-use Illuminate\Filesystem\Filesystem;
-
 class Bootstrap extends Preset
 {
     /**
@@ -14,7 +12,6 @@ class Bootstrap extends Preset
     public static function install()
     {
         static::updatePackages();
-        static::updateWebpackConfiguration();
         static::updateSass();
         static::updateBootstrapping();
         static::removeNodeModules();
@@ -32,19 +29,7 @@ class Bootstrap extends Preset
             'bootstrap' => '^4.0.0',
             'jquery' => '^3.2',
             'popper.js' => '^1.12',
-            'sass' => '^1.15.2',
-            'sass-loader' => '^8.0.0',
         ] + $packages;
-    }
-
-    /**
-     * Update the Webpack configuration.
-     *
-     * @return void
-     */
-    protected static function updateWebpackConfiguration()
-    {
-        copy(__DIR__.'/bootstrap-stubs/webpack.mix.js', base_path('webpack.mix.js'));
     }
 
     /**
@@ -54,8 +39,6 @@ class Bootstrap extends Preset
      */
     protected static function updateSass()
     {
-        (new Filesystem)->ensureDirectoryExists(resource_path('sass'));
-
         copy(__DIR__.'/bootstrap-stubs/_variables.scss', resource_path('sass/_variables.scss'));
         copy(__DIR__.'/bootstrap-stubs/app.scss', resource_path('sass/app.scss'));
     }
