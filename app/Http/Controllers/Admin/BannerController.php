@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 
 class BannerController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -113,7 +115,7 @@ class BannerController extends Controller
                     Storage::disk('public')->delete('banner/'.$banner->banner_image);
                 }
                 //Saving image
-                
+
                 $bannerImage = Image::make($image)->resize(1170, 480)->save(storage_path('banner'));
                 Storage::disk('public')->put('banner/'. $imageName, $bannerImage);
             } else {
