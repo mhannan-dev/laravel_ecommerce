@@ -25,7 +25,7 @@ Auth::routes();
 
 
 Route::prefix('/admin')->namespace('Admin')->group(function () {
-    //Route::group(['prefix' => 'admin'], function () {
+    //Route::match(['get', 'post'], '/', 'AdminController@login');
     Route::get('/login', 'AdminController@showLoginForm')->name('admin.loginForm');
     Route::post('/login', 'AdminController@login')->name('admin.login.submit');
     Route::get('/logout', 'AdminController@logout')->name('admin.logout');

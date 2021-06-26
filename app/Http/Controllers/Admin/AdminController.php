@@ -69,7 +69,7 @@ class AdminController extends Controller
                 return back()->with('error', 'Username or password is wrong');
             }
         }
-        //return view('admin.pages.settings.admin_login');
+     //   return view('admin.pages.settings.admin_login');
     }
     /**
      * Admin logout
