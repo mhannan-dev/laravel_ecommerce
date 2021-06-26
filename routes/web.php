@@ -28,6 +28,7 @@ Route::prefix('/admin')->namespace('Admin')->group(function () {
     //Route::group(['prefix' => 'admin'], function () {
     Route::get('/login', 'AdminController@showLoginForm')->name('admin.loginForm');
     Route::post('/login', 'AdminController@login')->name('admin.login.submit');
+    Route::get('/logout', 'AdminController@logout')->name('admin.logout');
     Route::group(['middleware' => ['admin']], function () {
         Route::get('dashboard', 'AdminController@dashboard');
         Route::resource('banner', 'BannerController');
@@ -59,4 +60,13 @@ Route::prefix('/admin')->namespace('Admin')->group(function () {
         Route::post('update-product-status', 'ProductController@update_product_status');
         Route::post('edit-product-attribute', 'ProductController@edit_attributes')->name('edit_attribute');
     });
+});
+//to clear all cache
+Route::get('/clear', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+    Artisan::call('view:clear');
+    Artisan::call('optimize:clear');
+    return "Cleared!";
 });

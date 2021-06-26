@@ -78,7 +78,8 @@ class AdminController extends Controller
     public function logout()
     {
         Auth::guard('admin')->logout();
-        return redirect('/admin');
+        //return view('admin.pages.settings.admin_login');
+        return redirect('/');
     }
     /**
      * Check_current_password
