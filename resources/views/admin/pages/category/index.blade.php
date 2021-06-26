@@ -80,7 +80,11 @@ Product Category
                                             @endif
                                         </td>
                                         <td>
-                                            <img style="height: 60px; width: 60px;" src="{{ ('storage/category/'.$category->image) }}" alt="{{ $category->title }}">
+                                            @if (!empty($category->image))
+                                            <img style="width: 60px;" src="{{ url('storage/category/'.$category->image) }}" alt="{{ $category->title }}">
+                                            @else
+                                            <img style="width: 60px; border: 3px solid red" src="{{url('/storage/category/default.png')}}" alt="No Image">
+                                            @endif
                                         </td>
                                         <td>
                                             <a class="btn btn-warning btn-sm" href="{{ route('category.edit', $category->id) }}">
