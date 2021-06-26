@@ -2,11 +2,9 @@
 
 namespace Illuminate\Queue;
 
-use Closure;
 use DateTimeInterface;
 use Illuminate\Container\Container;
 use Illuminate\Support\InteractsWithTime;
-use Illuminate\Support\Str;
 
 abstract class Queue
 {
@@ -78,7 +76,7 @@ abstract class Queue
     /**
      * Create a payload string from the given job and data.
      *
-     * @param  \Closure|string|object  $job
+     * @param  string|object  $job
      * @param  string  $queue
      * @param  mixed  $data
      * @return string
@@ -87,10 +85,6 @@ abstract class Queue
      */
     protected function createPayload($job, $queue, $data = '')
     {
-        if ($job instanceof Closure) {
-            $job = CallQueuedClosure::create($job);
-        }
-
         $payload = json_encode($this->createPayloadArray($job, $queue, $data));
 
         if (JSON_ERROR_NONE !== json_last_error()) {
@@ -127,11 +121,9 @@ abstract class Queue
     protected function createObjectPayload($job, $queue)
     {
         $payload = $this->withCreatePayloadHooks($queue, [
-            'uuid' => (string) Str::uuid(),
             'displayName' => $this->getDisplayName($job),
             'job' => 'Illuminate\Queue\CallQueuedHandler@call',
             'maxTries' => $job->tries ?? null,
-            'maxExceptions' => $job->maxExceptions ?? null,
             'delay' => $this->getJobRetryDelay($job),
             'timeout' => $job->timeout ?? null,
             'timeoutAt' => $this->getJobExpiration($job),
@@ -208,11 +200,9 @@ abstract class Queue
     protected function createStringPayload($job, $queue, $data)
     {
         return $this->withCreatePayloadHooks($queue, [
-            'uuid' => (string) Str::uuid(),
             'displayName' => is_string($job) ? explode('@', $job)[0] : null,
             'job' => $job,
             'maxTries' => null,
-            'maxExceptions' => null,
             'delay' => null,
             'timeout' => null,
             'data' => $data,

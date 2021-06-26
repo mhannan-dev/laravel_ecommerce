@@ -2,6 +2,7 @@
 
 namespace Illuminate\Queue;
 
+use Exception;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -13,6 +14,7 @@ use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Events\Looping;
 use Illuminate\Queue\Events\WorkerStopping;
 use Illuminate\Support\Carbon;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Throwable;
 
 class Worker
@@ -283,8 +285,14 @@ class Worker
                     return $job;
                 }
             }
-        } catch (Throwable $e) {
+        } catch (Exception $e) {
             $this->exceptions->report($e);
+
+            $this->stopWorkerIfLostConnection($e);
+
+            $this->sleep(1);
+        } catch (Throwable $e) {
+            $this->exceptions->report($e = new FatalThrowableError($e));
 
             $this->stopWorkerIfLostConnection($e);
 
@@ -304,8 +312,12 @@ class Worker
     {
         try {
             return $this->process($connectionName, $job, $options);
-        } catch (Throwable $e) {
+        } catch (Exception $e) {
             $this->exceptions->report($e);
+
+            $this->stopWorkerIfLostConnection($e);
+        } catch (Throwable $e) {
+            $this->exceptions->report($e = new FatalThrowableError($e));
 
             $this->stopWorkerIfLostConnection($e);
         }
@@ -356,8 +368,12 @@ class Worker
             $job->fire();
 
             $this->raiseAfterJobEvent($connectionName, $job);
-        } catch (Throwable $e) {
+        } catch (Exception $e) {
             $this->handleJobException($connectionName, $job, $options, $e);
+        } catch (Throwable $e) {
+            $this->handleJobException(
+                $connectionName, $job, $options, new FatalThrowableError($e)
+            );
         }
     }
 
@@ -367,12 +383,12 @@ class Worker
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  \Illuminate\Queue\WorkerOptions  $options
-     * @param  \Throwable  $e
+     * @param  \Exception  $e
      * @return void
      *
-     * @throws \Throwable
+     * @throws \Exception
      */
-    protected function handleJobException($connectionName, $job, WorkerOptions $options, Throwable $e)
+    protected function handleJobException($connectionName, $job, WorkerOptions $options, $e)
     {
         try {
             // First, we will go ahead and mark the job as failed if it will exceed the maximum
@@ -381,10 +397,6 @@ class Worker
             if (! $job->hasFailed()) {
                 $this->markJobAsFailedIfWillExceedMaxAttempts(
                     $connectionName, $job, (int) $options->maxTries, $e
-                );
-
-                $this->markJobAsFailedIfWillExceedMaxExceptions(
-                    $connectionName, $job, $e
                 );
             }
 
@@ -416,8 +428,6 @@ class Worker
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  int  $maxTries
      * @return void
-     *
-     * @throws \Throwable
      */
     protected function markJobAsFailedIfAlreadyExceedsMaxAttempts($connectionName, $job, $maxTries)
     {
@@ -444,10 +454,10 @@ class Worker
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @param  int  $maxTries
-     * @param  \Throwable  $e
+     * @param  \Exception  $e
      * @return void
      */
-    protected function markJobAsFailedIfWillExceedMaxAttempts($connectionName, $job, $maxTries, Throwable $e)
+    protected function markJobAsFailedIfWillExceedMaxAttempts($connectionName, $job, $maxTries, $e)
     {
         $maxTries = ! is_null($job->maxTries()) ? $job->maxTries() : $maxTries;
 
@@ -461,39 +471,13 @@ class Worker
     }
 
     /**
-     * Mark the given job as failed if it has exceeded the maximum allowed attempts.
-     *
-     * @param  string  $connectionName
-     * @param  \Illuminate\Contracts\Queue\Job  $job
-     * @param  \Throwable  $e
-     * @return void
-     */
-    protected function markJobAsFailedIfWillExceedMaxExceptions($connectionName, $job, Throwable $e)
-    {
-        if (! $this->cache || is_null($uuid = $job->uuid()) ||
-            is_null($maxExceptions = $job->maxExceptions())) {
-            return;
-        }
-
-        if (! $this->cache->get('job-exceptions:'.$uuid)) {
-            $this->cache->put('job-exceptions:'.$uuid, 0, Carbon::now()->addDay());
-        }
-
-        if ($maxExceptions <= $this->cache->increment('job-exceptions:'.$uuid)) {
-            $this->cache->forget('job-exceptions:'.$uuid);
-
-            $this->failJob($job, $e);
-        }
-    }
-
-    /**
      * Mark the given job as failed and raise the relevant event.
      *
      * @param  \Illuminate\Contracts\Queue\Job  $job
-     * @param  \Throwable  $e
+     * @param  \Exception  $e
      * @return void
      */
-    protected function failJob($job, Throwable $e)
+    protected function failJob($job, $e)
     {
         return $job->fail($e);
     }
@@ -531,10 +515,10 @@ class Worker
      *
      * @param  string  $connectionName
      * @param  \Illuminate\Contracts\Queue\Job  $job
-     * @param  \Throwable  $e
+     * @param  \Exception  $e
      * @return void
      */
-    protected function raiseExceptionOccurredJobEvent($connectionName, $job, Throwable $e)
+    protected function raiseExceptionOccurredJobEvent($connectionName, $job, $e)
     {
         $this->events->dispatch(new JobExceptionOccurred(
             $connectionName, $job, $e
@@ -640,7 +624,7 @@ class Worker
     /**
      * Create an instance of MaxAttemptsExceededException.
      *
-     * @param  \Illuminate\Contracts\Queue\Job  $job
+     * @param  \Illuminate\Contracts\Queue\Job|null  $job
      * @return \Illuminate\Queue\MaxAttemptsExceededException
      */
     protected function maxAttemptsExceededException($job)

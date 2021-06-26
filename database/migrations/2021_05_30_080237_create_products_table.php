@@ -12,7 +12,7 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->integer('section_id')->unsigned()->comment('PK on sections table')->nullable();
             $table->integer('brand_id')->unsigned()->comment('PK on brands table')->nullable();
             $table->integer('category_id')->unsigned()->comment('PK on categories table');

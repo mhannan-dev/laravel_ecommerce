@@ -21,7 +21,7 @@ class UrlGenerator implements UrlGeneratorContract
     /**
      * The route collection.
      *
-     * @var \Illuminate\Routing\RouteCollectionInterface
+     * @var \Illuminate\Routing\RouteCollection
      */
     protected $routes;
 
@@ -112,12 +112,12 @@ class UrlGenerator implements UrlGeneratorContract
     /**
      * Create a new URL Generator instance.
      *
-     * @param  \Illuminate\Routing\RouteCollectionInterface  $routes
+     * @param  \Illuminate\Routing\RouteCollection  $routes
      * @param  \Illuminate\Http\Request  $request
      * @param  string|null  $assetRoot
      * @return void
      */
-    public function __construct(RouteCollectionInterface $routes, Request $request, $assetRoot = null)
+    public function __construct(RouteCollection $routes, Request $request, $assetRoot = null)
     {
         $this->routes = $routes;
         $this->assetRoot = $assetRoot;
@@ -320,7 +320,7 @@ class UrlGenerator implements UrlGeneratorContract
      */
     public function signedRoute($name, $parameters = [], $expiration = null, $absolute = true)
     {
-        $parameters = Arr::wrap($parameters);
+        $parameters = $this->formatParameters($parameters);
 
         if (array_key_exists('signature', $parameters)) {
             throw new InvalidArgumentException(
@@ -432,12 +432,6 @@ class UrlGenerator implements UrlGeneratorContract
      */
     public function toRoute($route, $parameters, $absolute)
     {
-        $parameters = collect(Arr::wrap($parameters))->map(function ($value, $key) use ($route) {
-            return $value instanceof UrlRoutable && $route->bindingFieldFor($key)
-                    ? $value->{$route->bindingFieldFor($key)}
-                    : $value;
-        })->all();
-
         return $this->routeUrl()->to(
             $route, $this->formatParameters($parameters), $absolute
         );
@@ -616,25 +610,25 @@ class UrlGenerator implements UrlGeneratorContract
     /**
      * Force the scheme for URLs.
      *
-     * @param  string|null  $scheme
+     * @param  string  $scheme
      * @return void
      */
     public function forceScheme($scheme)
     {
         $this->cachedScheme = null;
 
-        $this->forceScheme = $scheme ? $scheme.'://' : null;
+        $this->forceScheme = $scheme.'://';
     }
 
     /**
      * Set the forced root URL.
      *
-     * @param  string|null  $root
+     * @param  string  $root
      * @return void
      */
     public function forceRootUrl($root)
     {
-        $this->forcedRoot = $root ? rtrim($root, '/') : null;
+        $this->forcedRoot = rtrim($root, '/');
 
         $this->cachedRoot = null;
     }
@@ -699,23 +693,16 @@ class UrlGenerator implements UrlGeneratorContract
 
         $this->cachedRoot = null;
         $this->cachedScheme = null;
-
-        tap(optional($this->routeGenerator)->defaultParameters ?: [], function ($defaults) {
-            $this->routeGenerator = null;
-
-            if (! empty($defaults)) {
-                $this->defaults($defaults);
-            }
-        });
+        $this->routeGenerator = null;
     }
 
     /**
      * Set the route collection.
      *
-     * @param  \Illuminate\Routing\RouteCollectionInterface  $routes
+     * @param  \Illuminate\Routing\RouteCollection  $routes
      * @return $this
      */
-    public function setRoutes(RouteCollectionInterface $routes)
+    public function setRoutes(RouteCollection $routes)
     {
         $this->routes = $routes;
 

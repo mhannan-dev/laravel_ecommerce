@@ -59,18 +59,16 @@ class ComposerClassMap
 
         foreach ($prefixes as $namespace => $directories) {
             foreach ($directories as $directory) {
-                if (file_exists($directory)) {
-                    $files = (new Finder)
-                        ->in($directory)
-                        ->files()
-                        ->name('*.php');
+                $files = (new Finder)
+                    ->in($directory)
+                    ->files()
+                    ->name('*.php');
 
-                    foreach ($files as $file) {
-                        if ($file instanceof SplFileInfo) {
-                            $fqcn = $this->getFullyQualifiedClassNameFromFile($namespace, $file);
+                foreach ($files as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        $fqcn = $this->getFullyQualifiedClassNameFromFile($namespace, $file);
 
-                            $classes[$fqcn] = $file->getRelativePathname();
-                        }
+                        $classes[$fqcn] = $file->getRelativePathname();
                     }
                 }
             }
@@ -88,19 +86,17 @@ class ComposerClassMap
 
         foreach ($prefixes as $namespace => $directories) {
             foreach ($directories as $directory) {
-                if (file_exists($directory)) {
-                    $files = (new Finder)
-                        ->in($directory)
-                        ->files()
-                        ->name('*.php');
+                $files = (new Finder)
+                    ->in($directory)
+                    ->files()
+                    ->name('*.php');
 
-                    foreach ($files as $file) {
-                        if ($file instanceof SplFileInfo) {
-                            $basename = basename($file->getRelativePathname(), '.php');
+                foreach ($files as $file) {
+                    if ($file instanceof SplFileInfo) {
+                        $basename = basename($file->getRelativePathname(), '.php');
 
-                            if ($basename === $missingClass) {
-                                return $namespace.basename($file->getRelativePathname(), '.php');
-                            }
+                        if ($basename === $missingClass) {
+                            return $namespace.basename($file->getRelativePathname(), '.php');
                         }
                     }
                 }

@@ -30,7 +30,7 @@ class RouteNotDefinedSolutionProvider implements HasSolutionsForThrowable
             }
         }
 
-        return (bool)preg_match(self::REGEX, $throwable->getMessage(), $matches);
+        return preg_match(self::REGEX, $throwable->getMessage(), $matches);
     }
 
     public function getSolutions(Throwable $throwable): array

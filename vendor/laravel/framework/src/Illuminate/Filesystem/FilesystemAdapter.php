@@ -116,13 +116,7 @@ class FilesystemAdapter implements CloudFilesystemContract
      */
     public function path($path)
     {
-        $adapter = $this->driver->getAdapter();
-
-        if ($adapter instanceof CachedAdapter) {
-            $adapter = $adapter->getAdapter();
-        }
-
-        return $adapter->getPathPrefix().$path;
+        return $this->driver->getAdapter()->getPathPrefix().$path;
     }
 
     /**
@@ -731,7 +725,7 @@ class FilesystemAdapter implements CloudFilesystemContract
                 return AdapterInterface::VISIBILITY_PRIVATE;
         }
 
-        throw new InvalidArgumentException("Unknown visibility: {$visibility}.");
+        throw new InvalidArgumentException("Unknown visibility: {$visibility}");
     }
 
     /**

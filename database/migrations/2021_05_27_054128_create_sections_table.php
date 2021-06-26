@@ -15,7 +15,7 @@ class CreateSectionsTable extends Migration
     public function up()
     {
         Schema::create('sections', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('title', 200)->unique();
             $table->string('slug');
             $table->tinyInteger('status')->comment('1=Active and 0=Inactive')->default('1')->nullable();

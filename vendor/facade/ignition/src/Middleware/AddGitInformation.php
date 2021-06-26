@@ -3,7 +3,6 @@
 namespace Facade\Ignition\Middleware;
 
 use Facade\FlareClient\Report;
-use ReflectionClass;
 use Symfony\Component\Process\Process;
 
 class AddGitInformation
@@ -48,7 +47,7 @@ class AddGitInformation
 
     protected function command($command)
     {
-        $process = (new ReflectionClass(Process::class))->hasMethod('fromShellCommandline')
+        $process = (new \ReflectionClass(Process::class))->hasMethod('fromShellCommandline')
             ? Process::fromShellCommandline($command, base_path())
             : new Process($command, base_path());
 

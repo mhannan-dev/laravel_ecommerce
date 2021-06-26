@@ -80,7 +80,7 @@ Product Category
                                             @endif
                                         </td>
                                         <td>
-                                            <img style="height: 60px; width: 60px;" src="{{ zzz('storage/category/'.$category->image) }}" alt="{{ $category->title }}">
+                                            <img style="height: 60px; width: 60px;" src="{{ ('storage/category/'.$category->image) }}" alt="{{ $category->title }}">
                                         </td>
                                         <td>
                                             <a class="btn btn-warning btn-sm" href="{{ route('category.edit', $category->id) }}">

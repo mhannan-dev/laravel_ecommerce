@@ -14,13 +14,6 @@ class PendingDispatch
     protected $job;
 
     /**
-     * Indicates if the job should be dispatched immediately after sending the response.
-     *
-     * @var bool
-     */
-    protected $afterResponse = false;
-
-    /**
      * Create a new pending job dispatch.
      *
      * @param  mixed  $job
@@ -110,28 +103,12 @@ class PendingDispatch
     }
 
     /**
-     * Indicate that the job should be dispatched after the response is sent to the browser.
-     *
-     * @return $this
-     */
-    public function afterResponse()
-    {
-        $this->afterResponse = true;
-
-        return $this;
-    }
-
-    /**
      * Handle the object's destruction.
      *
      * @return void
      */
     public function __destruct()
     {
-        if ($this->afterResponse) {
-            app(Dispatcher::class)->dispatchAfterResponse($this->job);
-        } else {
-            app(Dispatcher::class)->dispatch($this->job);
-        }
+        app(Dispatcher::class)->dispatch($this->job);
     }
 }

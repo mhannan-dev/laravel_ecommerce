@@ -4,7 +4,6 @@ namespace Illuminate\Database\Query\Grammars;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 class SqlServerGrammar extends Grammar
 {
@@ -61,8 +60,8 @@ class SqlServerGrammar extends Grammar
         // If there is a limit on the query, but not an offset, we will add the top
         // clause to the query, which serves as a "limit" type clause within the
         // SQL Server system similar to the limit keywords available in MySQL.
-        if ($query->limit > 0 && $query->offset <= 0) {
-            $select .= 'top '.$query->limit.' ';
+        if (is_numeric($query->limit) && $query->limit > 0 && $query->offset <= 0) {
+            $select .= 'top '.((int) $query->limit).' ';
         }
 
         return $select.$this->columnize($columns);
@@ -222,32 +221,15 @@ class SqlServerGrammar extends Grammar
      */
     protected function compileRowConstraint($query)
     {
-        $start = $query->offset + 1;
+        $start = (int) $query->offset + 1;
 
         if ($query->limit > 0) {
-            $finish = $query->offset + $query->limit;
+            $finish = (int) $query->offset + (int) $query->limit;
 
             return "between {$start} and {$finish}";
         }
 
         return ">= {$start}";
-    }
-
-    /**
-     * Compile a delete statement without joins into SQL.
-     *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @param  string  $table
-     * @param  string  $where
-     * @return string
-     */
-    protected function compileDeleteWithoutJoins(Builder $query, $table, $where)
-    {
-        $sql = parent::compileDeleteWithoutJoins($query, $table, $where);
-
-        return ! is_null($query->limit) && $query->limit > 0 && $query->offset <= 0
-                        ? Str::replaceFirst('delete', 'delete top ('.$query->limit.')', $sql)
-                        : $sql;
     }
 
     /**

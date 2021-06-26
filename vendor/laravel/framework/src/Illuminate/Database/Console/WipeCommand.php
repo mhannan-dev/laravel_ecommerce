@@ -27,12 +27,12 @@ class WipeCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return void
      */
     public function handle()
     {
         if (! $this->confirmToProceed()) {
-            return 1;
+            return;
         }
 
         $database = $this->input->getOption('database');
@@ -52,8 +52,6 @@ class WipeCommand extends Command
 
             $this->info('Dropped all types successfully.');
         }
-
-        return 0;
     }
 
     /**

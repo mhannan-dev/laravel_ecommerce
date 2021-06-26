@@ -113,7 +113,7 @@ class CallQueuedListener implements ShouldQueue
      *
      * The event instance and the exception will be passed.
      *
-     * @param  \Throwable  $e
+     * @param  \Exception  $e
      * @return void
      */
     public function failed($e)

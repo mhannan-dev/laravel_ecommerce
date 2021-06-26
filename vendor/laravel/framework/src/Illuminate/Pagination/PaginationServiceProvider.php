@@ -46,9 +46,5 @@ class PaginationServiceProvider extends ServiceProvider
 
             return 1;
         });
-
-        Paginator::queryStringResolver(function () {
-            return $this->app['request']->query();
-        });
     }
 }

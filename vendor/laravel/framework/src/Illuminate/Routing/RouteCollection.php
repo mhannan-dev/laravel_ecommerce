@@ -2,11 +2,16 @@
 
 namespace Illuminate\Routing;
 
-use Illuminate\Container\Container;
+use ArrayIterator;
+use Countable;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
+use IteratorAggregate;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class RouteCollection extends AbstractRouteCollection
+class RouteCollection implements Countable, IteratorAggregate
 {
     /**
      * An array of the routes keyed by method.
@@ -18,21 +23,21 @@ class RouteCollection extends AbstractRouteCollection
     /**
      * A flattened array of all of the routes.
      *
-     * @var \Illuminate\Routing\Route[]
+     * @var array
      */
     protected $allRoutes = [];
 
     /**
      * A look-up table of routes by their names.
      *
-     * @var \Illuminate\Routing\Route[]
+     * @var array
      */
     protected $nameList = [];
 
     /**
      * A look-up table of routes by controller action.
      *
-     * @var \Illuminate\Routing\Route[]
+     * @var array
      */
     protected $actionList = [];
 
@@ -147,7 +152,6 @@ class RouteCollection extends AbstractRouteCollection
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Routing\Route
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function match(Request $request)
@@ -159,14 +163,111 @@ class RouteCollection extends AbstractRouteCollection
         // by the consumer. Otherwise we will check for routes with another verb.
         $route = $this->matchAgainstRoutes($routes, $request);
 
-        return $this->handleMatchedRoute($request, $route);
+        if (! is_null($route)) {
+            return $route->bind($request);
+        }
+
+        // If no route was found we will now check if a matching route is specified by
+        // another HTTP verb. If it is we will need to throw a MethodNotAllowed and
+        // inform the user agent of which HTTP verb it should use for this route.
+        $others = $this->checkForAlternateVerbs($request);
+
+        if (count($others) > 0) {
+            return $this->getRouteForMethods($request, $others);
+        }
+
+        throw new NotFoundHttpException;
+    }
+
+    /**
+     * Determine if a route in the array matches the request.
+     *
+     * @param  array  $routes
+     * @param  \Illuminate\Http\Request  $request
+     * @param  bool  $includingMethod
+     * @return \Illuminate\Routing\Route|null
+     */
+    protected function matchAgainstRoutes(array $routes, $request, $includingMethod = true)
+    {
+        [$fallbacks, $routes] = collect($routes)->partition(function ($route) {
+            return $route->isFallback;
+        });
+
+        return $routes->merge($fallbacks)->first(function ($value) use ($request, $includingMethod) {
+            return $value->matches($request, $includingMethod);
+        });
+    }
+
+    /**
+     * Determine if any routes match on another HTTP verb.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function checkForAlternateVerbs($request)
+    {
+        $methods = array_diff(Router::$verbs, [$request->getMethod()]);
+
+        // Here we will spin through all verbs except for the current request verb and
+        // check to see if any routes respond to them. If they do, we will return a
+        // proper error response with the correct headers on the response string.
+        $others = [];
+
+        foreach ($methods as $method) {
+            if (! is_null($this->matchAgainstRoutes($this->get($method), $request, false))) {
+                $others[] = $method;
+            }
+        }
+
+        return $others;
+    }
+
+    /**
+     * Get a route (if necessary) that responds when other available methods are present.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  array  $methods
+     * @return \Illuminate\Routing\Route
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
+     */
+    protected function getRouteForMethods($request, array $methods)
+    {
+        if ($request->method() === 'OPTIONS') {
+            return (new Route('OPTIONS', $request->path(), function () use ($methods) {
+                return new Response('', 200, ['Allow' => implode(',', $methods)]);
+            }))->bind($request);
+        }
+
+        $this->methodNotAllowed($methods, $request->method());
+    }
+
+    /**
+     * Throw a method not allowed HTTP exception.
+     *
+     * @param  array  $others
+     * @param  string  $method
+     * @return void
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
+     */
+    protected function methodNotAllowed(array $others, $method)
+    {
+        throw new MethodNotAllowedHttpException(
+            $others,
+            sprintf(
+                'The %s method is not supported for this route. Supported methods: %s.',
+                $method,
+                implode(', ', $others)
+            )
+        );
     }
 
     /**
      * Get routes from the collection by method.
      *
      * @param  string|null  $method
-     * @return \Illuminate\Routing\Route[]
+     * @return array
      */
     public function get($method = null)
     {
@@ -209,7 +310,7 @@ class RouteCollection extends AbstractRouteCollection
     /**
      * Get all of the routes in the collection.
      *
-     * @return \Illuminate\Routing\Route[]
+     * @return array
      */
     public function getRoutes()
     {
@@ -229,7 +330,7 @@ class RouteCollection extends AbstractRouteCollection
     /**
      * Get all of the routes keyed by their name.
      *
-     * @return \Illuminate\Routing\Route[]
+     * @return array
      */
     public function getRoutesByName()
     {
@@ -237,32 +338,22 @@ class RouteCollection extends AbstractRouteCollection
     }
 
     /**
-     * Convert the collection to a Symfony RouteCollection instance.
+     * Get an iterator for the items.
      *
-     * @return \Symfony\Component\Routing\RouteCollection
+     * @return \ArrayIterator
      */
-    public function toSymfonyRouteCollection()
+    public function getIterator()
     {
-        $symfonyRoutes = parent::toSymfonyRouteCollection();
-
-        $this->refreshNameLookups();
-
-        return $symfonyRoutes;
+        return new ArrayIterator($this->getRoutes());
     }
 
     /**
-     * Convert the collection to a CompiledRouteCollection instance.
+     * Count the number of items in the collection.
      *
-     * @param  \Illuminate\Routing\Router  $router
-     * @param  \Illuminate\Container\Container  $container
-     * @return \Illuminate\Routing\CompiledRouteCollection
+     * @return int
      */
-    public function toCompiledRouteCollection(Router $router, Container $container)
+    public function count()
     {
-        ['compiled' => $compiled, 'attributes' => $attributes] = $this->compile();
-
-        return (new CompiledRouteCollection($compiled, $attributes))
-            ->setRouter($router)
-            ->setContainer($container);
+        return count($this->getRoutes());
     }
 }

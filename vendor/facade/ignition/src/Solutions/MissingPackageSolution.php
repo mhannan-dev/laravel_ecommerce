@@ -7,7 +7,7 @@ use Facade\IgnitionContracts\Solution;
 
 class MissingPackageSolution implements Solution
 {
-    /** @var Package */
+    /** @var \Facade\Flare\Support\Packagist\Package */
     protected $possiblePackage;
 
     public function __construct(Package $possiblePackage)

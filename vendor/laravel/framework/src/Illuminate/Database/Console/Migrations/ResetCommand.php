@@ -47,28 +47,26 @@ class ResetCommand extends BaseCommand
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return void
      */
     public function handle()
     {
         if (! $this->confirmToProceed()) {
-            return 1;
+            return;
         }
 
-        return $this->migrator->usingConnection($this->option('database'), function () {
-            // First, we'll make sure that the migration table actually exists before we
-            // start trying to rollback and re-run all of the migrations. If it's not
-            // present we'll just bail out with an info message for the developers.
-            if (! $this->migrator->repositoryExists()) {
-                return $this->comment('Migration table not found.');
-            }
+        $this->migrator->setConnection($this->option('database'));
 
-            $this->migrator->setOutput($this->output)->reset(
-                $this->getMigrationPaths(), $this->option('pretend')
-            );
-        });
+        // First, we'll make sure that the migration table actually exists before we
+        // start trying to rollback and re-run all of the migrations. If it's not
+        // present we'll just bail out with an info message for the developers.
+        if (! $this->migrator->repositoryExists()) {
+            return $this->comment('Migration table not found.');
+        }
 
-        return 0;
+        $this->migrator->setOutput($this->output)->reset(
+            $this->getMigrationPaths(), $this->option('pretend')
+        );
     }
 
     /**

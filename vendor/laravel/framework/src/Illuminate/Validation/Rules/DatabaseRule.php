@@ -63,11 +63,7 @@ trait DatabaseRule
         }
 
         if (is_subclass_of($table, Model::class)) {
-            $model = new $table;
-
-            return implode('.', array_filter(
-                [$model->getConnectionName(), $model->getTable()]
-            ));
+            return (new $table)->getTable();
         }
 
         return $table;
@@ -88,10 +84,6 @@ trait DatabaseRule
 
         if ($column instanceof Closure) {
             return $this->using($column);
-        }
-
-        if (is_null($value)) {
-            return $this->whereNull($column);
         }
 
         $this->wheres[] = compact('column', 'value');

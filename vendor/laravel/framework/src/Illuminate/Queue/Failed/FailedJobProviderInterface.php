@@ -10,7 +10,7 @@ interface FailedJobProviderInterface
      * @param  string  $connection
      * @param  string  $queue
      * @param  string  $payload
-     * @param  \Throwable  $exception
+     * @param  \Exception  $exception
      * @return string|int|null
      */
     public function log($connection, $queue, $payload, $exception);

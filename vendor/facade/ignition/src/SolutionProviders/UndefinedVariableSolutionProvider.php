@@ -40,11 +40,8 @@ class UndefinedVariableSolutionProvider implements HasSolutionsForThrowable
         return $solutions;
     }
 
-    protected function findCorrectVariableSolutions(
-        ViewException $throwable,
-        string $variableName,
-        string $viewFile
-    ): array {
+    protected function findCorrectVariableSolutions(Throwable $throwable, string $variableName, string $viewFile): array
+    {
         return collect($throwable->getViewData())->map(function ($value, $key) use ($variableName) {
             similar_text($variableName, $key, $percentage);
 
@@ -57,7 +54,7 @@ class UndefinedVariableSolutionProvider implements HasSolutionsForThrowable
             return $solution->isRunnable()
                 ? $solution
                 : BaseSolution::create($solution->getSolutionTitle())
-                    ->setSolutionDescription($solution->getSolutionDescription());
+                    ->setSolutionDescription($solution->getSolutionActionDescription());
         })->toArray();
     }
 
@@ -68,22 +65,18 @@ class UndefinedVariableSolutionProvider implements HasSolutionsForThrowable
         return $optionalSolution->isRunnable()
             ? $optionalSolution
             : BaseSolution::create($optionalSolution->getSolutionTitle())
-                ->setSolutionDescription($optionalSolution->getSolutionDescription());
+                ->setSolutionDescription($optionalSolution->getSolutionActionDescription());
     }
 
     protected function getNameAndView(Throwable $throwable): ?array
     {
-        $pattern = '/Undefined variable:? (.*?) \(View: (.*?)\)/';
+        $pattern = '/Undefined variable: (.*?) \(View: (.*?)\)/';
 
         preg_match($pattern, $throwable->getMessage(), $matches);
-
         if (count($matches) === 3) {
-            [, $variableName, $viewFile] = $matches;
-            $variableName = ltrim($variableName, '$');
+            [$string, $variableName, $viewFile] = $matches;
 
             return compact('variableName', 'viewFile');
         }
-
-        return null;
     }
 }

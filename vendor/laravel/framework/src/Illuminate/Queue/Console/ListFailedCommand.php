@@ -92,7 +92,7 @@ class ListFailedCommand extends Command
      * Match the job name from the payload.
      *
      * @param  array  $payload
-     * @return string|null
+     * @return string
      */
     protected function matchJobName($payload)
     {

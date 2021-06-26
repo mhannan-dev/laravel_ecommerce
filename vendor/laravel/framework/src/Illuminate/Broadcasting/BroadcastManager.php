@@ -10,7 +10,6 @@ use Illuminate\Broadcasting\Broadcasters\RedisBroadcaster;
 use Illuminate\Contracts\Broadcasting\Factory as FactoryContract;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Contracts\Bus\Dispatcher as BusDispatcherContract;
-use Illuminate\Contracts\Foundation\CachesRoutes;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Pusher\Pusher;
@@ -23,7 +22,7 @@ class BroadcastManager implements FactoryContract
     /**
      * The application instance.
      *
-     * @var \Illuminate\Contracts\Container\Container
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
@@ -44,7 +43,7 @@ class BroadcastManager implements FactoryContract
     /**
      * Create a new manager instance.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $app
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
     public function __construct($app)
@@ -60,7 +59,7 @@ class BroadcastManager implements FactoryContract
      */
     public function routes(array $attributes = null)
     {
-        if ($this->app instanceof CachesRoutes && $this->app->routesAreCached()) {
+        if ($this->app->routesAreCached()) {
             return;
         }
 

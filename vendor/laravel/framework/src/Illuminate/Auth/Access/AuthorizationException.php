@@ -3,7 +3,6 @@
 namespace Illuminate\Auth\Access;
 
 use Exception;
-use Throwable;
 
 class AuthorizationException extends Exception
 {
@@ -19,10 +18,10 @@ class AuthorizationException extends Exception
      *
      * @param  string|null  $message
      * @param  mixed  $code
-     * @param  \Throwable|null  $previous
+     * @param  \Exception|null  $previous
      * @return void
      */
-    public function __construct($message = null, $code = null, Throwable $previous = null)
+    public function __construct($message = null, $code = null, Exception $previous = null)
     {
         parent::__construct($message ?? 'This action is unauthorized.', 0, $previous);
 

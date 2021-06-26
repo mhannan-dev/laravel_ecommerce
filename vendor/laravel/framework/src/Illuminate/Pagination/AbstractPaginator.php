@@ -94,13 +94,6 @@ abstract class AbstractPaginator implements Htmlable
     protected static $currentPageResolver;
 
     /**
-     * The query string resolver callback.
-     *
-     * @var \Closure
-     */
-    protected static $queryStringResolver;
-
-    /**
      * The view factory resolver callback.
      *
      * @var \Closure
@@ -238,20 +231,6 @@ abstract class AbstractPaginator implements Htmlable
     }
 
     /**
-     * Add all current query string values to the paginator.
-     *
-     * @return $this
-     */
-    public function withQueryString()
-    {
-        if (isset(static::$queryStringResolver)) {
-            return $this->appends(call_user_func(static::$queryStringResolver));
-        }
-
-        return $this;
-    }
-
-    /**
      * Add a query string value to the paginator.
      *
      * @param  string  $key
@@ -287,20 +266,6 @@ abstract class AbstractPaginator implements Htmlable
     public function loadMorph($relation, $relations)
     {
         $this->getCollection()->loadMorph($relation, $relations);
-
-        return $this;
-    }
-
-    /**
-     * Load a set of relationship counts onto the mixed relationship collection.
-     *
-     * @param  string  $relation
-     * @param  array  $relations
-     * @return $this
-     */
-    public function loadMorphCount($relation, $relations)
-    {
-        $this->getCollection()->loadMorphCount($relation, $relations);
 
         return $this;
     }
@@ -481,7 +446,7 @@ abstract class AbstractPaginator implements Htmlable
     public static function resolveCurrentPage($pageName = 'page', $default = 1)
     {
         if (isset(static::$currentPageResolver)) {
-            return call_user_func(static::$currentPageResolver, $pageName);
+            return (int) call_user_func(static::$currentPageResolver, $pageName);
         }
 
         return $default;
@@ -496,17 +461,6 @@ abstract class AbstractPaginator implements Htmlable
     public static function currentPageResolver(Closure $resolver)
     {
         static::$currentPageResolver = $resolver;
-    }
-
-    /**
-     * Set with query string resolver callback.
-     *
-     * @param  \Closure  $resolver
-     * @return void
-     */
-    public static function queryStringResolver(Closure $resolver)
-    {
-        static::$queryStringResolver = $resolver;
     }
 
     /**
@@ -550,17 +504,6 @@ abstract class AbstractPaginator implements Htmlable
     public static function defaultSimpleView($view)
     {
         static::$defaultSimpleView = $view;
-    }
-
-    /**
-     * Indicate that Tailwind styling should be used for generated links.
-     *
-     * @return void
-     */
-    public static function useTailwind()
-    {
-        static::defaultView('pagination::tailwind');
-        static::defaultSimpleView('pagination::simple-tailwind');
     }
 
     /**

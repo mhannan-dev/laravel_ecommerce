@@ -199,7 +199,7 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
     /**
      * Get the ID for the currently authenticated user.
      *
-     * @return int|string|null
+     * @return int|null
      */
     public function id()
     {
@@ -632,8 +632,7 @@ class SessionGuard implements StatefulGuard, SupportsBasicAuth
     /**
      * Fires the validated event if the dispatcher is set.
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @return void
+     * @param $user
      */
     protected function fireValidatedEvent($user)
     {

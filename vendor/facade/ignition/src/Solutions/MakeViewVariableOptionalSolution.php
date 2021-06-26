@@ -32,6 +32,7 @@ class MakeViewVariableOptionalSolution implements RunnableSolution
 
     public function getSolutionActionDescription(): string
     {
+        $path = str_replace(base_path().'/', '', $this->viewFile);
         $output = [
             'Make the variable optional in the blade template.',
             "Replace `{{ $$this->variableName }}` with `{{ $$this->variableName ?? '' }}`",
@@ -73,10 +74,10 @@ class MakeViewVariableOptionalSolution implements RunnableSolution
 
     protected function isSafePath(string $path): bool
     {
-        if (! Str::startsWith($path, ['/', './'])) {
+        if (!Str::startsWith($path, ['/', './'])) {
             return false;
         }
-        if (! Str::endsWith($path, '.blade.php')) {
+        if (!Str::endsWith($path, '.blade.php')) {
             return false;
         }
 
@@ -85,7 +86,7 @@ class MakeViewVariableOptionalSolution implements RunnableSolution
 
     public function makeOptional(array $parameters = [])
     {
-        if (! $this->isSafePath($parameters['viewFile'])) {
+        if (!$this->isSafePath($parameters['viewFile'])) {
             return false;
         }
 
@@ -107,7 +108,7 @@ class MakeViewVariableOptionalSolution implements RunnableSolution
     protected function generateExpectedTokens(array $originalTokens, string $variableName): array
     {
         $expectedTokens = [];
-        foreach ($originalTokens as $token) {
+        foreach ($originalTokens as $key => $token) {
             $expectedTokens[] = $token;
             if ($token[0] === T_VARIABLE && $token[1] === '$'.$variableName) {
                 $expectedTokens[] = [T_WHITESPACE, ' ', $token[2]];

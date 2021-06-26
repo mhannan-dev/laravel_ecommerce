@@ -18,14 +18,9 @@ class ProductController extends Controller
     {
         $data['title'] = "Listing";
         $categoryCount = Category::where(['slug' => $url, 'status' => 1])->count();
-        if($categoryCount>0) {
+        if ($categoryCount > 0) {
             $categoryDetails = Category::categoryDetails($url);
-            // echo '<pre>';
-            // echo '======================<br>';
-            // print_r($categoryDetails);
-            // echo '<br>======================<br>';
-            // exit();
-        }else{
+        } else {
             abort(404);
         }
     }

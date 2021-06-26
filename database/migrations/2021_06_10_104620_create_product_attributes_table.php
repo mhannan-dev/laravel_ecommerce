@@ -14,10 +14,10 @@ class CreateProductAttributesTable extends Migration
     public function up()
     {
         Schema::create('product_attributes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->integer('product_id')->comment('Product primary key');
             $table->string('size');
-            $table->decimal('price', 10, 2); 
+            $table->decimal('price', 10, 2);
             $table->integer('stock');
             $table->string('sku')->unique()->comment("Different for every product It should meaningful");
             $table->tinyInteger('status')->default('1');

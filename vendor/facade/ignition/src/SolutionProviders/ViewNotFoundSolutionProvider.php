@@ -23,7 +23,7 @@ class ViewNotFoundSolutionProvider implements HasSolutionsForThrowable
             return false;
         }
 
-        return (bool)preg_match(self::REGEX, $throwable->getMessage(), $matches);
+        return preg_match(self::REGEX, $throwable->getMessage(), $matches);
     }
 
     public function getSolutions(Throwable $throwable): array

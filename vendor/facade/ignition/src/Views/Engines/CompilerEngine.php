@@ -12,7 +12,6 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use ReflectionProperty;
-use Throwable;
 
 class CompilerEngine extends \Illuminate\View\Engines\CompilerEngine
 {
@@ -23,8 +22,8 @@ class CompilerEngine extends \Illuminate\View\Engines\CompilerEngine
     /**
      * Get the evaluated contents of the view.
      *
-     * @param string $path
-     * @param array $data
+     * @param  string $path
+     * @param  array $data
      *
      * @return string
      */
@@ -40,14 +39,14 @@ class CompilerEngine extends \Illuminate\View\Engines\CompilerEngine
     /**
      * Handle a view exception.
      *
-     * @param \Throwable $baseException
-     * @param int $obLevel
+     * @param  \Exception $baseException
+     * @param  int $obLevel
      *
      * @return void
      *
-     * @throws \Throwable
+     * @throws \Exception
      */
-    protected function handleViewException(Throwable $baseException, $obLevel)
+    protected function handleViewException(Exception $baseException, $obLevel)
     {
         while (ob_get_level() > $obLevel) {
             ob_end_clean();
@@ -59,7 +58,7 @@ class CompilerEngine extends \Illuminate\View\Engines\CompilerEngine
 
         $viewExceptionClass = ViewException::class;
 
-        if ($baseException instanceof ProvidesSolution) {
+        if (in_array(ProvidesSolution::class, class_implements($baseException))) {
             $viewExceptionClass = ViewExceptionWithSolution::class;
         }
 
@@ -72,10 +71,9 @@ class CompilerEngine extends \Illuminate\View\Engines\CompilerEngine
             $baseException
         );
 
-        if ($baseException instanceof ProvidesSolution) {
+        if ($viewExceptionClass === ViewExceptionWithSolution::class) {
             $exception->setSolution($baseException->getSolution());
         }
-
 
         $this->modifyViewsInTrace($exception);
 

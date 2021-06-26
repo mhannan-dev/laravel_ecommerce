@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\Support\Str;
 
-class DatabasePresenceVerifier implements DatabasePresenceVerifierInterface
+class DatabasePresenceVerifier implements PresenceVerifierInterface
 {
     /**
      * The database connection instance.
@@ -120,7 +120,7 @@ class DatabasePresenceVerifier implements DatabasePresenceVerifierInterface
      * @param  string  $table
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function table($table)
+    public function table($table)
     {
         return $this->db->connection($this->connection)->table($table)->useWritePdo();
     }

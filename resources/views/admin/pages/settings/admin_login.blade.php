@@ -26,8 +26,9 @@
       <p class="login-box-msg">Login to start your session</p>
       @include('admin.partials.message')
 
-      <form action="{{ url('/admin') }}" method="post">
+      <form action="{{ route('admin.login.submit') }}" method="post">
         @csrf
+
         <div class="input-group mb-3">
           <input name="email" type="email" class="form-control" placeholder="Email">
           <div class="input-group-append">
@@ -35,7 +36,7 @@
               <span class="fas fa-envelope"></span>
             </div>
           </div>
-          
+
         </div>
         <div class="input-group mb-3">
           <input name="password" type="password" class="form-control" placeholder="Password">

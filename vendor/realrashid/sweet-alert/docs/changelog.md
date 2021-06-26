@@ -2,16 +2,6 @@
 
 All notable changes to `sweet-alert` will be documented in this file.
 
-## v3.2.3 - 2021-05-26
-- Bug Fixes
-- Upgraded SweetAlert2 to latest version
-- Docs Updated
-
-## v3.2.2 - 2021-02-17
-- Remove Laravel 6 Support
-- Upgraded SweetAlert2 to latest version
-- Docs Updated
-
 ## v3.2.1 - 2021-01-15
 - Fixed PHP 8 Issues
 - Upgraded SweetAlert2 to latest version

@@ -7,8 +7,8 @@ use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Foundation\Application;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\ErrorHandler\Error\FatalError;
-use Throwable;
+use Symfony\Component\Debug\Exception\FatalErrorException;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 class HandleExceptions
 {
@@ -80,8 +80,12 @@ class HandleExceptions
      * @param  \Throwable  $e
      * @return void
      */
-    public function handleException(Throwable $e)
+    public function handleException($e)
     {
+        if (! $e instanceof Exception) {
+            $e = new FatalThrowableError($e);
+        }
+
         try {
             self::$reservedMemory = null;
 
@@ -100,10 +104,10 @@ class HandleExceptions
     /**
      * Render an exception to the console.
      *
-     * @param  \Throwable  $e
+     * @param  \Exception  $e
      * @return void
      */
-    protected function renderForConsole(Throwable $e)
+    protected function renderForConsole(Exception $e)
     {
         $this->getExceptionHandler()->renderForConsole(new ConsoleOutput, $e);
     }
@@ -111,10 +115,10 @@ class HandleExceptions
     /**
      * Render an exception as an HTTP response and send it.
      *
-     * @param  \Throwable  $e
+     * @param  \Exception  $e
      * @return void
      */
-    protected function renderHttpResponse(Throwable $e)
+    protected function renderHttpResponse(Exception $e)
     {
         $this->getExceptionHandler()->render($this->app['request'], $e)->send();
     }
@@ -127,20 +131,22 @@ class HandleExceptions
     public function handleShutdown()
     {
         if (! is_null($error = error_get_last()) && $this->isFatal($error['type'])) {
-            $this->handleException($this->fatalErrorFromPhpError($error, 0));
+            $this->handleException($this->fatalExceptionFromError($error, 0));
         }
     }
 
     /**
-     * Create a new fatal error instance from an error array.
+     * Create a new fatal exception instance from an error array.
      *
      * @param  array  $error
      * @param  int|null  $traceOffset
-     * @return \Symfony\Component\ErrorHandler\Error\FatalError
+     * @return \Symfony\Component\Debug\Exception\FatalErrorException
      */
-    protected function fatalErrorFromPhpError(array $error, $traceOffset = null)
+    protected function fatalExceptionFromError(array $error, $traceOffset = null)
     {
-        return new FatalError($error['message'], 0, $error, $traceOffset);
+        return new FatalErrorException(
+            $error['message'], $error['type'], 0, $error['file'], $error['line'], $traceOffset
+        );
     }
 
     /**

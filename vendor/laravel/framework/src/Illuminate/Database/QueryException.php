@@ -4,7 +4,6 @@ namespace Illuminate\Database;
 
 use Illuminate\Support\Str;
 use PDOException;
-use Throwable;
 
 class QueryException extends PDOException
 {
@@ -27,10 +26,10 @@ class QueryException extends PDOException
      *
      * @param  string  $sql
      * @param  array  $bindings
-     * @param  \Throwable  $previous
+     * @param  \Exception  $previous
      * @return void
      */
-    public function __construct($sql, array $bindings, Throwable $previous)
+    public function __construct($sql, array $bindings, $previous)
     {
         parent::__construct('', 0, $previous);
 
@@ -49,10 +48,10 @@ class QueryException extends PDOException
      *
      * @param  string  $sql
      * @param  array  $bindings
-     * @param  \Throwable  $previous
+     * @param  \Exception  $previous
      * @return string
      */
-    protected function formatMessage($sql, $bindings, Throwable $previous)
+    protected function formatMessage($sql, $bindings, $previous)
     {
         return $previous->getMessage().' (SQL: '.Str::replaceArray('?', $bindings, $sql).')';
     }

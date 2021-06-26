@@ -3,7 +3,6 @@
 namespace Facade\Ignition\Logger;
 
 use Facade\FlareClient\Flare;
-use Facade\FlareClient\Report;
 use Facade\Ignition\Ignition;
 use Facade\Ignition\Tabs\Tab;
 use Monolog\Handler\AbstractProcessingHandler;
@@ -55,25 +54,13 @@ class FlareHandler extends AbstractProcessingHandler
 
         if (config('flare.send_logs_as_events')) {
             if ($this->hasValidLogLevel($report)) {
-                $this->flare->reportMessage(
-                    $report['message'],
-                    'Log ' . Logger::getLevelName($report['level']),
-                    function (Report $flareReport) use ($report) {
-                        foreach ($report['context'] as $key => $value) {
-                            $flareReport->context($key, $value);
-                        }
-                    }
-                );
+                $this->flare->reportMessage($report['message'], 'Log '.Logger::getLevelName($report['level']));
             }
         }
     }
 
     protected function shouldReport(array $report): bool
     {
-        if (! config('flare.key')) {
-            return false;
-        }
-
         return $this->hasException($report) || $this->hasValidLogLevel($report);
     }
 

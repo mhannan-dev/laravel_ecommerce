@@ -49,15 +49,13 @@ class SeedCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return void
      */
     public function handle()
     {
         if (! $this->confirmToProceed()) {
-            return 1;
+            return;
         }
-
-        $previousConnection = $this->resolver->getDefaultConnection();
 
         $this->resolver->setDefaultConnection($this->getDatabase());
 
@@ -65,13 +63,7 @@ class SeedCommand extends Command
             $this->getSeeder()->__invoke();
         });
 
-        if ($previousConnection) {
-            $this->resolver->setDefaultConnection($previousConnection);
-        }
-
         $this->info('Database seeding completed successfully.');
-
-        return 0;
     }
 
     /**

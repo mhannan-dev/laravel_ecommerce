@@ -336,7 +336,7 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      * @param  mixed  $default
      * @return mixed
      */
-    public function get(string $key, $default = null)
+    public function get($key, $default = null)
     {
         return parent::get($key, $default);
     }
@@ -423,6 +423,10 @@ class Request extends SymfonyRequest implements Arrayable, ArrayAccess
      */
     public static function createFromBase(SymfonyRequest $request)
     {
+        if ($request instanceof static) {
+            return $request;
+        }
+
         $newRequest = (new static)->duplicate(
             $request->query->all(), $request->request->all(), $request->attributes->all(),
             $request->cookies->all(), $request->files->all(), $request->server->all()

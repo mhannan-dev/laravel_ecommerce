@@ -4,6 +4,7 @@ namespace Illuminate\Database;
 
 use Closure;
 use Doctrine\DBAL\Driver\PDOSqlsrv\Driver as DoctrineDriver;
+use Exception;
 use Illuminate\Database\Query\Grammars\SqlServerGrammar as QueryGrammar;
 use Illuminate\Database\Query\Processors\SqlServerProcessor;
 use Illuminate\Database\Schema\Grammars\SqlServerGrammar as SchemaGrammar;
@@ -19,7 +20,7 @@ class SqlServerConnection extends Connection
      * @param  int  $attempts
      * @return mixed
      *
-     * @throws \Throwable
+     * @throws \Exception|\Throwable
      */
     public function transaction(Closure $callback, $attempts = 1)
     {
@@ -42,7 +43,11 @@ class SqlServerConnection extends Connection
             // If we catch an exception, we will roll back so nothing gets messed
             // up in the database. Then we'll re-throw the exception so it can
             // be handled how the developer sees fit for their applications.
-            catch (Throwable $e) {
+            catch (Exception $e) {
+                $this->getPdo()->exec('ROLLBACK TRAN');
+
+                throw $e;
+            } catch (Throwable $e) {
                 $this->getPdo()->exec('ROLLBACK TRAN');
 
                 throw $e;

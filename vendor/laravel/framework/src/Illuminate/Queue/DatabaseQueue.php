@@ -190,7 +190,7 @@ class DatabaseQueue extends Queue implements QueueContract
      * @param  string|null  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
      *
-     * @throws \Throwable
+     * @throws \Exception|\Throwable
      */
     public function pop($queue = null)
     {
@@ -310,7 +310,7 @@ class DatabaseQueue extends Queue implements QueueContract
      * @param  string  $id
      * @return void
      *
-     * @throws \Throwable
+     * @throws \Exception|\Throwable
      */
     public function deleteReserved($queue, $id)
     {

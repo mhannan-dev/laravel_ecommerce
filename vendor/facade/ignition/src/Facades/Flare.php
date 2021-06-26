@@ -17,6 +17,6 @@ class Flare extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \Facade\FlareClient\Flare::class;
+        return 'flare.client';
     }
 }

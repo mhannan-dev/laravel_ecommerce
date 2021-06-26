@@ -3,9 +3,11 @@
 namespace Illuminate\Pipeline;
 
 use Closure;
+use Exception;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Pipeline\Pipeline as PipelineContract;
 use RuntimeException;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Throwable;
 
 class Pipeline implements PipelineContract
@@ -126,8 +128,10 @@ class Pipeline implements PipelineContract
         return function ($passable) use ($destination) {
             try {
                 return $destination($passable);
-            } catch (Throwable $e) {
+            } catch (Exception $e) {
                 return $this->handleException($passable, $e);
+            } catch (Throwable $e) {
+                return $this->handleException($passable, new FatalThrowableError($e));
             }
         };
     }
@@ -168,8 +172,10 @@ class Pipeline implements PipelineContract
                                     : $pipe(...$parameters);
 
                     return $this->handleCarry($carry);
-                } catch (Throwable $e) {
+                } catch (Exception $e) {
                     return $this->handleException($passable, $e);
+                } catch (Throwable $e) {
+                    return $this->handleException($passable, new FatalThrowableError($e));
                 }
             };
         };
@@ -233,12 +239,12 @@ class Pipeline implements PipelineContract
      * Handle the given exception.
      *
      * @param  mixed  $passable
-     * @param  \Throwable  $e
+     * @param  \Exception  $e
      * @return mixed
      *
-     * @throws \Throwable
+     * @throws \Exception
      */
-    protected function handleException($passable, Throwable $e)
+    protected function handleException($passable, Exception $e)
     {
         throw $e;
     }

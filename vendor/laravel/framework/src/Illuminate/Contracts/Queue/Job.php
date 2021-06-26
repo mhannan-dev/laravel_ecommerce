@@ -5,13 +5,6 @@ namespace Illuminate\Contracts\Queue;
 interface Job
 {
     /**
-     * Get the UUID of the job.
-     *
-     * @return string|null
-     */
-    public function uuid();
-
-    /**
      * Get the job identifier.
      *
      * @return string
@@ -105,13 +98,6 @@ interface Job
      * @return int|null
      */
     public function maxTries();
-
-    /**
-     * Get the maximum number of exceptions allowed, regardless of attempts.
-     *
-     * @return int|null
-     */
-    public function maxExceptions();
 
     /**
      * Get the number of seconds the job can run.

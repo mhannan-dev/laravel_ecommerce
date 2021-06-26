@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
+
 use Carbon\Carbon;
 use App\Models\Admin;
 use Illuminate\Http\Request;
@@ -10,6 +12,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProfileUpdateRequest;
 use Intervention\Image\ImageManagerStatic as Image;
+
 class AdminController extends Controller
 {
     /**
@@ -19,7 +22,6 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        Session::put('page','dashboard');
         return view('admin.pages.settings.dashboard');
     }
     /**
@@ -28,9 +30,17 @@ class AdminController extends Controller
      */
     public function change_pwd()
     {
-       $data['title'] = "Upate password";
-       $data['adminDetails'] = Admin::where('email', Auth::guard('admin')->user()->email)->first();
-       return view('admin.pages.settings.change_password', $data);
+        $data['title'] = "Upate password";
+        $data['adminDetails'] = Admin::where('email', Auth::guard('admin')->user()->email)->first();
+        return view('admin.pages.settings.change_password', $data);
+    }
+    /**
+     * Admin Form
+     *
+     */
+    public function showLoginForm()
+    {
+        return view('admin.pages.settings.admin_login');
     }
     /**
      * Admin login
@@ -52,16 +62,16 @@ class AdminController extends Controller
                 'password.required' => 'Password is required'
             ];
             $this->validate($request, $rules, $customMessage);
-            if (Auth::guard('admin')->attempt(['email'=> $data['email'], 'password' => $data['password']])) {
+            if (Auth::guard('admin')->attempt(['email' => $data['email'], 'password' => $data['password']])) {
                 //toast('Successfully logged in !','success');
                 return redirect('admin/dashboard')->with('success', 'Login Successfully!');
             } else {
-                return back()->with('error','Username or password is wrong');
+                return back()->with('error', 'Username or password is wrong');
             }
         }
-        return view('admin.pages.settings.admin_login');
+        //return view('admin.pages.settings.admin_login');
     }
-     /**
+    /**
      * Admin logout
      *
      */
@@ -100,12 +110,12 @@ class AdminController extends Controller
                     $admin = Admin::find(Auth::guard('admin')->user()->id);
                     $admin->password = bcrypt($request->new_password);
                     $admin->save();
-                    toast('Password Changed successfully!!','success');
+                    toast('Password Changed successfully!!', 'success');
                 } else {
                     toast('New password & confirm password is not same', 'error');
                     return redirect()->back();
                 }
-            } else{
+            } else {
                 toast('Password not updated!!', 'error');
             }
             return redirect()->back();
@@ -116,7 +126,7 @@ class AdminController extends Controller
      */
     public function profile_update(Request $request)
     {
-        Session::put('page','profile_update');
+        Session::put('page', 'profile_update');
         $title = "Profile Update";
         if ($request->isMethod('POST')) {
             $data = $request->all();
@@ -130,19 +140,19 @@ class AdminController extends Controller
                 }
                 $postImage = Image::make($image)->resize(150, 150)->save(storage_path('admin'));
                 Storage::disk('public')->put('admin/' . $imageName, $postImage);
-            } else if(!empty($data['current_image'])){
+            } else if (!empty($data['current_image'])) {
                 $imageName = $data['current_image'];
             } else {
                 $imageName = "default.png";
             }
             Admin::where('email', Auth::guard('admin')->user()->email)->update([
-                'name'=> $data['name'],
-                'mobile'=> $data['mobile'],
-                'image'=> $imageName
+                'name' => $data['name'],
+                'mobile' => $data['mobile'],
+                'image' => $imageName
             ]);
-            toast('Profile updated successfully!!','success');
+            toast('Profile updated successfully!!', 'success');
             return redirect()->back();
         }
-        return view('admin.pages.settings.profile_update',compact('title'));
+        return view('admin.pages.settings.profile_update', compact('title'));
     }
 }

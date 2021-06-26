@@ -19,6 +19,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Queue\CallQueuedClosure;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\HtmlString;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\HttpFoundation\Response;
 
 if (! function_exists('abort')) {
@@ -50,7 +51,7 @@ if (! function_exists('abort_if')) {
      * Throw an HttpException with the given data if the given condition is true.
      *
      * @param  bool  $boolean
-     * @param  \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Support\Responsable|int  $code
+     * @param  int  $code
      * @param  string  $message
      * @param  array  $headers
      * @return void
@@ -71,7 +72,7 @@ if (! function_exists('abort_unless')) {
      * Throw an HttpException with the given data unless the given condition is true.
      *
      * @param  bool  $boolean
-     * @param  \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Support\Responsable|int  $code
+     * @param  int  $code
      * @param  string  $message
      * @param  array  $headers
      * @return void
@@ -479,21 +480,24 @@ if (! function_exists('event')) {
 
 if (! function_exists('factory')) {
     /**
-     * Create a model factory builder for a given class and amount.
+     * Create a model factory builder for a given class, name, and amount.
      *
-     * @param  string  $class
-     * @param  int  $amount
+     * @param  dynamic  class|class,name|class,amount|class,name,amount
      * @return \Illuminate\Database\Eloquent\FactoryBuilder
      */
-    function factory($class, $amount = null)
+    function factory()
     {
         $factory = app(EloquentFactory::class);
 
-        if (isset($amount) && is_int($amount)) {
-            return $factory->of($class)->times($amount);
+        $arguments = func_get_args();
+
+        if (isset($arguments[1]) && is_string($arguments[1])) {
+            return $factory->of($arguments[0], $arguments[1])->times($arguments[2] ?? null);
+        } elseif (isset($arguments[1])) {
+            return $factory->of($arguments[0])->times($arguments[1]);
         }
 
-        return $factory->of($class);
+        return $factory->of($arguments[0]);
     }
 }
 
@@ -653,8 +657,13 @@ if (! function_exists('report')) {
      * @param  \Throwable  $exception
      * @return void
      */
-    function report(Throwable $exception)
+    function report($exception)
     {
+        if ($exception instanceof Throwable &&
+            ! $exception instanceof Exception) {
+            $exception = new FatalThrowableError($exception);
+        }
+
         app(ExceptionHandler::class)->report($exception);
     }
 }

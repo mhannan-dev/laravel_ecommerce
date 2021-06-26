@@ -43,7 +43,7 @@ interface StatefulGuard extends Guard
      * Log the given user ID into the application without sessions or cookies.
      *
      * @param  mixed  $id
-     * @return \Illuminate\Contracts\Auth\Authenticatable|bool
+     * @return bool
      */
     public function onceUsingId($id);
 

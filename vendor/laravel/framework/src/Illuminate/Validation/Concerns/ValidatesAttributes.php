@@ -5,6 +5,7 @@ namespace Illuminate\Validation\Concerns;
 use Countable;
 use DateTime;
 use DateTimeInterface;
+use DateTimeZone;
 use Egulias\EmailValidator\EmailValidator;
 use Egulias\EmailValidator\Validation\DNSCheckValidation;
 use Egulias\EmailValidator\Validation\MultipleValidationWithAnd;
@@ -23,6 +24,7 @@ use Illuminate\Validation\ValidationData;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Throwable;
 
 trait ValidatesAttributes
 {
@@ -57,7 +59,7 @@ trait ValidatesAttributes
 
         if ($url = parse_url($value, PHP_URL_HOST)) {
             try {
-                return count(dns_get_record($url, DNS_A | DNS_AAAA)) > 0;
+                return count(dns_get_record($url.'.', DNS_A | DNS_AAAA)) > 0;
             } catch (Exception $e) {
                 return false;
             }
@@ -317,20 +319,11 @@ trait ValidatesAttributes
      *
      * @param  string  $attribute
      * @param  mixed  $value
-     * @param  array  $parameters
      * @return bool
      */
-    public function validateArray($attribute, $value, $parameters = [])
+    public function validateArray($attribute, $value)
     {
-        if (! is_array($value)) {
-            return false;
-        }
-
-        if (empty($parameters)) {
-            return true;
-        }
-
-        return empty(array_diff_key($value, array_fill_keys($parameters, '')));
+        return is_array($value);
     }
 
     /**
@@ -449,12 +442,14 @@ trait ValidatesAttributes
         $this->requireParameterCount(1, $parameters, 'different');
 
         foreach ($parameters as $parameter) {
-            if (Arr::has($this->data, $parameter)) {
-                $other = Arr::get($this->data, $parameter);
+            if (! Arr::has($this->data, $parameter)) {
+                return false;
+            }
 
-                if ($value === $other) {
-                    return false;
-                }
+            $other = Arr::get($this->data, $parameter);
+
+            if ($value === $other) {
+                return false;
             }
         }
 
@@ -654,10 +649,6 @@ trait ValidatesAttributes
                     return new SpoofCheckValidation();
                 } elseif ($validation === 'filter') {
                     return new FilterEmailValidation();
-                } elseif ($validation === 'filter_unicode') {
-                    return FilterEmailValidation::unicode();
-                } elseif (is_string($validation) && class_exists($validation)) {
-                    return $this->container->make($validation);
                 }
             })
             ->values()
@@ -704,7 +695,7 @@ trait ValidatesAttributes
      */
     protected function getExistCount($connection, $table, $column, $value, $parameters)
     {
-        $verifier = $this->getPresenceVerifier($connection);
+        $verifier = $this->getPresenceVerifierFor($connection);
 
         $extra = $this->getExtraConditions(
             array_values(array_slice($parameters, 2))
@@ -733,17 +724,17 @@ trait ValidatesAttributes
     {
         $this->requireParameterCount(1, $parameters, 'unique');
 
-        [$connection, $table, $idColumn] = $this->parseTable($parameters[0]);
+        [$connection, $table] = $this->parseTable($parameters[0]);
 
         // The second parameter position holds the name of the column that needs to
         // be verified as unique. If this parameter isn't specified we will just
         // assume that this column to be verified shares the attribute's name.
         $column = $this->getQueryColumn($parameters, $attribute);
 
-        $id = null;
+        [$idColumn, $id] = [null, null];
 
         if (isset($parameters[2])) {
-            [$idColumn, $id] = $this->getUniqueIds($idColumn, $parameters);
+            [$idColumn, $id] = $this->getUniqueIds($parameters);
 
             if (! is_null($id)) {
                 $id = stripslashes($id);
@@ -753,7 +744,7 @@ trait ValidatesAttributes
         // The presence verifier is responsible for counting rows within this store
         // mechanism which might be a relational database or any other permanent
         // data store like Redis, etc. We will use it to determine uniqueness.
-        $verifier = $this->getPresenceVerifier($connection);
+        $verifier = $this->getPresenceVerifierFor($connection);
 
         $extra = $this->getUniqueExtra($parameters);
 
@@ -769,13 +760,12 @@ trait ValidatesAttributes
     /**
      * Get the excluded ID column and value for the unique rule.
      *
-     * @param  string|null  $idColumn
      * @param  array  $parameters
      * @return array
      */
-    protected function getUniqueIds($idColumn, $parameters)
+    protected function getUniqueIds($parameters)
     {
-        $idColumn = $idColumn ?? $parameters[3] ?? 'id';
+        $idColumn = $parameters[3] ?? 'id';
 
         return [$idColumn, $this->prepareUniqueId($parameters[2])];
     }
@@ -832,11 +822,11 @@ trait ValidatesAttributes
             $model = new $table;
 
             $table = $model->getTable();
+
             $connection = $connection ?? $model->getConnectionName();
-            $idColumn = $model->getKeyName();
         }
 
-        return [$connection, $table, $idColumn ?? null];
+        return [$connection, $table];
     }
 
     /**
@@ -1430,9 +1420,13 @@ trait ValidatesAttributes
     {
         $this->requireParameterCount(2, $parameters, 'required_if');
 
+        if (! Arr::has($this->data, $parameters[0])) {
+            return true;
+        }
+
         [$values, $other] = $this->prepareValuesAndOther($parameters);
 
-        if (in_array($other, $values)) {
+        if (in_array($other, $values, is_bool($other) || is_null($other))) {
             return $this->validateRequired($attribute, $value);
         }
 
@@ -1451,9 +1445,13 @@ trait ValidatesAttributes
     {
         $this->requireParameterCount(2, $parameters, 'exclude_if');
 
+        if (! Arr::has($this->data, $parameters[0])) {
+            return true;
+        }
+
         [$values, $other] = $this->prepareValuesAndOther($parameters);
 
-        return ! in_array($other, $values);
+        return ! in_array($other, $values, is_bool($other) || is_null($other));
     }
 
     /**
@@ -1470,23 +1468,25 @@ trait ValidatesAttributes
 
         [$values, $other] = $this->prepareValuesAndOther($parameters);
 
-        return in_array($other, $values);
+        return in_array($other, $values, is_bool($other) || is_null($other));
     }
 
     /**
-     * Indicate that an attribute should be excluded when another attribute is missing.
+     * Validate that an attribute exists when another attribute does not have a given value.
      *
      * @param  string  $attribute
      * @param  mixed  $value
      * @param  mixed  $parameters
      * @return bool
      */
-    public function validateExcludeWithout($attribute, $value, $parameters)
+    public function validateRequiredUnless($attribute, $value, $parameters)
     {
-        $this->requireParameterCount(1, $parameters, 'exclude_without');
+        $this->requireParameterCount(2, $parameters, 'required_unless');
 
-        if ($this->anyFailingRequired($parameters)) {
-            return false;
+        [$values, $other] = $this->prepareValuesAndOther($parameters);
+
+        if (! in_array($other, $values, is_bool($other) || is_null($other))) {
+            return $this->validateRequired($attribute, $value);
         }
 
         return true;
@@ -1504,11 +1504,26 @@ trait ValidatesAttributes
 
         $values = array_slice($parameters, 1);
 
-        if (is_bool($other)) {
+        if ($this->shouldConvertToBoolean($parameters[0]) || is_bool($other)) {
             $values = $this->convertValuesToBoolean($values);
         }
 
+        if (is_null($other)) {
+            $values = $this->convertValuesToNull($values);
+        }
+
         return [$values, $other];
+    }
+
+    /**
+     * Check if parameter should be converted to boolean.
+     *
+     * @param  string  $parameter
+     * @return bool
+     */
+    protected function shouldConvertToBoolean($parameter)
+    {
+        return in_array('boolean', Arr::get($this->rules, $parameter, []));
     }
 
     /**
@@ -1531,24 +1546,16 @@ trait ValidatesAttributes
     }
 
     /**
-     * Validate that an attribute exists when another attribute does not have a given value.
+     * Convert the given values to null if they are string "null".
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @param  mixed  $parameters
-     * @return bool
+     * @param  array  $values
+     * @return array
      */
-    public function validateRequiredUnless($attribute, $value, $parameters)
+    protected function convertValuesToNull($values)
     {
-        $this->requireParameterCount(2, $parameters, 'required_unless');
-
-        [$values, $other] = $this->prepareValuesAndOther($parameters);
-
-        if (! in_array($other, $values)) {
-            return $this->validateRequired($attribute, $value);
-        }
-
-        return true;
+        return array_map(function ($value) {
+            return Str::lower($value) === 'null' ? null : $value;
+        }, $values);
     }
 
     /**
@@ -1744,7 +1751,15 @@ trait ValidatesAttributes
      */
     public function validateTimezone($attribute, $value)
     {
-        return in_array($value, timezone_identifiers_list(), true);
+        try {
+            new DateTimeZone($value);
+        } catch (Exception $e) {
+            return false;
+        } catch (Throwable $e) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
