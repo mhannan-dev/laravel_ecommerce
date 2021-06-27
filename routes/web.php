@@ -24,7 +24,7 @@ Auth::routes();
 Route::prefix('/admin')->namespace('Admin')->group(function () {
     Route::get('/login', 'AdminController@showLoginForm')->name('admin.loginForm');
     Route::post('/login', 'AdminController@login')->name('admin.login.submit');
-    Route::get('/logout', 'AdminController@logout')->name('admin.logout');
+    Route::get('logout', 'AdminController@logout')->name('admin.logout');
     Route::group(['middleware' => ['admin']], function () {
         Route::get('dashboard', 'AdminController@dashboard');
         Route::resource('banner', 'BannerController');
