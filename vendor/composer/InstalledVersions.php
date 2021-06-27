@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '22f92f211dd1a082835e72ac1c1efd89cd4e2288',
+    'reference' => 'eff85c794596166acc0ee5aebcf33142c0042cf1',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -410,7 +410,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '22f92f211dd1a082835e72ac1c1efd89cd4e2288',
+      'reference' => 'eff85c794596166acc0ee5aebcf33142c0042cf1',
     ),
     'laravel/tinker' => 
     array (
@@ -722,8 +722,8 @@ private static $installed = array (
     array (
       'provided' => 
       array (
-        0 => '1.0',
-        1 => '1.0.0',
+        0 => '1.0.0',
+        1 => '1.0',
       ),
     ),
     'psr/simple-cache' => 
@@ -1405,23 +1405,9 @@ return $installed[0]['root'];
 
 
 
-
 public static function getRawData()
 {
-@trigger_error('getRawData only returns the first dataset loaded, which may not be what you expect. Use getAllRawData() instead which returns all datasets for all autoloaders present in the process.', E_USER_DEPRECATED);
-
 return self::$installed;
-}
-
-
-
-
-
-
-
-public static function getAllRawData()
-{
-return self::getInstalled();
 }
 
 
