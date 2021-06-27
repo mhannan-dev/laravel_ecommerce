@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
+
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Section;
@@ -48,7 +50,7 @@ class ProductController extends Controller
         $data['fits'] = array('Regular', 'Slim');
         $categories = Section::with('categories')->get();
         $data['categories'] = json_decode(json_encode($categories), true);
-        $brands = Brand::select('id','title')->where('status', 1)->get();
+        $brands = Brand::select('id', 'title')->where('status', 1)->get();
         $data['brands'] = json_decode(json_encode($brands), true);
         //dd($data['brands']);
         return view('admin.pages.product.add', $data);
@@ -119,7 +121,7 @@ class ProductController extends Controller
                 if (!Storage::disk('public')->exists('product')) {
                     Storage::disk('public')->makeDirectory('product');
                 }
-                $productImage = Image::make($image)->resize(1040, 1200)->save(storage_path('product'));
+                $productImage = Image::make($image)->resize(200, 200)->save(storage_path('product'));
                 Storage::disk('public')->put('product/' . $imageName, $productImage);
             } else {
                 $imageName = "default.png";
@@ -165,9 +167,9 @@ class ProductController extends Controller
         $fits = array('Regular', 'Slim');
         $categories = Section::with('categories')->select('id', 'title')->get();
         $categories = json_decode(json_encode($categories), true);
-        $brands = Brand::select('id','title')->where('status', 1)->get();
+        $brands = Brand::select('id', 'title')->where('status', 1)->get();
         $data['brands'] = json_decode(json_encode($brands), true);
-        return view('admin.pages.product.edit')->with(compact('brands','product_data', 'fabrics', 'sleeves', 'patterns', 'patterns', 'occasions', 'fits', 'categories', 'title'));
+        return view('admin.pages.product.edit')->with(compact('brands', 'product_data', 'fabrics', 'sleeves', 'patterns', 'patterns', 'occasions', 'fits', 'categories', 'title'));
     }
     /**
      * Update the specified resource in storage.
@@ -246,8 +248,6 @@ class ProductController extends Controller
                 toast('Your product has been deleted.', 'success', 'top-right');
                 return redirect()->route('product.index');
             }
-
-
         } catch (\Throwable $th) {
             toast('Your product not deleted.', 'success', 'top-right');
             return redirect()->back();
@@ -271,7 +271,6 @@ class ProductController extends Controller
             toast('Your product not deleted.', 'success', 'top-right');
             return redirect()->back();
         }
-
     }
     /**
      * Remove the specified resource from storage.
@@ -362,7 +361,7 @@ class ProductController extends Controller
                 foreach ($images as $key => $image) {
                     $product_image = new ProductsImage();
                     $image_tmp = Image::make($image);
-                    $imageName = time() .rand(222,999).'.'.$image->getClientOriginalExtension();
+                    $imageName = time() . rand(222, 999) . '.' . $image->getClientOriginalExtension();
                     if (!Storage::disk('public')->exists('multi_image')) {
                         Storage::disk('public')->makeDirectory('multi_image');
                     }
