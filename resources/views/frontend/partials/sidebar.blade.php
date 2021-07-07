@@ -5,21 +5,19 @@ $sections = Section::with('categories')->where('status', 1)->get();
 @endphp
 <!-- Sidebar ================================================== -->
 <div id="sidebar" class="span3">
-    <div class="well well-small"><a id="myCart" href="product_summary.html"><img src="themes/images/ico-cart.png" alt="cart">3 Items in your cart</a></div>
+    <div class="well well-small"><a id="myCart" href="#"><img src="themes/images/ico-cart.png" alt="cart">3 Items in your cart</a></div>
     <ul id="sideManu" class="nav nav-tabs nav-stacked">
         @foreach ( $sections as $section)
         @if (count($section['categories']) > 0)
         <li class="subMenu"><a>{!! $section['title'] !!}</a>
             @foreach ($section['categories'] as $category)
             <ul>
-                
-                <li><a href="products.html"><i class="icon-chevron-right"></i><strong>{!! $category['title'] !!}</strong></a></li>
-                
+                <li><a href="#"><i class="icon-chevron-right"></i><strong>{!! $category['title'] !!}</strong></a></li>
                 @foreach ($category['subcategories'] as $subcategory )
-                <li><a href="products.html"><i class="icon-chevron-right"></i>{!! $subcategory['title'] !!}</a></li> 
+                <li><a href="#"><i class="icon-chevron-right"></i>{!! $subcategory['title'] !!}</a></li>
                 @endforeach
             </ul>
-            @endforeach    
+            @endforeach
         </li>
         @endif
         @endforeach

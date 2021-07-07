@@ -10,18 +10,12 @@ use PHPUnit\Framework\ComparisonMethodDoesNotDeclareBoolReturnTypeException;
 
 class ProductController extends Controller
 {
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function listing($url)
+    public function listing($slug)
     {
-
         $data['title'] = "Listing";
-        $categoryCount = Category::where(['slug' => $url, 'status' => 1])->count();
+        $categoryCount = Category::where(['slug' => $slug, 'status' => 1])->count();
         if ($categoryCount > 0) {
-            $categoryDetails = Category::catDetails($url);
+            $categoryDetails = Category::catDetails($slug);
             // echo '<pre>'; print_r($categoryDetails);die;
             $categoryProducts = Product::whereIn('category_id', $categoryDetails['catIds'])->where('status', 1)->get()->toArray();
 

@@ -10,36 +10,34 @@ use Illuminate\Support\Facades\Artisan;
 */
 
 Route::namespace('Frontend')->group(function () {
-    //Home page route
-    Route::get('/', 'IndexController@index')->name('frontend.home');
-    // Product listing page route
-    Route::get('/{url}', 'ProductController@listing')->name('listing');
+    Route::get('/', 'IndexController@index')->name('frontend.home'); // Home route
+    //Route::get('/{slug}', 'ProductController@listing')->name('listing'); // Listing category route
+    Route::get('/{slug}', 'ProductController@listing'); // Listing category route
 });
 Auth::routes();
 Route::prefix('/admin')->namespace('Admin')->group(function () {
     Route::get('/login', 'AdminController@showLoginForm')->name('admin.loginForm');
     Route::post('/login', 'AdminController@login')->name('admin.login.submit');
-    Route::get('logout', 'AdminController@logout')->name('admin.logout');
+
     Route::group(['middleware' => ['admin']], function () {
         Route::get('dashboard', 'AdminController@dashboard');
-        Route::resource('banner', 'BannerController');
-        Route::post('update-banner-status', 'BannerController@update_banner_status');
-    });
-    Route::group(['prefix' => 'settings'], function () {
         Route::get('change-password', 'AdminController@change_pwd')->name('change_pwd'); //Its settings
+        Route::get('logout', 'AdminController@logout')->name('admin.logout');
         Route::post('check-current-pwd', 'AdminController@check_current_pwd')->name('check_current_pwd');
         Route::post('update-current-pwd', 'AdminController@update_current_pwd')->name('update_current_pwd');
         Route::match(['GET', 'POST'], '/profile-update', 'AdminController@profile_update')->name('profile_update');
-    });
-    // Ecommerce sections or product  route
-    Route::group(['prefix' => 'catalogue'], function () {
-        Route::resource('section', 'SectionController');
+        Route::resource('banner', 'BannerController');
+        Route::post('update-banner-status', 'BannerController@update_banner_status');
+        // Ecommerce sections or product  route
         Route::resource('brand', 'BrandsController');
         Route::post('update-brand-status', 'BrandsController@update_brand_status');
         Route::post('update-section-status', 'SectionController@update_section_status');
+        //Category
         Route::resource('category', 'CategoryController');
         Route::post('update-category-status', 'CategoryController@update_category_status');
         Route::post('append-category-level', 'CategoryController@append_category_level');
+        //Section
+        Route::resource('section', 'SectionController');
         //Product
         Route::resource('product', 'ProductController');
         Route::match(['get', 'post'], 'add-product-image/{id}', 'ProductController@add_images')->name('add.images');

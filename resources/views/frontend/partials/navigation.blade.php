@@ -29,6 +29,7 @@ $sections = Section::with('categories')->where('status', 1)->get();
                             <ul class="nav">
                                 <li class="active"><a href="#">Home</a></li>
                                 @foreach ($sections as $section)
+                                @if (count($section['categories']) > 0)
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{!! $section->title !!}<b
                                             class="caret"></b></a>
@@ -36,14 +37,19 @@ $sections = Section::with('categories')->where('status', 1)->get();
                                         @foreach ($section['categories'] as $category)
                                         <li class="divider"></li>
                                         <li class="nav-header">
-                                            <a href="{{ route('listing', $category['slug']) }}">{!! $category['title'] !!}</a>
+                                            <a href="{{ url('slug', $category['slug']) }}">{!! $category['title'] !!}</a>
                                         </li>
-                                        @foreach ($category['subcategories'] as $subcategory)
-                                        <li><a href="{{ route('listing', $subcategory['slug']) }}">{!! $subcategory->title !!}</a></li>
-                                        @endforeach
+                                            @foreach ($category['subcategories'] as $subcategory)
+                                            <li>
+                                                <a href="{{ url('slug', $subcategory['slug']) }}">
+                                                    {!! $subcategory->title !!}
+                                                </a>
+                                            </li>
+                                            @endforeach
                                         @endforeach
                                     </ul>
                                 </li>
+                                @endif
                                 @endforeach
 
                                 <li><a href="#">About</a></li>
