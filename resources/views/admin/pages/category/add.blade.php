@@ -57,7 +57,7 @@
             var section_id = $(this).val();
             $.ajax({
                 type: 'post',
-                url: '/admin/catalogue/append-category-level',
+                url: '/admin/append-category-level',
                 data: {
                     section_id: section_id
                 },

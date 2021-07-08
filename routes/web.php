@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Artisan;
 Route::namespace('Frontend')->group(function () {
     Route::get('/', 'IndexController@index')->name('frontend.home'); // Home route
     //Route::get('/{slug}', 'ProductController@listing')->name('listing'); // Listing category route
-    Route::get('/{slug}', 'ProductController@listing'); // Listing category route
+    Route::get('/{slug}', 'ProductController@listing')->name('slug'); // Listing category route
 });
 Auth::routes();
 Route::prefix('/admin')->namespace('Admin')->group(function () {

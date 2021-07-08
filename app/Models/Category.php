@@ -45,12 +45,12 @@ class Category extends Model
         $this->attributes['slug'] = Str::slug($value);
     }
     //Getting categoryDetails to show category wise products
-    public static function catDetails($url)
+    public static function catDetails($slug)
     {
-        $catDetails = Category::select('id', 'title', 'slug')
-            ->with(['subcategories' => function ($query) {
-                $query->select('id', 'parent_id')->where('status', 1);
-            }])->where('slug', $url)->first()->toArray();
+        $catDetails = Category::select('id', 'title', 'slug')->with(['subcategories' =>
+        function ($query) {
+            $query->select('id', 'parent_id', 'title')->where('status', 1);
+        }])->where('slug', $slug)->first()->toArray();
         $catIds = array();
         $catIds[] = $catDetails['id'];
         foreach ($catDetails['subcategories'] as $key => $sub_cat) {

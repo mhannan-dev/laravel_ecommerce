@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Models;
+
 use Illuminate\Support\Str;
 use App\Models\ProductAttribute;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +11,7 @@ class Product extends Model
     protected $table = 'products';
     protected $fillable =
     [
-        'section_id','brand_id','category_id','title','slug','code','color','price','weight','discount_amt','image','description','wash_care','fabric','pattern','sleeve','fit','occasion','meta_title','meta_description','meta_keyword','is_featured','status'
+        'section_id', 'brand_id', 'category_id', 'title', 'slug', 'code', 'color', 'price', 'weight', 'discount_amt', 'image', 'description', 'wash_care', 'fabric', 'pattern', 'sleeve', 'fit', 'occasion', 'meta_title', 'meta_description', 'meta_keyword', 'is_featured', 'status'
     ];
     public function setTitleAttribute($value)
     {
@@ -24,6 +26,15 @@ class Product extends Model
     public function section()
     {
         return $this->belongsTo('App\Models\Section', 'section_id');
+    }
+    /**
+     * Get the user that owns the Product
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function brand()
+    {
+        return $this->belongsTo('App\Models\Brand', 'brand_id');
     }
     /**
      * Get the user that owns the Product
@@ -54,5 +65,4 @@ class Product extends Model
     {
         return $this->hasMany(ProductsImage::class);
     }
-
 }

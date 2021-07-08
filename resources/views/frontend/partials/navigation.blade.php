@@ -1,7 +1,7 @@
 @php
 use App\Models\Section;
-$sections = Section::with('categories')->where('status', 1)->get();
-//dd($sections);
+$sections = Section::sections();
+//echo '<pre>'; print_r($sections);die;
 @endphp
 <div id="header">
     <div class="container">
@@ -31,18 +31,20 @@ $sections = Section::with('categories')->where('status', 1)->get();
                                 @foreach ($sections as $section)
                                 @if (count($section['categories']) > 0)
                                 <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{!! $section->title !!}<b
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        {!! $section['title'] !!}<b
                                             class="caret"></b></a>
                                     <ul class="dropdown-menu">
                                         @foreach ($section['categories'] as $category)
+                                        
                                         <li class="divider"></li>
                                         <li class="nav-header">
-                                            <a href="{{ url('slug', $category['slug']) }}">{!! $category['title'] !!}</a>
+                                            <a href="{{ route('slug', $category['slug']) }}">{{ $category['title'] }}</a>
                                         </li>
                                             @foreach ($category['subcategories'] as $subcategory)
                                             <li>
-                                                <a href="{{ url('slug', $subcategory['slug']) }}">
-                                                    {!! $subcategory->title !!}
+                                                <a href="{{ route('slug', $subcategory['slug']) }}">
+                                                    {!! $subcategory['title'] !!}
                                                 </a>
                                             </li>
                                             @endforeach

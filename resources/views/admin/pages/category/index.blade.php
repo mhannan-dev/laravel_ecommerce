@@ -90,7 +90,7 @@ Product Category
                                             <a class="btn btn-warning btn-sm" href="{{ route('category.edit', $category->id) }}">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <form style="display: inline-block" action="{{ url('admin/catalogue/category', $category->id) }}" class="form-delete" method="post">
+                                            <form style="display: inline-block" action="{{ url('admin/category', $category->id) }}" class="form-delete" method="post">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger btn-sm" onclick="return confirm('Are you sure?')">
@@ -132,7 +132,7 @@ Product Category
             var category_id = $(this).attr("category_id");
             $.ajax({
                 type: 'post',
-                url: '/admin/catalogue/update-category-status',
+                url: '/admin/update-category-status',
                 data: {
                     status: status,
                     category_id: category_id

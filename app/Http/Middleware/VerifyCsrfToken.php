@@ -13,13 +13,13 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         "admin/settings/check-current-pwd",
-        "/admin/catalogue/update-section-status",
-        "/admin/catalogue/update-category-status",
-        "/admin/catalogue/append-category-level",
-        "/admin/catalogue/update-product-status",
-        "/admin/catalogue/update-product-attr-status",
-        "/admin/catalogue/update-product-image-status",
-        "/admin/catalogue/update-brand-status",
+        "/admin/update-section-status",
+        "/admin/update-category-status",
+        "/admin/append-category-level",
+        "/admin/update-product-status",
+        "/admin/update-product-attr-status",
+        "/admin/update-product-image-status",
+        "/admin/update-brand-status",
         "/admin/site/update-banner-status"
     ];
 }
