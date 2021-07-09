@@ -128,7 +128,7 @@ class BannerController extends Controller
             toast("Banner has been updated successfully", 'success', 'top-right');
             return redirect()->route('banner.index');
         } catch (\Throwable $th) {
-            dd($th);
+           // dd($th);
             toast("Banner not updated successfully", 'warning', 'top-right');
             return redirect()->back();
         }
@@ -166,7 +166,7 @@ class BannerController extends Controller
                 return redirect()->route('banner.index');
             }
         } catch (\Throwable $th) {
-            dd($th);
+           // dd($th);
             toast('Your banner not deleted.', 'success', 'top-right');
             return redirect()->back();
         }

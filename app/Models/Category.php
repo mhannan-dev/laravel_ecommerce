@@ -47,11 +47,13 @@ class Category extends Model
     //Getting categoryDetails to show category wise products
     public static function catDetails($slug)
     {
-        $catDetails = Category::select('id', 'parent_id', 'title', 'description', 'slug')->with(['subcategories' =>
+        $catDetails = Category::select('id', 'parent_id', 'title', 'slug', 'description')->with(['subcategories' =>
         function ($query) {
             $query->select('id', 'parent_id', 'title', 'slug', 'description')->where('status', 1);
         }])->where('slug', $slug)->first()->toArray();
+        // echo '<pre>';// print_r($catDetails);// die;
         $catIds = array();
+        $catIds[] = $catDetails['id'];
         if ($catDetails['parent_id'] == 0) {
             //Only show main category in breadcrumbs
             $breadcrumbs = '<a href="' . url($catDetails['slug']) . '">' . $catDetails['title'] . '</a>';
@@ -60,9 +62,8 @@ class Category extends Model
             $parentCategory = Category::select('title', 'slug')->where('id', $catDetails['parent_id'])->first()->toArray();
             $breadcrumbs = '<a href="' . url($parentCategory['slug']) . '">' . $parentCategory['title'] . '</a> <span class="divider">/</span> <a href="' . url($catDetails['slug']) . '">' . $catDetails['title'] . '</a>';
         }
-        $catIds[] = $catDetails['id'];
-        foreach ($catDetails['subcategories'] as $key => $sub_cat) {
-            $catIds = $sub_cat['id'];
+        foreach ($catDetails['subcategories'] as $key => $subcat) {
+            $catIds[] = $subcat['id'];
         }
         return array('catIds' => $catIds, 'catDetails' => $catDetails, 'breadcrumbs' => $breadcrumbs);
     }
