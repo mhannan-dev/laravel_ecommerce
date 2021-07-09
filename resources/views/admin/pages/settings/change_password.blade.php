@@ -109,7 +109,7 @@ Change password
             var current_password = $("#current_password").val();
             $.ajax({
                 type: 'POST',
-                url: '/admin/settings/check-current-pwd',
+                url: '/admin/check-current-pwd',
                 data: {
                     current_password: current_password
                 },

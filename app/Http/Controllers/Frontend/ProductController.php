@@ -16,9 +16,10 @@ class ProductController extends Controller
         $categoryCount = Category::where(['slug' => $slug, 'status' => 1])->count();
         if ($categoryCount > 0) {
             $categoryDetails = Category::catDetails($slug);
-           $categoryProducts = Product::with('brand')->whereIn('category_id', $categoryDetails['catIds'])->where('status', 1)->get()->toArray();
-            // $categoryProducts = Product::with('brand')->whereIn('category_id', is_array($categoryDetails ['catIds']))->where('status', 1)->get()->toArray();
-            return view('frontend.pages.products.listing', compact('categoryDetails', 'categoryProducts'));
+            $categoryProducts = Product::with('brand')->whereIn('category_id', $categoryDetails['catIds'])->where('status', 1)->get()->toArray();
+            //dd($categoryDetails);
+            //return view('frontend.pages.products.listing', compact('categoryDetails', 'categoryProducts'));
+            return view('frontend.pages.products.listing')->with(compact('categoryDetails','categoryProducts'));
         } else {
             abort(404);
         }

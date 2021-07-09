@@ -3,12 +3,18 @@
 <div class="span9">
     <ul class="breadcrumb">
         <li><a href="index.html">Home</a> <span class="divider">/</span></li>
-        <li class="active">{{ $categoryDetails['catDetails']['title'] }}</li>
+        <li class="active">
+            <?php
+                echo $categoryDetails['breadcrumbs'];
+            ?>
+        </li>
     </ul>
-    <h3> {{ $categoryDetails['catDetails']['title'] }} <small class="pull-right"> 40 products are available </small></h3>
+    <h3> {{ $categoryDetails['catDetails']['title'] }} <small class="pull-right text-success"> 
+        {{ count($categoryProducts)}} products are available </small></h3>
     <hr class="soft">
     <p>
-        Nowadays the lingerie industry is one of the most successful business spheres.We always stay in touch with the latest fashion tendencies - that is why our goods are so popular and we have a great number of faithful customers all over the country.
+        
+        {{ $categoryDetails['catDetails']['description'] }}
     </p>
     <hr class="soft">
     <form class="form-horizontal span6">
