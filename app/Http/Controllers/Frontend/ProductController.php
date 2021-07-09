@@ -17,8 +17,6 @@ class ProductController extends Controller
         if ($categoryCount > 0) {
             $categoryDetails = Category::catDetails($slug);
             $categoryProducts = Product::with('brand')->whereIn('category_id', $categoryDetails['catIds'])->where('status', 1)->get()->toArray();
-
-            // $categoryProducts = Product::with('brand')->whereIn('category_id', array($categoryDetails['catIds']))->where('status', 1)->get()->toArray();
             //echo "<pre>"; print_r($categoryProducts); exit;
             return view('frontend.pages.products.listing')->with(compact('categoryDetails','categoryProducts'));
         } else {
