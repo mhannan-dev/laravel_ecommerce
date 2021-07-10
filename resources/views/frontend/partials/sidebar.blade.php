@@ -12,9 +12,9 @@ $sections = Section::with('categories')->where('status', 1)->get();
         <li class="subMenu"><a>{!! $section['title'] !!}</a>
             @foreach ($section['categories'] as $category)
             <ul>
-                <li><a href="#"><i class="icon-chevron-right"></i><strong>{!! $category['title'] !!}</strong></a></li>
+                <li><a href="{{ route('slug', $category['slug']) }}"><i class="icon-chevron-right"></i><strong>{!! $category['title'] !!}</strong></a></li>
                 @foreach ($category['subcategories'] as $subcategory )
-                <li><a href="#"><i class="icon-chevron-right"></i>{!! $subcategory['title'] !!}</a></li>
+                <li><a href="{{ route('slug', $subcategory['slug']) }}"><i class="icon-chevron-right"></i>{!! $subcategory['title'] !!}</a></li>
                 @endforeach
             </ul>
             @endforeach

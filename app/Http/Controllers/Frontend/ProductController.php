@@ -16,7 +16,7 @@ class ProductController extends Controller
         $categoryCount = Category::where(['slug' => $slug, 'status' => 1])->count();
         if ($categoryCount > 0) {
             $categoryDetails = Category::catDetails($slug);
-            $categoryProducts = Product::with('brand')->whereIn('category_id', $categoryDetails['catIds'])->where('status', 1)->get()->toArray();
+            $categoryProducts = Product::with('brand')->whereIn('category_id', $categoryDetails['catIds'])->where('status', 1)->paginate(6);
             //echo "<pre>"; print_r($categoryProducts); exit;
             return view('frontend.pages.products.listing')->with(compact('categoryDetails','categoryProducts'));
         } else {

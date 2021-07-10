@@ -1,5 +1,7 @@
 @extends('frontend.layouts.front_app')
 @section('content')
+@if (count($categoryProducts) > 0)
+
 <div class="span9">
     <ul class="breadcrumb">
         <li><a href="{{ url('/')}}">Home</a> <span class="divider">/</span></li>
@@ -9,11 +11,10 @@
             ?>
         </li>
     </ul>
-    <h3> {{ $categoryDetails['catDetails']['title'] }} <small class="pull-right text-success"> 
+    <h3> {{ $categoryDetails['catDetails']['title'] }} <small class="pull-right text-success">
         {{ count($categoryProducts)}} products are available </small></h3>
     <hr class="soft">
     <p>
-        
         {{ $categoryDetails['catDetails']['description'] }}
     </p>
     <hr class="soft">
@@ -36,26 +37,31 @@
     <br class="clr">
     <div class="tab-content">
         <div class="tab-pane" id="listView">
+            @foreach ($categoryProducts as $product)
             <div class="row">
                 <div class="span2">
-                    <img src="themes/images/products/3.jpg" alt="">
+                    @if (!empty($product['image']))
+                    <img src="{{ url('storage/product/'.$product['image']) }}" alt="{!! $product['title'] !!}">
+                    @else
+                    <img src="{{url('/storage/product/no_image.png')}}" alt="No Image">
+                    @endif
+
                 </div>
                 <div class="span4">
-                    <h3>New | Available</h3>
+                    <h3>{!! $product['title'] !!}</h3>
                     <hr class="soft">
-                    <h5>Product Name </h5>
+                    <h5>{!! $product['brand']['title'] !!} </h5>
                     <p>
-                        Nowadays the lingerie industry is one of the most successful business spheres.We always stay in touch with the latest fashion tendencies -
-                        that is why our goods are so popular..
+                        {!! $product['description'] !!}
                     </p>
                     <a class="btn btn-small pull-right" href="product_details.html">View Details</a>
                     <br class="clr">
                 </div>
                 <div class="span3 alignR">
                     <form class="form-horizontal qtyFrm">
-                        <h3> $140.00</h3>
+                        <h3> BDT.  {!! $product['price'] !!}</h3>
                         <label class="checkbox">
-                            <input type="checkbox">  Adds product to compair
+                            <input type="checkbox">  Adds product to compare
                         </label><br>
 
                         <a href="product_details.html" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
@@ -65,150 +71,7 @@
                 </div>
             </div>
             <hr class="soft">
-            <div class="row">
-                <div class="span2">
-                    <img src="themes/images/products/1.jpg" alt="">
-                </div>
-                <div class="span4">
-                    <h3>New | Available</h3>
-                    <hr class="soft">
-                    <h5>Product Name </h5>
-                    <p>
-                        Nowadays the lingerie industry is one of the most successful business spheres.We always stay in touch with the latest fashion tendencies -
-                        that is why our goods are so popular..
-                    </p>
-                    <a class="btn btn-small pull-right" href="product_details.html">View Details</a>
-                    <br class="clr">
-                </div>
-                <div class="span3 alignR">
-                    <form class="form-horizontal qtyFrm">
-                        <h3> $140.00</h3>
-                        <label class="checkbox">
-                            <input type="checkbox">  Adds product to compair
-                        </label><br>
-
-                        <a href="product_details.html" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
-                        <a href="product_details.html" class="btn btn-large"><i class="icon-zoom-in"></i></a>
-
-                    </form>
-                </div>
-            </div>
-            <hr class="soft">
-            <div class="row">
-                <div class="span2">
-                    <img src="themes/images/products/3.jpg" alt="">
-                </div>
-                <div class="span4">
-                    <h3>New | Available</h3>
-                    <hr class="soft">
-                    <h5>Product Name </h5>
-                    <p>
-                        Nowadays the lingerie industry is one of the most successful business spheres.We always stay in touch with the latest fashion tendencies -
-                        that is why our goods are so popular..
-                    </p>
-                    <a class="btn btn-small pull-right" href="product_details.html">View Details</a>
-                    <br class="clr">
-                </div>
-                <div class="span3 alignR">
-                    <form class="form-horizontal qtyFrm">
-                        <h3> $140.00</h3>
-                        <label class="checkbox">
-                            <input type="checkbox">  Adds product to compair
-                        </label><br>
-
-                        <a href="product_details.html" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
-                        <a href="product_details.html" class="btn btn-large"><i class="icon-zoom-in"></i></a>
-
-                    </form>
-                </div>
-            </div>
-            <hr class="soft">
-            <div class="row">
-                <div class="span2">
-                    <img src="themes/images/products/3.jpg" alt="">
-                </div>
-                <div class="span4">
-                    <h3>New | Available</h3>
-                    <hr class="soft">
-                    <h5>Product Name </h5>
-                    <p>
-                        Nowadays the lingerie industry is one of the most successful business spheres.We always stay in touch with the latest fashion tendencies -
-                        that is why our goods are so popular..
-                    </p>
-                    <a class="btn btn-small pull-right" href="product_details.html">View Details</a>
-                    <br class="clr">
-                </div>
-                <div class="span3 alignR">
-                    <form class="form-horizontal qtyFrm">
-                        <h3> $140.00</h3>
-                        <label class="checkbox">
-                            <input type="checkbox">  Adds product to compair
-                        </label><br>
-
-                        <a href="product_details.html" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
-                        <a href="product_details.html" class="btn btn-large"><i class="icon-zoom-in"></i></a>
-
-                    </form>
-                </div>
-            </div>
-
-            <hr class="soft">
-            <div class="row">
-                <div class="span2">
-                    <img src="themes/images/products/3.jpg" alt="">
-                </div>
-                <div class="span4">
-                    <h3>New | Available</h3>
-                    <hr class="soft">
-                    <h5>Product Name </h5>
-                    <p>
-                        Nowadays the lingerie industry is one of the most successful business spheres.We always stay in touch with the latest fashion tendencies -
-                        that is why our goods are so popular..
-                    </p>
-                    <a class="btn btn-small pull-right" href="product_details.html">View Details</a>
-                    <br class="clr">
-                </div>
-                <div class="span3 alignR">
-                    <form class="form-horizontal qtyFrm">
-                        <h3> $140.00</h3>
-                        <label class="checkbox">
-                            <input type="checkbox">  Adds product to compair
-                        </label><br>
-                        <a href="product_details.html" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
-                        <a href="product_details.html" class="btn btn-large"><i class="icon-zoom-in"></i></a>
-                    </form>
-                </div>
-            </div>
-            <hr class="soft">
-            <div class="row">
-                <div class="span2">
-                    <img src="themes/images/products/3.jpg" alt="">
-                </div>
-                <div class="span4">
-                    <h3>New | Available</h3>
-                    <hr class="soft">
-                    <h5>Product Name </h5>
-                    <p>
-                        Nowadays the lingerie industry is one of the most successful business spheres.We always stay in touch with the latest fashion tendencies -
-                        that is why our goods are so popular..
-                    </p>
-                    <a class="btn btn-small pull-right" href="product_details.html">View Details</a>
-                    <br class="clr">
-                </div>
-                <div class="span3 alignR">
-                    <form class="form-horizontal qtyFrm">
-                        <h3> $140.00</h3>
-                        <label class="checkbox">
-                            <input type="checkbox">  Adds product to compair
-                        </label><br>
-
-                        <a href="product_details.html" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
-                        <a href="product_details.html" class="btn btn-large"><i class="icon-zoom-in"></i></a>
-
-                    </form>
-                </div>
-            </div>
-            <hr class="soft">
+            @endforeach
         </div>
         <div class="tab-pane  active" id="blockView">
             <ul class="thumbnails">
@@ -226,7 +89,7 @@
                         <div class="caption">
                             <h5>{{ $product['title'] }}</h5>
                             <p>
-                                {{ $product['description'] }}
+                                {{ Str::limit($product['description'], 50) }}
                             </p>
                             <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">BDT. {{ $product['price'] }}</a></h4>
                         </div>
@@ -240,7 +103,7 @@
     </div>
     <a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
     <div class="pagination">
-        <ul>
+        {{-- <ul>
             <li><a href="#">‹</a></li>
             <li><a href="#">1</a></li>
             <li><a href="#">2</a></li>
@@ -248,8 +111,16 @@
             <li><a href="#">4</a></li>
             <li><a href="#">...</a></li>
             <li><a href="#">›</a></li>
-        </ul>
+        </ul> --}}
+        {{ $categoryProducts->links()  }}
     </div>
     <br class="clr">
 </div>
+@else
+
+<div class="span9">
+    <h3 class="text-danger"> No product found</h3>
+
+</div>
+@endif
 @endsection
