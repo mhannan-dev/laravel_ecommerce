@@ -16,9 +16,27 @@ class ProductController extends Controller
         $categoryCount = Category::where(['slug' => $slug, 'status' => 1])->count();
         if ($categoryCount > 0) {
             $categoryDetails = Category::catDetails($slug);
-            $categoryProducts = Product::with('brand')->whereIn('category_id', $categoryDetails['catIds'])->where('status', 1)->paginate(6);
+            $categoryProducts = Product::with('brand')->whereIn('category_id', $categoryDetails['catIds'])->where('status', 1);
             //echo "<pre>"; print_r($categoryProducts); exit;
-            return view('frontend.pages.products.listing')->with(compact('categoryDetails','categoryProducts'));
+            if (isset($_GET['sort_products']) && !empty($_GET['sort_products'])) {
+                if ($_GET['sort_products'] == "latest_product") {
+                    $categoryProducts->orderBy('id', 'DESC');
+                } else if ($_GET['sort_products'] == "products_sort_a_to_z") {
+                    $categoryProducts->orderBy('title', 'ASC');
+                } else if ($_GET['sort_products'] == "products_sort_z_to_a") {
+                    $categoryProducts->orderBy('title', 'DESC');
+                } else if ($_GET['sort_products'] == "lowest_price_wise_products") {
+                    $categoryProducts->orderBy('price', 'ASC');
+                } else if ($_GET['sort_products'] == "highest_price_wise_products") {
+                    $categoryProducts->orderBy('price', 'DESC');
+                }
+            } else {
+                $categoryProducts->orderBy('id', 'DESC');
+            }
+            //After doing filter work this paginate
+            $categoryProducts = $categoryProducts->paginate(6);
+
+            return view('frontend.pages.products.listing')->with(compact('categoryDetails', 'categoryProducts'));
         } else {
             abort(404);
         }

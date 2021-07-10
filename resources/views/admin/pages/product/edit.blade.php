@@ -28,9 +28,7 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">{{ $title }}</h3>
-                <a href="{{ route('section.create') }}" class="btn btn-success float-right">
-                    <i class="fa fa-plus-circle" aria-hidden="true"></i> {{ $title }}</a>
-              </div>
+              
               <!-- /.card-header -->
               <div class="card-body">
                 <form action="{{ route('product.update',$product_data['id']) }}" method="post" enctype="multipart/form-data">

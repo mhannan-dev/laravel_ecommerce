@@ -18,14 +18,16 @@
         {{ $categoryDetails['catDetails']['description'] }}
     </p>
     <hr class="soft">
-    <form class="form-horizontal span6">
+    <form class="form-horizontal span6" name="product_sort_form" id="product_sort_form">
         <div class="control-group">
             <label class="control-label alignL">Sort By </label>
-            <select>
-                <option id="product_a_to_z">Priduct name A - Z</option>
-                <option id="product_z_to_a">Priduct name Z - A</option>
-                <option id="product_stock_wise_sort">Priduct Stoke</option>
-                <option id="price_lowest_first">Price Lowest first</option>
+            <select name="sort_products" id="sort_products">
+                <option value="">Select</option>
+                <option value="latest_product" @if (isset($_GET['sort_products']) && $_GET['sort_products'] == 'latest_product') selected="" @endif>Latest Products</option>
+                <option value="products_sort_a_to_z" @if (isset($_GET['sort_products']) && $_GET['sort_products'] == 'products_sort_a_to_z') selected="" @endif>Product A to Z</option>
+                <option value="products_sort_z_to_a" @if (isset($_GET['sort_products']) && $_GET['sort_products'] == 'products_sort_z_to_a') selected="" @endif>Product Z to A</option>
+                <option value="lowest_price_wise_products" @if (isset($_GET['sort_products']) && $_GET['sort_products'] == 'lowest_price_wise_products') selected="" @endif>Lowest Price First</option>
+                <option value="highest_price_wise_products" @if (isset($_GET['sort_products']) && $_GET['sort_products'] == 'highest_price_wise_products') selected="" @endif>Price Highest First</option>
             </select>
         </div>
     </form>
@@ -104,8 +106,11 @@
     <a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
     <div class="pagination">
 
-
-        {{ $categoryProducts->appends(['sort' => 'price_lowest_first'])->links() }}
+        @if (isset($_GET['sort_products']) && !empty($_GET['sort_products']))
+            {{ $categoryProducts->appends(['sort_products' => $_GET['sort_products']])->links() }}
+        @else
+            {{ $categoryProducts->links() }}
+        @endif
     </div>
     <br class="clr">
 </div>
@@ -117,3 +122,4 @@
 </div>
 @endif
 @endsection
+

@@ -51,6 +51,6 @@
 
 <script src="themes/js/front.js"></script>
 <script src="themes/js/jquery.lightbox-0.5.js"></script>
-
+<script src="js/_frontend.js"></script>
 </body>
 </html>
