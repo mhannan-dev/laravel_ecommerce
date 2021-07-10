@@ -22,10 +22,10 @@
         <div class="control-group">
             <label class="control-label alignL">Sort By </label>
             <select>
-                <option>Priduct name A - Z</option>
-                <option>Priduct name Z - A</option>
-                <option>Priduct Stoke</option>
-                <option>Price Lowest first</option>
+                <option id="product_a_to_z">Priduct name A - Z</option>
+                <option id="product_z_to_a">Priduct name Z - A</option>
+                <option id="product_stock_wise_sort">Priduct Stoke</option>
+                <option id="price_lowest_first">Price Lowest first</option>
             </select>
         </div>
     </form>
@@ -103,16 +103,9 @@
     </div>
     <a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
     <div class="pagination">
-        {{-- <ul>
-            <li><a href="#">‹</a></li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">...</a></li>
-            <li><a href="#">›</a></li>
-        </ul> --}}
-        {{ $categoryProducts->links()  }}
+
+
+        {{ $categoryProducts->appends(['sort' => 'price_lowest_first'])->links() }}
     </div>
     <br class="clr">
 </div>
