@@ -19,6 +19,7 @@
     </p>
     <hr class="soft">
     <form class="form-horizontal span6" name="product_sort_form" id="product_sort_form">
+        <input type="hidden" id="slug" name="slug" value="{{ $slug }}">
         <div class="control-group">
             <label class="control-label alignL">Sort By </label>
             <select name="sort_products" id="sort_products">
@@ -32,76 +33,10 @@
         </div>
     </form>
 
-    <div id="myTab" class="pull-right">
-        <a href="#listView" data-toggle="tab"><span class="btn btn-large"><i class="icon-list"></i></span></a>
-        <a href="#blockView" data-toggle="tab"><span class="btn btn-large btn-primary"><i class="icon-th-large"></i></span></a>
-    </div>
+   
     <br class="clr">
-    <div class="tab-content">
-        <div class="tab-pane" id="listView">
-            @foreach ($categoryProducts as $product)
-            <div class="row">
-                <div class="span2">
-                    @if (!empty($product['image']))
-                    <img src="{{ url('storage/product/'.$product['image']) }}" alt="{!! $product['title'] !!}">
-                    @else
-                    <img src="{{url('/storage/product/no_image.png')}}" alt="No Image">
-                    @endif
-
-                </div>
-                <div class="span4">
-                    <h3>{!! $product['title'] !!}</h3>
-                    <hr class="soft">
-                    <h5>{!! $product['brand']['title'] !!} </h5>
-                    <p>
-                        {!! $product['description'] !!}
-                    </p>
-                    <a class="btn btn-small pull-right" href="product_details.html">View Details</a>
-                    <br class="clr">
-                </div>
-                <div class="span3 alignR">
-                    <form class="form-horizontal qtyFrm">
-                        <h3> BDT.  {!! $product['price'] !!}</h3>
-                        <label class="checkbox">
-                            <input type="checkbox">  Adds product to compare
-                        </label><br>
-
-                        <a href="product_details.html" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
-                        <a href="product_details.html" class="btn btn-large"><i class="icon-zoom-in"></i></a>
-
-                    </form>
-                </div>
-            </div>
-            <hr class="soft">
-            @endforeach
-        </div>
-        <div class="tab-pane  active" id="blockView">
-            <ul class="thumbnails">
-                @foreach ($categoryProducts as $product)
-                <li class="span3">
-                    <div class="thumbnail">
-                        <a href="product_details.html">
-
-                            @if (!empty($product['image']))
-                            <img src="{{ url('storage/product/'.$product['image']) }}" alt="{!! $product['title'] !!}">
-                            @else
-                            <img src="{{url('/storage/product/no_image.png')}}" alt="No Image">
-                            @endif
-                        </a>
-                        <div class="caption">
-                            <h5>{{ $product['title'] }}</h5>
-                            <p>
-                                {{ Str::limit($product['description'], 50) }}
-                            </p>
-                            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">BDT. {{ $product['price'] }}</a></h4>
-                        </div>
-                    </div>
-                </li>
-                @endforeach
-
-            </ul>
-            <hr class="soft">
-        </div>
+    <div class="tab-content filter_products_ajax">
+       @include('frontend/pages/products/ajax_prd_listing')
     </div>
     <a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
     <div class="pagination">
