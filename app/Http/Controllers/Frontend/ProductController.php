@@ -39,6 +39,7 @@ class ProductController extends Controller
                 }
                 //After doing filter work this paginate
                 $categoryProducts = $categoryProducts->paginate(6);
+
                 $title = "Listing";
                 return view('frontend.pages.products.ajax_prd_listing')->with(compact('categoryDetails', 'categoryProducts', 'slug', 'title'));
             } else {
@@ -53,7 +54,13 @@ class ProductController extends Controller
                 $categoryProducts = $categoryProducts->paginate(6);
                 $title = "Listing";
                 $page_name = "listing";
-                return view('frontend.pages.products.listing')->with(compact('categoryDetails', 'categoryProducts', 'slug', 'title','page_name'));
+                $product_filters = Product::product_filters();
+                $fabrics = $product_filters['fabrics'];
+                $sleeves = $product_filters['sleeves'];
+                $patterns = $product_filters['patterns'];
+                $occasions = $product_filters['occasions'];
+                $fits = $product_filters['fits'];
+                return view('frontend.pages.products.listing')->with(compact('categoryDetails', 'categoryProducts', 'slug', 'title', 'page_name', 'fabrics', 'sleeves', 'patterns', 'occasions', 'fits'));
             } else {
                 abort(404);
             }
