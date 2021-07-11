@@ -22,6 +22,11 @@ class ProductController extends Controller
                 $categoryDetails = Category::catDetails($slug);
                 $categoryProducts = Product::with('brand')->whereIn('category_id', $categoryDetails['catIds'])->where('status', 1);
                 //echo "<pre>"; print_r($categoryProducts); exit;
+                //If product fabric is selected
+                if (isset($data['fabric']) && !empty($data['fabric'])) {
+                    $categoryProducts->whereIn('products.fabric', $data['fabric']);
+                }
+                //If product sort is selected
                 if (isset($data['sort_products']) && !empty($data['sort_products'])) {
                     if ($data['sort_products'] == "latest_product") {
                         $categoryProducts->orderBy('id', 'DESC');
