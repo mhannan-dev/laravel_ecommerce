@@ -1,6 +1,5 @@
 @csrf
 <div class="form-row">
-
     <div class="form-group col-md-4">
         <label for="category_id">Category</label> <span class="text-danger">*</span>
         <select name="category_id" class="form-control {{ $errors->has('category_id') ? 'is-invalid' : '' }}" id="category_id">
@@ -23,16 +22,12 @@
             @foreach ( $brands as $brand )
             <option value="{{ $brand['id'] }}" @if($brand['id'] == $product_data['brand_id']): selected @else ' ' @endif>{{ $brand['title'] }}</option>
             @endforeach
-
         </select>
     </div>
-
-
     <div class="form-group col-md-4">
         <label for="title">Product name</label><span class="text-danger">*</span>
         <input type="text" value="{{ old('title', $product_data['title']) }}" name="title" class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" id="title" placeh@older="Product name">
     </div>
-
     <div class="form-group col-md-4">
         <label for="code">Code</label><span class="text-danger">*</span>
         <input type="text" value="{{ @old('code', $product_data['code']) }}" name="code" class="form-control {{ $errors->has('code') ? 'is-invalid' : '' }}" id="code" placeh@older="Enter Product Code">
@@ -53,7 +48,6 @@
         <label for="discount_amt">Discount</label><span class="text-danger">*</span>(%)
         <input type="text" name="discount_amt" class="form-control" placeh@older="Category discount" value="{{ @old('discount_amt', $product_data['discount_amt']) }}">
     </div>
-
     <div class="col-md-4" style="margin-top: 30px;">
         <div class="custom-file">
             <label class="custom-file-label" for="customFile">Product image</label>
@@ -109,14 +103,6 @@
         <label for="meta_title">Meta title</label><span class="text-danger">*</span>
         <input type="text" value="{{ @old('meta_title', $product_data['meta_title']) }}" name="meta_title" class="form-control {{ $errors->has('meta_title') ? 'is-invalid' : '' }}" id="meta_title" placeh@older="Product meta title">
     </div>
-    <div class="form-group col-md-4">
-        <label for="status">Status</label> <span class="text-danger">*</span>
-        <select name="status" class="form-control {{ $errors->has('status') ? 'is-invalid' : '' }}" id="status">
-            <option>Select status</option>
-            <option value="1" {{( $product_data['status'] == "1" )? "selected": " "}}>Active</option>
-            <option value="0" {{( $product_data['status'] == "0" )? "selected": " "}}>InActive</option>
-        </select>
-    </div>
     <div class="form-group col-md-6">
         <label for="description">Description</label><span class="text-danger">*</span>
         <textarea placeholder="Description" class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" rows="3">{{ old('description', $product_data['description']) }}</textarea>
@@ -133,9 +119,17 @@
         <label for="meta_keyword">Meta keyword</label><span class="text-danger">*</span>
         <textarea placeholder="meta keyword" class="form-control {{ $errors->has('meta_keyword') ? 'is-invalid' : '' }}" name="meta_keyword" rows="3">{{ old('meta_keyword', $product_data['meta_keyword']) }}</textarea>
     </div>
-    <div class="ml-2 mb-2 form-check ">
-        <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured" value="Yes" @if (!empty($product_data['is_featured']) && $product_data['is_featured']=="Yes" ) checked @endif>
+    <div class="form-group col-md-4">
+        <label for="status">Status</label> <span class="text-danger">*</span>
+        <select name="status" class="form-control {{ $errors->has('status') ? 'is-invalid' : '' }}" id="status">
+            <option>Select status</option>
+            <option value="1" {{( $product_data['status'] == "1" )? "selected": " "}}>Active</option>
+            <option value="0" {{( $product_data['status'] == "0" )? "selected": " "}}>In Active</option>
+        </select>
+    </div>
+    <div class="form-check  mt-4">
         <label class="form-check-label" for="is_featured">Is Featured ?</label>
+        <input type="checkbox" class="ml-2 form-check-input" id="is_featured" name="is_featured" value="Yes" @if (!empty($product_data['is_featured']) && $product_data['is_featured']=="Yes" ) checked @endif>
     </div>
 </div>
 <button type="submit" class="btn btn-primary">{{ $buttonText }}</button>

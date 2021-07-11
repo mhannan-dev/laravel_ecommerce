@@ -1,18 +1,13 @@
-// $(function() {
-//    $('#sort_products').on('change', function(){
-//         this.form.submit();
-//    });
-//   });
 $(function () {
     $('#sort_products').on('change', function () {
-        var sort_product = $(this).val();
+        var sort_products = $(this).val();
         var slug = $("#slug").val();
         $.ajax({
             url: slug,
-            method: "POST",
+            method: "post",
             data: {sort_products:sort_products, url:slug},
-            success:function(data){
-                $('.filter_products_ajax').html(data);
+            success: function (data) {
+                 $('.filter_products_ajax').html(data);
             }
         });
     });

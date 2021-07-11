@@ -43,11 +43,14 @@ class ProductController extends Controller
     {
         $data['title'] = "Product";
         $data['product_data'] = new Product();
-        $data['fabrics'] =  array('Cotton', 'Polyester', 'Wool');
-        $data['sleeves'] = array('Long-Sleve', 'Half-Sleeve', 'Sleeve-less');
-        $data['patterns'] = array('Check', 'Plain', 'Printed', 'Solid');
-        $data['occasions'] = array('Casual', 'Formal');
-        $data['fits'] = array('Regular', 'Slim');
+        $product_filters = Product::product_filters();
+        //echo "<pre>"; print_r($product_filters);die;echo "</pre>";
+        $data['fabrics'] = $product_filters['fabrics'];
+        $data['sleeves'] = $product_filters['sleeves'];
+        $data['patterns'] = $product_filters['patterns'];
+        $data['occasions'] = $product_filters['occasions'];
+        $data['fits'] = $product_filters['fits'];
+
         $categories = Section::with('categories')->get();
         $data['categories'] = json_decode(json_encode($categories), true);
         $brands = Brand::select('id', 'title')->where('status', 1)->get();
@@ -126,7 +129,7 @@ class ProductController extends Controller
             } else {
                 $imageName = "default.png";
             }
-            $productFillable           = $request->only($product->getFillable());
+            $productFillable         = $request->only($product->getFillable());
             $categoryDetail = Category::find($request->category_id);
             $productFillable['section_id'] = $categoryDetail['section_id'];
             $productFillable['image']  = $imageName;
@@ -160,11 +163,12 @@ class ProductController extends Controller
         $title = "Update";
         $product_data = Product::find($id);
         $product_data = json_decode(json_encode($product_data), true);
-        $fabrics =  array('Cotton', 'Polyester', 'Wool');
-        $sleeves = array('Long-Sleeve', 'Half-Sleeve', 'Sleeve-Less');
-        $patterns = array('Check', 'Plain', 'Printed', 'Solid');
-        $occasions = array('Casual', 'Formal');
-        $fits = array('Regular', 'Slim');
+        $product_filters = Product::product_filters();
+        $fabrics = $product_filters['fabrics'];
+        $sleeves = $product_filters['sleeves'];
+        $patterns = $product_filters['patterns'];
+        $occasions = $product_filters['occasions'];
+        $fits = $product_filters['fits'];
         $categories = Section::with('categories')->select('id', 'title')->get();
         $categories = json_decode(json_encode($categories), true);
         $brands = Brand::select('id', 'title')->where('status', 1)->get();
