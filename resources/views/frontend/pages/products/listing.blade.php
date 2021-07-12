@@ -22,13 +22,13 @@
         <input type="hidden" id="slug" name="slug" value="{{ $slug }}">
         <div class="control-group">
             <label class="control-label alignL">Sort By </label>
-            <select name="sort_products" id="sort_products">
+            <select name="sort" id="sort">
                 <option value="">Select</option>
-                <option value="latest_product" @if (isset($_GET['sort_products']) && $_GET['sort_products'] == 'latest_product') selected="" @endif>Latest Products</option>
-                <option value="products_sort_a_to_z" @if (isset($_GET['sort_products']) && $_GET['sort_products'] == 'products_sort_a_to_z') selected="" @endif>Product A to Z</option>
-                <option value="products_sort_z_to_a" @if (isset($_GET['sort_products']) && $_GET['sort_products'] == 'products_sort_z_to_a') selected="" @endif>Product Z to A</option>
-                <option value="lowest_price_wise_products" @if (isset($_GET['sort_products']) && $_GET['sort_products'] == 'lowest_price_wise_products') selected="" @endif>Lowest Price First</option>
-                <option value="highest_price_wise_products" @if (isset($_GET['sort_products']) && $_GET['sort_products'] == 'highest_price_wise_products') selected="" @endif>Price Highest First</option>
+                <option value="latest_product" @if (isset($_GET['sort']) && $_GET['sort'] == 'latest_product') selected="" @endif>Latest Products</option>
+                <option value="products_sort_a_to_z" @if (isset($_GET['sort']) && $_GET['sort'] == 'products_sort_a_to_z') selected="" @endif>Product A to Z</option>
+                <option value="products_sort_z_to_a" @if (isset($_GET['sort']) && $_GET['sort'] == 'products_sort_z_to_a') selected="" @endif>Product Z to A</option>
+                <option value="lowest_price_wise_products" @if (isset($_GET['sort']) && $_GET['sort'] == 'lowest_price_wise_products') selected="" @endif>Lowest Price First</option>
+                <option value="highest_price_wise_products" @if (isset($_GET['sort']) && $_GET['sort'] == 'highest_price_wise_products') selected="" @endif>Price Highest First</option>
             </select>
         </div>
     </form>
@@ -41,8 +41,8 @@
     <a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
     <div class="pagination">
 
-        @if (isset($_GET['sort_products']) && !empty($_GET['sort_products']))
-            {{ $categoryProducts->appends(['sort_products' => $_GET['sort_products']])->links() }}
+        @if (isset($_GET['sort']) && !empty($_GET['sort']))
+            {{ $categoryProducts->appends(['sort' => $_GET['sort']])->links() }}
         @else
             {{ $categoryProducts->links() }}
         @endif

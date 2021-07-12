@@ -1,12 +1,22 @@
 $(function () {
-    $('#sort').on('change', function () {
-        var  sort = $(this).val();
+    $('#sort_products').on('change', function () {
+        var fabric = get_filter('fabric');
+        var sleeve = get_filter('sleeve');
+        var pattern = get_filter('pattern');
+        var occasion = get_filter('occasion');
+        var fit = get_filter('fit');
+        var  sort_products = $("#sort_products option:selected").text();
         var slug = $("#slug").val();
         $.ajax({
             url: slug,
             method: "post",
             data: {
-                sort:sort,
+                fabric: fabric,
+                sleeve:sleeve,
+                pattern:pattern,
+                occasion:occasion,
+                fit:fit,
+                sort_products:sort_products,
                 url:slug
             },
             success: function (data) {
@@ -21,7 +31,7 @@ $(function () {
         var pattern = get_filter('pattern');
         var occasion = get_filter('occasion');
         var fit = get_filter('fit');
-        var  sort = $("#sort option:selected").text();
+        var  sort_products = $("#sort_products option:selected").text();
         var slug = $("#slug").val();
         $.ajax({
             url: slug,
@@ -32,7 +42,7 @@ $(function () {
                 pattern:pattern,
                 occasion:occasion,
                 fit:fit,
-                sort:sort,
+                sort_products:sort_products,
                 url:slug
             },
             success: function (data) {
@@ -47,7 +57,7 @@ $(function () {
         var pattern = get_filter('pattern');
         var occasion = get_filter('occasion');
         var fit = get_filter('fit');
-        var  sort = $("#sort option:selected").text();
+        var  sort_products = $("#sort_products option:selected").text();
         var slug = $("#slug").val();
         //console.log(sleeve);
         $.ajax({
@@ -59,7 +69,7 @@ $(function () {
                 pattern:pattern,
                 occasion:occasion,
                 fit:fit,
-                sort:sort,
+                sort_products:sort_products,
                 url:slug
             },
             success: function (data) {
@@ -76,7 +86,7 @@ $(function () {
         var pattern = get_filter('pattern');
         var occasion = get_filter('occasion');
         var fit = get_filter('fit');
-        var  sort = $("#sort option:selected").text();
+        var  sort_products = $("#sort_products option:selected").text();
         var slug = $("#slug").val();
         //console.log(pattern);
         $.ajax({
@@ -88,7 +98,7 @@ $(function () {
                 pattern:pattern,
                 occasion:occasion,
                 fit:fit,
-                sort:sort,
+                sort_products:sort_products,
                 url:slug
             },
             success: function (data) {
@@ -104,7 +114,7 @@ $(function () {
         var pattern = get_filter('pattern');
         var occasion = get_filter('occasion');
         var fit = get_filter('fit');
-        var  sort = $("#sort option:selected").text();
+        var  sort_products = $("#sort_products option:selected").text();
         var slug = $("#slug").val();
         //console.log(pattern);
         $.ajax({
@@ -116,7 +126,7 @@ $(function () {
                 pattern:pattern,
                 occasion:occasion,
                 fit:fit,
-                sort:sort,
+                sort_products:sort_products,
                 url:slug
             },
             success: function (data) {
@@ -133,7 +143,7 @@ $(function () {
         var pattern = get_filter('pattern');
         var occasion = get_filter('occasion');
         var fit = get_filter('fit');
-        var  sort = $("#sort option:selected").text();
+        var  sort_products = $("#sort_products option:selected").text();
         var slug = $("#slug").val();
         //console.log(pattern);
         $.ajax({
@@ -145,7 +155,7 @@ $(function () {
                 pattern:pattern,
                 occasion:occasion,
                 fit:fit,
-                sort:sort,
+                sort_products:sort_products,
                 url:slug
             },
             success: function (data) {

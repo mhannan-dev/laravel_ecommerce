@@ -12,7 +12,7 @@
                     @endif
                 </a>
                 <div class="caption">
-                    <span class="badge badge-info text-center">{{ $product['fabric'] }}</span> - <span class="badge badge-info text-center">{{ $product['sleeve'] }}</span>
+                    
                     <h5>{{ $product['title'] }}</h5>
                     <p>
                         {{ Str::limit($product['description'], 50) }}

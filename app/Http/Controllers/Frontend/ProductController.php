@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
-
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -12,12 +10,9 @@ class ProductController extends Controller
 {
     public function listing($slug, Request $request)
     {
-
         if ($request->ajax()) {
             $data = $request->all();
-            // echo "<pre>";
-            // print_r($data);
-            // die;
+            //echo "<pre>"; print_r($data); die;
             $slug = $data['url'];
             $categoryCount = Category::where(['slug' => $slug, 'status' => 1])->count();
             if ($categoryCount > 0) {
@@ -43,23 +38,21 @@ class ProductController extends Controller
                     $categoryProducts->whereIn('products.occasion', $data['occasion']);
                 }
 
-
                 //If product fit is selected
                 if (isset($data['fit']) && !empty($data['fit'])) {
                     $categoryProducts->whereIn('products.fit', $data['fit']);
                 }
-
                 //If product sort is selected
-                if (isset($data['sort_products']) && !empty($data['sort_products'])) {
-                    if ($data['sort_products'] == "latest_product") {
+                if (isset($data['sort']) && !empty($data['sort'])) {
+                    if ($data['sort'] == "latest_product") {
                         $categoryProducts->orderBy('id', 'DESC');
-                    } else if ($data['sort_products'] == "products_sort_a_to_z") {
+                    } else if ($data['sort'] == "products_sort_a_to_z") {
                         $categoryProducts->orderBy('title', 'ASC');
-                    } else if ($data['sort_products'] == "products_sort_z_to_a") {
+                    } else if ($data['sort'] == "products_sort_z_to_a") {
                         $categoryProducts->orderBy('title', 'DESC');
-                    } else if ($data['sort_products'] == "lowest_price_wise_products") {
+                    } else if ($data['sort'] == "lowest_price_wise_products") {
                         $categoryProducts->orderBy('price', 'ASC');
-                    } else if ($data['sort_products'] == "highest_price_wise_products") {
+                    } else if ($data['sort'] == "highest_price_wise_products") {
                         $categoryProducts->orderBy('price', 'DESC');
                     }
                 } else {
