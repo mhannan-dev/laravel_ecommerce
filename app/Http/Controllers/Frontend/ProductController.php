@@ -26,6 +26,10 @@ class ProductController extends Controller
                 if (isset($data['fabric']) && !empty($data['fabric'])) {
                     $categoryProducts->whereIn('products.fabric', $data['fabric']);
                 }
+                //If product Sleeve is selected
+                if (isset($data['sleeve']) && !empty($data['sleeve'])) {
+                    $categoryProducts->whereIn('products.sleeve', $data['sleeve']);
+                }
                 //If product sort is selected
                 if (isset($data['sort_products']) && !empty($data['sort_products'])) {
                     if ($data['sort_products'] == "latest_product") {

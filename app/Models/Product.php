@@ -69,8 +69,8 @@ class Product extends Model
     public static function product_filters()
     {
         //Product filters
-        $product_filters['fabrics'] =  array('Cotton', 'Polyester', 'Wool', 'PureCotton');
-        $product_filters['sleeves'] = array('LongSleeve', 'HalfSleeve', 'ShortSleeve', 'SleeveLess');
+        $product_filters['fabrics'] =  array('Cotton', 'Polyester', 'Wool', 'Pure-Cotton');
+        $product_filters['sleeves'] = array('Long-Sleeve', 'Half-Sleeve', 'Short-Sleeve', 'Sleeve-Less');
         $product_filters['patterns'] = array('Check', 'Plain', 'Printed', 'Self', 'Solid');
         $product_filters['occasions'] = array('Casual', 'Formal');
         $product_filters['fits'] = array('Regular', 'Slim');
