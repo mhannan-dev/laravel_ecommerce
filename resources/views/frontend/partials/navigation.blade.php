@@ -39,11 +39,13 @@ $sections = Section::sections();
                                         
                                         <li class="divider"></li>
                                         <li class="nav-header">
-                                            <a href="{{ route('slug', $category['slug']) }}">{{ $category['title'] }}</a>
+                                            {{-- <a href="{{ route('slug', $category['slug']) }}"> --}}
+                                            <a href="{{ url($category['slug']) }}"> 
+                                                {{ $category['title'] }}</a>
                                         </li>
                                             @foreach ($category['subcategories'] as $subcategory)
                                             <li>
-                                                <a href="{{ route('slug', $subcategory['slug']) }}">
+                                                <a href="{{ url($subcategory['slug']) }}">
                                                     {!! $subcategory['title'] !!}
                                                 </a>
                                             </li>
