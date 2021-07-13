@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\ComparisonMethodDoesNotDeclareBoolReturnTypeException;
 
 class ProductController extends Controller
@@ -69,7 +70,7 @@ class ProductController extends Controller
                 abort(404);
             }
         } else {
-
+            $slug = Route::getFacedeRoot()->current()->uri();
             $categoryCount = Category::where(['slug' => $slug, 'status' => 1])->count();
             if ($categoryCount > 0) {
                 $categoryDetails = Category::catDetails($slug);
