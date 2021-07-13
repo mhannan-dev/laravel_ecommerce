@@ -1,8 +1,11 @@
 <?php
 
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use PhpParser\Node\Stmt\Foreach_;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +15,18 @@ use Illuminate\Support\Facades\Artisan;
 Route::namespace('Frontend')->group(function () {
     Route::get('/', 'IndexController@index')->name('frontend.home'); // Home route
     //Route::get('/{slug}', 'ProductController@listing')->name('listing'); // Listing category route
-    Route::get('/{slug}', 'ProductController@listing')->name('slug'); // Listing category route
+
+
+
+
+    $catSlugs = Category::select('slug')->where('status', 1)->get()->pluck('slug')->toArray();
+    foreach ($catSlugs as $slug) {
+        Route::get('/' . $slug, 'ProductController@listing')->name('slug');
+    }
+    // Route::get('/contact-us', function () {
+    //     echo 'Contact us';
+    //     die;
+    // });
 });
 Auth::routes();
 Route::prefix('/admin')->namespace('Admin')->group(function () {

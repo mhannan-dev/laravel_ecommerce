@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Frontend;
+
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -8,7 +10,7 @@ use PHPUnit\Framework\ComparisonMethodDoesNotDeclareBoolReturnTypeException;
 
 class ProductController extends Controller
 {
-    public function listing($slug, Request $request)
+    public function listing(Request $request)
     {
         if ($request->ajax()) {
             $data = $request->all();
@@ -67,6 +69,7 @@ class ProductController extends Controller
                 abort(404);
             }
         } else {
+
             $categoryCount = Category::where(['slug' => $slug, 'status' => 1])->count();
             if ($categoryCount > 0) {
                 $categoryDetails = Category::catDetails($slug);
