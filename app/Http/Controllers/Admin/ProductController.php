@@ -263,7 +263,6 @@ class ProductController extends Controller
         try {
             $product_image = ProductsImage::findorfail($id);
             $image_path  = public_path() . '/storage/multi_image/' . $product_image->images;
-
             if (!is_null($product_image)) {
                 $product_image->delete();
                 unlink($image_path);
@@ -271,7 +270,7 @@ class ProductController extends Controller
                 return redirect()->back();
             }
         } catch (\Throwable $th) {
-            dd($th);
+           // dd($th);
             toast('Your product not deleted.', 'success', 'top-right');
             return redirect()->back();
         }

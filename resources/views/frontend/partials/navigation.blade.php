@@ -24,7 +24,7 @@ $sections = Section::sections();
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </a>
-                        <a class="brand" href="#">Stack Developers</a>
+                        <a class="brand" href="{{ url('/')}}">eCommerce</a>
                         <div class="nav-collapse">
                             <ul class="nav">
                                 <li class="active"><a href="#">Home</a></li>
@@ -39,11 +39,11 @@ $sections = Section::sections();
                                         
                                         <li class="divider"></li>
                                         <li class="nav-header">
-                                            <a href="{{ route('slug', $category['slug']) }}">{{ $category['title'] }}</a>
+                                            <a href="{{ url($category['slug']) }}">{{ $category['title'] }}</a>
                                         </li>
                                             @foreach ($category['subcategories'] as $subcategory)
                                             <li>
-                                                <a href="{{ route('slug', $subcategory['slug']) }}">
+                                                <a href="{{ url($subcategory['slug']) }}">
                                                     {!! $subcategory['title'] !!}
                                                 </a>
                                             </li>

@@ -7,13 +7,9 @@
             <div id="featured" class="carousel slide">
                 <div class="carousel-inner">
                     @foreach ($feature_product_chunk as $key => $feature_product)
-
-
                     <div class="item @if ($key == 1) active @endif">
                         <ul class="thumbnails">
                             @foreach ($feature_product as $feature)
-
-
                             <li class="span3">
                                 <div class="thumbnail">
                                     <i class="tag"></i>
@@ -23,7 +19,6 @@
                                         @else
                                         <img src="{{url('/storage/product/no_image.png')}}" alt="No Image">
                                         @endif
-
                                     </a>
                                     <div class="caption">
                                         <h5>{!! $feature['title'] !!}</h5>
@@ -35,7 +30,6 @@
                         </ul>
                     </div>
                     @endforeach
-
                 </div>
                 <a class="left carousel-control" href="#featured" data-slide="prev">‹</a>
                 <a class="right carousel-control" href="#featured" data-slide="next">›</a>
@@ -44,9 +38,7 @@
     </div>
     <h4>Latest Products </h4>
     <ul class="thumbnails">
-
         @foreach ($new_products as $new_product)
-
         <li class="span3">
             <div class="thumbnail">
                 <a href="product_details.html">
@@ -55,7 +47,6 @@
                     @else
                     <img src="{{url('/storage/product/no_image.png')}}" alt="No Image">
                     @endif
-
                 </a>
                 <div class="caption">
                     <h5>{{ $new_product['title'] }}</h5>
@@ -71,7 +62,5 @@
         </li>
         @endforeach
     </ul>
-  
 </div>
-
 @endsection

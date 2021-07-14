@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'ec4557f982dd2a473fb9104c146785cb350d527e',
+        'reference' => 'bca5410c14cadf31dec423daf331828b759b42a4',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -113,21 +113,21 @@
             'dev_requirement' => false,
         ),
         'filp/whoops' => array(
-            'pretty_version' => '2.13.0',
-            'version' => '2.13.0.0',
+            'pretty_version' => '2.14.0',
+            'version' => '2.14.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../filp/whoops',
             'aliases' => array(),
-            'reference' => '2edbc73a4687d9085c8f20f398eebade844e8424',
+            'reference' => 'fdf92f03e150ed84d5967a833ae93abffac0315b',
             'dev_requirement' => true,
         ),
         'guzzlehttp/psr7' => array(
-            'pretty_version' => '1.8.2',
-            'version' => '1.8.2.0',
+            'pretty_version' => '2.0.0',
+            'version' => '2.0.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../guzzlehttp/psr7',
             'aliases' => array(),
-            'reference' => 'dc960a912984efb74d0a90222870c72c87f10c91',
+            'reference' => '1dc8d9cba3897165e16d12bb13d813afb1eb3fe7',
             'dev_requirement' => false,
         ),
         'hamcrest/hamcrest-php' => array(
@@ -308,12 +308,12 @@
             ),
         ),
         'intervention/image' => array(
-            'pretty_version' => '2.5.1',
-            'version' => '2.5.1.0',
+            'pretty_version' => '2.6.0',
+            'version' => '2.6.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../intervention/image',
             'aliases' => array(),
-            'reference' => 'abbf18d5ab8367f96b3205ca3c89fb2fa598c69e',
+            'reference' => 'a2d7238069bb01322f9c2a661449955434fec9c6',
             'dev_requirement' => false,
         ),
         'jakub-onderka/php-console-color' => array(
@@ -349,7 +349,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'ec4557f982dd2a473fb9104c146785cb350d527e',
+            'reference' => 'bca5410c14cadf31dec423daf331828b759b42a4',
             'dev_requirement' => false,
         ),
         'laravel/tinker' => array(
@@ -416,12 +416,12 @@
             'dev_requirement' => true,
         ),
         'monolog/monolog' => array(
-            'pretty_version' => '2.3.0',
-            'version' => '2.3.0.0',
+            'pretty_version' => '2.3.1',
+            'version' => '2.3.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../monolog/monolog',
             'aliases' => array(),
-            'reference' => 'df991fd88693ab703aa403413d83e15f688dae33',
+            'reference' => '9738e495f288eec0b187e310b7cdbbb285777dbe',
             'dev_requirement' => false,
         ),
         'myclabs/deep-copy' => array(
@@ -631,6 +631,21 @@
                 0 => '1.0',
             ),
         ),
+        'psr/http-factory' => array(
+            'pretty_version' => '1.0.1',
+            'version' => '1.0.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/http-factory',
+            'aliases' => array(),
+            'reference' => '12ac7fcd07e5b077433f5f2bee95b3a771bf61be',
+            'dev_requirement' => false,
+        ),
+        'psr/http-factory-implementation' => array(
+            'dev_requirement' => false,
+            'provided' => array(
+                0 => '1.0',
+            ),
+        ),
         'psr/http-message' => array(
             'pretty_version' => '1.0.1',
             'version' => '1.0.1.0',
@@ -658,8 +673,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0',
-                1 => '1.0.0',
+                0 => '1.0.0',
+                1 => '1.0',
             ),
         ),
         'psr/simple-cache' => array(
@@ -714,12 +729,12 @@
             ),
         ),
         'scrivo/highlight.php' => array(
-            'pretty_version' => 'v9.18.1.6',
-            'version' => '9.18.1.6',
+            'pretty_version' => 'v9.18.1.7',
+            'version' => '9.18.1.7',
             'type' => 'library',
             'install_path' => __DIR__ . '/../scrivo/highlight.php',
             'aliases' => array(),
-            'reference' => '44a3d4136edb5ad8551590bf90f437db80b2d466',
+            'reference' => '05996fcc61e97978d76ca7d1ac14b65e7cd26f91',
             'dev_requirement' => true,
         ),
         'sebastian/cli-parser' => array(
