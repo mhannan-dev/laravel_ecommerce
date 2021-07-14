@@ -15,10 +15,10 @@ $sections = Section::with('categories')
                 <li class="subMenu"><a>{!! $section['title'] !!}</a>
                     @foreach ($section['categories'] as $category)
                         <ul>
-                            <li><a href="{{ route('slug', $category['slug']) }}"><i
+                            <li><a href="{{ url($category['slug']) }}"><i
                                         class="icon-chevron-right"></i><strong>{!! $category['title'] !!}</strong></a></li>
                             @foreach ($category['subcategories'] as $subcategory)
-                                <li><a href="{{ route('slug', $subcategory['slug']) }}"><i
+                                <li><a href="{{ url($subcategory['slug']) }}"><i
                                             class="icon-chevron-right"></i>{!! $subcategory['title'] !!}</a></li>
                             @endforeach
                         </ul>

@@ -20,11 +20,13 @@ use Symfony\Component\Routing\RouteCollection;
 class CollectionConfigurator
 {
     use Traits\AddTrait;
+    use Traits\HostTrait;
     use Traits\RouteTrait;
 
     private $parent;
     private $parentConfigurator;
     private $parentPrefixes;
+    private $host;
 
     public function __construct(RouteCollection $parent, string $name, self $parentConfigurator = null, array $parentPrefixes = null)
     {
@@ -50,6 +52,9 @@ class CollectionConfigurator
     {
         if (null === $this->prefixes) {
             $this->collection->addPrefix($this->route->getPath());
+        }
+        if (null !== $this->host) {
+            $this->addHost($this->collection, $this->host);
         }
 
         $this->parent->addCollection($this->collection);
@@ -92,6 +97,20 @@ class CollectionConfigurator
             $this->prefixes = null;
             $this->route->setPath($prefix);
         }
+
+        return $this;
+    }
+
+    /**
+     * Sets the host to use for all child routes.
+     *
+     * @param string|array $host the host, or the localized hosts
+     *
+     * @return $this
+     */
+    final public function host($host): self
+    {
+        $this->host = $host;
 
         return $this;
     }
