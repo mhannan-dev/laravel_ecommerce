@@ -14,10 +14,14 @@ use PhpParser\Node\Stmt\Foreach_;
 
 Route::namespace('Frontend')->group(function () {
     Route::get('/', 'IndexController@index')->name('frontend.home'); // Home route
+    //Route::get('/{slug}', 'ProductController@listing')->name('listing'); // Listing category route
+
+
+
+
     $catSlugs = Category::select('slug')->where('status', 1)->get()->pluck('slug')->toArray();
-    //echo '<pre>'; print_r($catSlugs); die;
     foreach ($catSlugs as $slug) {
-        Route::get('/' . $slug, 'ProductController@listing');
+        Route::get('/' . $slug, 'ProductController@listing')->name('slug');
     }
     // Route::get('/contact-us', function () {
     //     echo 'Contact us';

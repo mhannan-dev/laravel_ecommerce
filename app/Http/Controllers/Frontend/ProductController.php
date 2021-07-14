@@ -15,7 +15,7 @@ class ProductController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-            //echo"<pre>"; print_r($data); die;
+            //echo "<pre>"; print_r($data); die;
             $slug = $data['url'];
             $categoryCount = Category::where(['slug' => $slug, 'status' => 1])->count();
             if ($categoryCount > 0) {
@@ -35,10 +35,12 @@ class ProductController extends Controller
                 if (isset($data['pattern']) && !empty($data['pattern'])) {
                     $categoryProducts->whereIn('products.pattern', $data['pattern']);
                 }
+
                 //If product occasion is selected
                 if (isset($data['occasion']) && !empty($data['occasion'])) {
                     $categoryProducts->whereIn('products.occasion', $data['occasion']);
                 }
+
                 //If product fit is selected
                 if (isset($data['fit']) && !empty($data['fit'])) {
                     $categoryProducts->whereIn('products.fit', $data['fit']);
@@ -61,6 +63,7 @@ class ProductController extends Controller
                 }
                 //After doing filter work this paginate
                 $categoryProducts = $categoryProducts->paginate(6);
+
                 $title = "Listing";
                 return view('frontend.pages.products.ajax_prd_listing')->with(compact('categoryDetails', 'categoryProducts', 'slug', 'title'));
             } else {
@@ -68,6 +71,7 @@ class ProductController extends Controller
             }
         } else {
             $slug = Route::getFacadeRoot()->current()->uri();
+
             $categoryCount = Category::where(['slug' => $slug, 'status' => 1])->count();
             if ($categoryCount > 0) {
                 $categoryDetails = Category::catDetails($slug);
