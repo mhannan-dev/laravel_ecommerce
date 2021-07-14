@@ -2,6 +2,8 @@
 
 namespace Illuminate\View\Concerns;
 
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 use InvalidArgumentException;
@@ -39,14 +41,14 @@ trait ManagesComponents
     /**
      * Start a component rendering process.
      *
-     * @param  string  $name
+     * @param  \Illuminate\Contracts\View\View|\Illuminate\Contracts\Support\Htmlable|\Closure|string  $view
      * @param  array  $data
      * @return void
      */
-    public function startComponent($name, array $data = [])
+    public function startComponent($view, array $data = [])
     {
         if (ob_start()) {
-            $this->componentStack[] = $name;
+            $this->componentStack[] = $view;
 
             $this->componentData[$this->currentComponent()] = $data;
 
@@ -77,23 +79,39 @@ trait ManagesComponents
      */
     public function renderComponent()
     {
-        $name = array_pop($this->componentStack);
+        $view = array_pop($this->componentStack);
 
-        return $this->make($name, $this->componentData($name))->render();
+        $data = $this->componentData();
+
+        $view = value($view, $data);
+
+        if ($view instanceof View) {
+            return $view->with($data)->render();
+        } elseif ($view instanceof Htmlable) {
+            return $view->toHtml();
+        } else {
+            return $this->make($view, $data)->render();
+        }
     }
 
     /**
      * Get the data for the given component.
      *
-     * @param  string  $name
      * @return array
      */
-    protected function componentData($name)
+    protected function componentData()
     {
+        $defaultSlot = new HtmlString(trim(ob_get_clean()));
+
+        $slots = array_merge([
+            '__default' => $defaultSlot,
+        ], $this->slots[count($this->componentStack)]);
+
         return array_merge(
             $this->componentData[count($this->componentStack)],
-            ['slot' => new HtmlString(trim(ob_get_clean()))],
-            $this->slots[count($this->componentStack)]
+            ['slot' => $defaultSlot],
+            $this->slots[count($this->componentStack)],
+            ['__laravel_slots' => $slots]
         );
     }
 
@@ -103,6 +121,8 @@ trait ManagesComponents
      * @param  string  $name
      * @param  string|null  $content
      * @return void
+     *
+     * @throws \InvalidArgumentException
      */
     public function slot($name, $content = null)
     {
@@ -130,8 +150,7 @@ trait ManagesComponents
             $this->slotStack[$this->currentComponent()]
         );
 
-        $this->slots[$this->currentComponent()]
-                    [$currentSlot] = new HtmlString(trim(ob_get_clean()));
+        $this->slots[$this->currentComponent()][$currentSlot] = new HtmlString(trim(ob_get_clean()));
     }
 
     /**
