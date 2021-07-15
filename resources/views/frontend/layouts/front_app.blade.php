@@ -51,10 +51,12 @@
     <script src="{{ URL::asset('backend') }}/themes/js/jquery.js" type="text/javascript"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/front.min.js" type="text/javascript"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/google-code-prettify/prettify.js"></script>
-
     <script src="{{ URL::asset('backend') }}/themes/js/front.js"></script>
-    <script src="themes/js/jquery.lightbox-0.5.js"></script>
+    <script src="{{ URL::asset('backend') }}/themes/js/jquery.lightbox-0.5.js"></script>
     <script src="{{ URL::asset('backend') }}/js/_frontend.js"></script>
+
+
+
 </body>
 
 </html>

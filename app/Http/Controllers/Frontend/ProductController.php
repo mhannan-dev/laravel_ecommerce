@@ -97,7 +97,7 @@ class ProductController extends Controller
         //$product_details = Product::with('brand', 'category')->find($id)->toArray();
         //return view('frontend.pages.products.detail', compact('product_details'));
         $data['product_details'] = Product::with('brand', 'category', 'attributes','images')->find($id)->toArray();
-        dd  ($data['product_details']);
+        //dd  ($data['product_details']);
         return view('frontend.pages.products.detail', $data);
     }
 }
