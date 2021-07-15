@@ -6,7 +6,7 @@ $sections = Section::with('categories')
 @endphp
 <!-- Sidebar ================================================== -->
 <div id="sidebar" class="span3">
-    <div class="well well-small"><a id="myCart" href="#"><img src="themes/images/ico-cart.png" alt="cart">3 Items in
+    <div class="well well-small"><a id="myCart" href="#"><img src="{{ URL::asset('backend')}}/themes/images/ico-cart.png" alt="cart">3 Items in
             your cart</a>
     </div>
     <ul id="sideManu" class="nav nav-tabs nav-stacked">
@@ -71,7 +71,7 @@ $sections = Section::with('categories')
     @endif
     <br />
     <div class="thumbnail">
-        <img src="themes/images/payment_methods.png" title="Payment Methods" alt="Payments Methods">
+        <img src="{{ URL::asset('backend')}}/themes/images/payment_methods.png" title="Payment Methods" alt="Payments Methods">
         <div class="caption">
             <h5>Payment Methods</h5>
         </div>

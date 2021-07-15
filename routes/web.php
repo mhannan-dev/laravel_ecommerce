@@ -13,12 +13,11 @@ use PhpParser\Node\Stmt\Foreach_;
 */
 
 Route::namespace('Frontend')->group(function () {
-    Route::get('/', 'IndexController@index')->name('frontend.home'); // Home route
-    //Route::get('/{slug}', 'ProductController@listing')->name('listing'); // Listing category route
-
-
-
-
+    // Home route
+    Route::get('/', 'IndexController@index')->name('frontend.home');
+    // Product Detail
+    //Route::get('/product/{code}/{id}', 'ProductController@details')->name('product_detail');
+    Route::get('/product/{id}', 'ProductController@detail')->name('product.detail');
     $catSlugs = Category::select('slug')->where('status', 1)->get()->pluck('slug')->toArray();
     foreach ($catSlugs as $slug) {
         Route::get('/' . $slug, 'ProductController@listing')->name('slug');
