@@ -7,9 +7,11 @@ use App\Models\Product;
 use App\Models\Section;
 use App\Models\Category;
 use Illuminate\Http\Request;
+
 use App\Models\ProductsImage;
 use App\Models\ProductAttribute;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\ProductRequest;
@@ -31,7 +33,7 @@ class ProductController extends Controller
                 $query->select('id', 'title');
             }
         ])->get();
-        //dd($data['products']);
+        //  dd($data['products']);
         return view('admin.pages.product.index', $data);
     }
     /**
@@ -116,44 +118,28 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request, Product $product)
     {
-        //dd($request->all());
         try {
-            // $image = $request->file('image');
-            // if (isset($image)) {
-            //     $imageName  = time() . '.' . $image->getClientOriginalExtension();
-            //     if (!Storage::disk('public')->exists('product')) {
-            //         Storage::disk('public')->makeDirectory('product');
-            //     }
-            //     $productImage = Image::make($image)->resize(200, 200)->save(storage_path('product'));
-            //     Storage::disk('public')->put('product/' . $imageName, $productImage);
-            // } else {
-            //     $imageName = "default.png";
-            // }
             if ($request->hasfile('image')) {
-                $image_tmp =  $request->file('image');
-                if ($image_tmp->isValid()) {
-                    // $image_name = $image_tmp->getClientOriginalName();
-                    // $extension = $image_tmp->getClientOriginalExtension();
-                    //$image_name  = $image_name . '-' . time() . $extension;
-                    $image_name = time() . '.' . $image_tmp->getClientOriginalExtension();
-                    $large_image_path = 'uploads/product_images/large/' . $image_name;
-                    $medium_image_path = 'uploads/product_images/medium/' . $image_name;
-                    $small_image_path = 'uploads/product_images/small/' . $image_name;
-                    Image::make($image_tmp)->resize(1040, 1200)->save($large_image_path);
-                    Image::make($image_tmp)->resize(520, 600)->save($medium_image_path);
-                    Image::make($image_tmp)->resize(260, 300)->save($small_image_path);
-                    $product->image = $image_name;
+                $image = $request->file('image');
+                if ($image->isValid()) {
+                    $imageName  = time() . '.' . $image->getClientOriginalExtension();
+                    $large_image_path = 'uploads/product_img_large/' . $imageName;
+                    $medium_image_path = 'uploads/product_img_medium/' . $imageName;
+                    $small_image_path = 'uploads/product_img_small/' . $imageName;
+                    Image::make($image)->resize(1040, 1200)->save($large_image_path);
+                    Image::make($image)->resize(520, 600)->save($medium_image_path);
+                    Image::make($image)->resize(260, 300)->save($small_image_path);
                 }
             }
             $productFillable         = $request->only($product->getFillable());
             $categoryDetail = Category::find($request->category_id);
             $productFillable['section_id'] = $categoryDetail['section_id'];
-            //$productFillable['image']  = $imageName;
+            $productFillable['image']  = $imageName;
             $product->fill($productFillable)->save();
             toast("Product has been saved successfully", 'success', 'top-right');
             return redirect()->route('product.index');
         } catch (\Throwable $th) {
-            dd($th);
+            //dd($th);
             toast("Product not saved successfully", 'warning', 'top-right');
             return redirect()->back();
         }
@@ -202,19 +188,27 @@ class ProductController extends Controller
     {
         //dd($request->all());
         try {
-            $image = $request->file('image');
-            if (isset($image)) {
-                $imageName  = time() . '.' . $image->getClientOriginalExtension();
-                if (!Storage::disk('public')->exists('product')) {
-                    Storage::disk('public')->makeDirectory('product');
+            if ($request->hasfile('image')) {
+                // get previous image from folder
+                $img_large = public_path("uploads/product_img_large/{$product->image}");
+                $img_medium = public_path("uploads/product_img_medium/{$product->image}");
+                $img_small = public_path("uploads/product_img_small/{$product->image}");
+                if (File::exists($img_large) && File::exists($img_medium) && File::exists($img_small)) {
+                    // unlink or remove previous image from folder
+                    unlink($img_large);
+                    unlink($img_medium);
+                    unlink($img_small);
                 }
-                //Delelte existiing image
-                if (Storage::disk('public')->exists('product/' . $product->image)) {
-                    Storage::disk('public')->delete('product/' . $product->image);
+                $image = $request->file('image');
+                if ($image->isValid()) {
+                    $imageName  = time() . '.' . $image->getClientOriginalExtension();
+                    $large_image_path = 'uploads/product_img_large/' . $imageName;
+                    $medium_image_path = 'uploads/product_img_medium/' . $imageName;
+                    $small_image_path = 'uploads/product_img_small/' . $imageName;
+                    Image::make($image)->resize(1040, 1200)->save($large_image_path);
+                    Image::make($image)->resize(520, 600)->save($medium_image_path);
+                    Image::make($image)->resize(260, 300)->save($small_image_path);
                 }
-                //Saving image
-                $productImage = Image::make($image)->resize(200, 200)->save(storage_path('product'));
-                Storage::disk('public')->put('product/' . $imageName, $productImage);
             } else {
                 //If someone update without changing image
                 $imageName = $product->image;
@@ -224,11 +218,11 @@ class ProductController extends Controller
             $productFillable['section_id'] = $categoryDetail['section_id'];
             $productFillable['image']  = $imageName;
             $product->fill($productFillable)->save();
-            toast("Category has been updated successfully", 'success', 'top-right');
+            toast("Product has been updated successfully", 'success', 'top-right');
             return redirect()->route('product.index');
         } catch (\Throwable $th) {
-            //dd($th);
-            toast("Category not updated successfully", 'warning', 'top-right');
+            dd($th);
+            toast("Product not updated successfully", 'warning', 'top-right');
             return redirect()->back();
         }
     }
@@ -261,10 +255,14 @@ class ProductController extends Controller
     {
         try {
             $product = Product::findOrFail($id);
-            $image_path  = public_path() . '/storage/product/' . $product->image;
+            $large_image_path = public_path() . '/uploads/product_img_large/' . $product->image;
+            $medium_image_path =  public_path() . '/uploads/product_img_medium/' . $product->image;
+            $small_image_path =  public_path() . '/uploads/product_img_small/' . $product->image;
             if (!is_null($product)) {
                 $product->delete();
-                unlink($image_path);
+                unlink($large_image_path);
+                unlink($medium_image_path);
+                unlink($small_image_path);
                 toast('Your product has been deleted.', 'success', 'top-right');
                 return redirect()->route('product.index');
             }

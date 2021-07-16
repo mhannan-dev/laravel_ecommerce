@@ -78,7 +78,10 @@ Product product
                                             <!-- <img style="width: 60px;"
                                                                 src="{{ url('storage/product/' . $product->image) }}"
                                                                 alt="{{ $product->title }}"> -->
-                                            <img style="width: 60px;" src="{{ public_path('uploads/product_images/large/'.$product->image) }}" alt="{{ $product->title }}">
+                                            <img style="width: 60px;" src="{{ asset('uploads/product_img_medium/' . $product->image) }}" alt="{{ $product->title }}">
+
+
+
 
 
                                             @else
