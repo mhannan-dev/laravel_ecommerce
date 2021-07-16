@@ -2,9 +2,9 @@
 @section('content')
 <div class="span9">
     <ul class="breadcrumb">
-        <li><a href="index.html">Home</a> <span class="divider">/</span></li>
-        <li><a href="products.html">Products</a> <span class="divider">/</span></li>
-        <li class="active">product Details</li>
+        <li><a href="{{ url('/')}}">Home</a> <span class="divider">/</span></li>
+        <li><a href="#">Products</a> <span class="divider">/</span></li>
+        <li class="active">Product Details</li>
     </ul>
     <div class="row">
         <div id="gallery" class="span3">
@@ -14,9 +14,13 @@
             <div id="differentview" class="moreOptopm carousel slide">
                 <div class="carousel-inner">
                     <div class="item active">
-                        <a href="{{ URL::asset('backend') }}/themes/images/products/large/f1.jpg"> <img style="width:29%" src="{{ URL::asset('backend') }}/themes/images/products/large/f1.jpg" alt=""></a>
-                        <a href="{{ URL::asset('backend') }}/themes/images/products/large/f2.jpg"> <img style="width:29%" src="{{ URL::asset('backend') }}/themes/images/products/large/f2.jpg" alt=""></a>
-                        <a href="{{ URL::asset('backend') }}/themes/images/products/large/f3.jpg"> <img style="width:29%" src="{{ URL::asset('backend') }}/themes/images/products/large/f3.jpg" alt=""></a>
+
+                        @foreach($product_details['images'] as $image)
+
+                        <a href="{{ asset('uploads/product_img_medium/'.$image['images']) }}"> <img style="width:29%" src="{{ asset('uploads/product_img_small/'.$image['images']) }}" alt="">
+                        </a>
+                        @endforeach
+
                     </div>
                     <div class="item">
                         <a href="{{ URL::asset('backend') }}/themes/images/products/large/f3.jpg"> <img style="width:29%" src="{{ URL::asset('backend') }}/themes/images/products/large/f3.jpg" alt=""></a>

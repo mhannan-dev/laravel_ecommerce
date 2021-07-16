@@ -127,7 +127,7 @@ class ProductController extends Controller
                     $medium_image_path = 'uploads/product_img_medium/' . $imageName;
                     $small_image_path = 'uploads/product_img_small/' . $imageName;
                     Image::make($image)->resize(1040, 1200)->save($large_image_path);
-                    Image::make($image)->resize(520, 600)->save($medium_image_path);
+                    Image::make($image)->resize(375, 500)->save($medium_image_path);
                     Image::make($image)->resize(260, 300)->save($small_image_path);
                 }
             }
@@ -297,7 +297,7 @@ class ProductController extends Controller
             toast('Your product image has been deleted.', 'success', 'top-right');
             return redirect()->back();
         } catch (\Throwable $th) {
-            dd($th);
+            // dd($th);
             toast('Your product not deleted.', 'success', 'top-right');
             return redirect()->back();
         }
