@@ -160,7 +160,7 @@ Product product
 
         $.ajax({
             type: 'post',
-            url: '/admin/catalogue/update-product-status',
+            url: '/admin/update-product-status',
             data: {
                 status: status,
                 product_id: product_id

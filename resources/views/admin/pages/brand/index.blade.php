@@ -120,7 +120,7 @@ Brands
 
             $.ajax({
                 type: 'post',
-                url: '/admin/catalogue/update-brand-status',
+                url: '/admin/update-brand-status',
                 data: {status:status, brand_id :brand_id},
                 success: function (resp) {
                     if (resp['status'] == 0) {

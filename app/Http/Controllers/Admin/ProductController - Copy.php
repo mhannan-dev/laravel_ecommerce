@@ -96,7 +96,7 @@ class ProductController extends Controller
             return  response()->json(['status' => $status, 'attribute_id' => $data['attribute_id']]);
         }
     }
-    //Update_img_status
+    //update_img_status
     public function update_img_status(Request $request)
     {
         if ($request->ajax()) {
@@ -272,32 +272,19 @@ class ProductController extends Controller
         }
     }
 
-    public function deleteImage($id)
+    public function delete_product_image($id)
     {
-
         try {
-            $productImage = ProductsImage::select('images')->where('id', $id)->first();
-            //dd($productImag);
-            $large_image_path  = public_path() . '/uploads/product_img_large/';
-            $medium_image_path  = public_path() . '/uploads/product_img_medium/';
-            $small_image_path  = public_path() . '/uploads/product_img_small/';
-            //Delete large image if exist in large folder
-            if (file_exists($large_image_path . $productImage->images)) {
-                unlink($large_image_path . $productImage->images);
+            $product_image = ProductsImage::findorfail($id);
+            $image_path  = public_path() . '/storage/multi_image/' . $product_image->images;
+            if (!is_null($product_image)) {
+                $product_image->delete();
+                unlink($image_path);
+                toast('Your product image has been deleted.', 'success', 'top-right');
+                return redirect()->back();
             }
-            //Delete large image if exist in medium folder
-            if (file_exists($medium_image_path . $productImage->images)) {
-                unlink($medium_image_path . $productImage->images);
-            }
-            //Delete large image if exist in small folder
-            if (file_exists($small_image_path . $productImage->images)) {
-                unlink($small_image_path . $productImage->images);
-            }
-            ProductsImage::where('id', $id)->delete();
-            toast('Your product image has been deleted.', 'success', 'top-right');
-            return redirect()->back();
         } catch (\Throwable $th) {
-            dd($th);
+            // dd($th);
             toast('Your product not deleted.', 'success', 'top-right');
             return redirect()->back();
         }
@@ -391,13 +378,12 @@ class ProductController extends Controller
                 foreach ($images as $key => $image) {
                     $product_image = new ProductsImage();
                     $image_tmp = Image::make($image);
-                    $imageName  = time() . '.' . $image->getClientOriginalExtension();
-                    $large_image_path = 'uploads/product_img_large/' . $imageName;
-                    $medium_image_path = 'uploads/product_img_medium/' . $imageName;
-                    $small_image_path = 'uploads/product_img_small/' . $imageName;
-                    Image::make($image_tmp)->resize(1040, 1200)->save($large_image_path);
-                    Image::make($image_tmp)->resize(520, 600)->save($medium_image_path);
-                    Image::make($image_tmp)->resize(260, 300)->save($small_image_path);
+                    $imageName = time() . rand(222, 999) . '.' . $image->getClientOriginalExtension();
+                    if (!Storage::disk('public')->exists('multi_image')) {
+                        Storage::disk('public')->makeDirectory('multi_image');
+                    }
+                    $multiImage = Image::make($image)->resize(1040, 1200)->save(storage_path('multi_image'));
+                    Storage::disk('public')->put('multi_image/' . $imageName, $multiImage);
                     $product_image->images = $imageName;
                     $product_image->product_id = $id;
                     $product_image->save();

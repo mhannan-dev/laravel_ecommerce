@@ -115,7 +115,7 @@ Product Category
             var banner_id = $(this).attr("banner_id");
             $.ajax({
                 type: 'post',
-                url: '/admin/site/update-banner-status',
+                url: '/admin/update-banner-status',
                 data: {
                     status: status,
                     banner_id: banner_id

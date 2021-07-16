@@ -49,7 +49,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <img style="height:150px;" src="{{ url('storage/product/'.$product['image']) }}" alt="{{ $product['title'] }}">
+                                            <img style="height:150px;" src="{{ asset('uploads/product_img_large/'.$product['image']) }}" alt="{{ $product['title'] }}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -119,16 +119,16 @@
                                         </td>
                                         <td>
                                             @if ($attribute['status'] == 1 )
-                                            <a attribute_id="{{ $attribute['id'] }}" class="attribute_status text-success" id="product_{{ $attribute['id'] }}" href="javascript:void(0)"> 
-                                            Active
+                                            <a attribute_id="{{ $attribute['id'] }}" class="attribute_status text-success" id="product_{{ $attribute['id'] }}" href="javascript:void(0)">
+                                                Active
                                             </a>
                                             @else
                                             <a attribute_id="{{ $attribute['id'] }}" class="attribute_status" id="attribute_{{ $attribute['id'] }}" href="javascript:void(0)">
-                                            In Active
-                                            </a>    
+                                                In Active
+                                            </a>
                                             @endif
-                                            &nbsp;&nbsp; / &nbsp;&nbsp;  <a href="{{ route('delete_attribute', $attribute['id'])}}" class="button delete-confirm text-danger">
-                                            <i class="fa fa-trash"></i>
+                                            &nbsp;&nbsp; / &nbsp;&nbsp; <a href="{{ url('admin/delete-attribute', $attribute['id'])}}" class="button delete-confirm text-danger">
+                                                <i class="fa fa-trash"></i>
                                             </a>
                                         </td>
                                     </tr>

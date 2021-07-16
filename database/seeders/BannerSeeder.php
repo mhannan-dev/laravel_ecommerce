@@ -1,5 +1,6 @@
 <?php
-
+namespace Database\Seeders;
+use App\Models\Brand;
 use App\Models\Banner;
 use Illuminate\Database\Seeder;
 

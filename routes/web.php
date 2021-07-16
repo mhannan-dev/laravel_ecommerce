@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use PhpParser\Node\Stmt\Foreach_;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,16 +15,11 @@ Route::namespace('Frontend')->group(function () {
     // Home route
     Route::get('/', 'IndexController@index')->name('frontend.home');
     // Product Detail
-    //Route::get('/product/{code}/{id}', 'ProductController@details')->name('product_detail');
     Route::get('/product/{id}', 'ProductController@detail')->name('product.detail');
     $catSlugs = Category::select('slug')->where('status', 1)->get()->pluck('slug')->toArray();
     foreach ($catSlugs as $slug) {
         Route::get('/' . $slug, 'ProductController@listing')->name('slug');
     }
-    // Route::get('/contact-us', function () {
-    //     echo 'Contact us';
-    //     die;
-    // });
 });
 Auth::routes();
 Route::prefix('/admin')->namespace('Admin')->group(function () {
@@ -34,7 +28,7 @@ Route::prefix('/admin')->namespace('Admin')->group(function () {
 
     Route::group(['middleware' => ['admin']], function () {
         Route::get('dashboard', 'AdminController@dashboard');
-        Route::get('change-password', 'AdminController@change_pwd')->name('change_pwd'); //Its settings
+        Route::get('change-password', 'AdminController@change_pwd')->name('change_pwd');
         Route::get('logout', 'AdminController@logout')->name('admin.logout');
         Route::post('check-current-pwd', 'AdminController@check_current_pwd')->name('check_current_pwd');
         Route::post('update-current-pwd', 'AdminController@update_current_pwd')->name('update_current_pwd');
@@ -53,17 +47,19 @@ Route::prefix('/admin')->namespace('Admin')->group(function () {
         Route::resource('section', 'SectionController');
         //Product
         Route::resource('product', 'ProductController');
-        Route::match(['get', 'post'], 'add-product-image/{id}', 'ProductController@add_images')->name('add.images');
-        Route::match(['get', 'post'], 'product-add-attribute/{id}', 'ProductController@add_attributes')->name('add_attribute');
-        Route::get('delete-attribute/{id}', 'ProductController@delete_attribute')->name('delete_attribute');
-        Route::get('delete-product-image/{id}', 'ProductController@delete_product_image')->name('delete_product_image');
-        Route::post('update-product-image-status', 'ProductController@update_img_status')->name('image_status');
-        Route::post('update-product-attr-status', 'ProductController@update_attribute_status');
         Route::post('update-product-status', 'ProductController@update_product_status');
-        Route::post('edit-product-attribute', 'ProductController@edit_attributes')->name('edit_attribute');
+        //Attribute
+        Route::match(['get', 'post'], 'product-add-attribute/{id}', 'ProductController@add_attributes')->name('add_attribute');
+        Route::get('delete-attribute/{id}', 'ProductController@delete_attribute');
+        Route::post('update-attribute-status', 'ProductController@update_attribute_status');
+        Route::post('edit-attribute', 'ProductController@edit_attributes')->name('edit_attribute');
+        //Images
+        Route::match(['get', 'post'], 'add-product-image/{id}', 'ProductController@add_images')->name('add.images');
+        Route::get('delete-product-image/{id}', 'ProductController@deleteImage');
+        Route::post('update-image-status', 'ProductController@update_img_status');
     });
 });
-//to clear all cache
+//To clear all cache
 Route::get('/clear', function () {
     Artisan::call('cache:clear');
     Artisan::call('config:clear');
