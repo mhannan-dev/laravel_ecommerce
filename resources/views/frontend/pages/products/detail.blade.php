@@ -23,9 +23,10 @@
 
                     </div>
                     <div class="item">
-                        <a href="{{ URL::asset('backend') }}/themes/images/products/large/f3.jpg"> <img style="width:29%" src="{{ URL::asset('backend') }}/themes/images/products/large/f3.jpg" alt=""></a>
-                        <a href="{{ URL::asset('backend') }}/themes/images/products/large/f1.jpg"> <img style="width:29%" src="{{ URL::asset('backend') }}/themes/images/products/large/f1.jpg" alt=""></a>
-                        <a href="{{ URL::asset('backend') }}/themes/images/products/large/f2.jpg"> <img style="width:29%" src="{{ URL::asset('backend') }}/themes/images/products/large/f2.jpg" alt=""></a>
+                        @foreach($product_details['images'] as $image)
+                        <a href="{{ asset('uploads/product_img_medium/'.$image['images']) }}"> <img style="width:29%" src="{{ asset('uploads/product_img_small/'.$image['images']) }}" alt="">
+
+                        @endforeach
                     </div>
                 </div>
                 <!--
