@@ -159,24 +159,24 @@
                 <hr class="soft">
                 <div class="tab-content">
                     <div class="tab-pane" id="listView">
-                    @foreach($related_products as $related_product)
+                        @foreach($related_products as $related_product)
                         <div class="row">
                             <div class="span2">
-                                <img src="{{ URL::asset('backend') }}/themes/images/products/4.jpg" alt="">
+                                <img src="{{ asset('uploads/product_img_medium/' . $related_product['image']) }}" alt="">
                             </div>
                             <div class="span4">
                                 <h3>New | Available</h3>
                                 <hr class="soft">
                                 <h5>{{ $related_product['title'] }}</h5>
                                 <p>
-                                {{ $related_product['description'] }}
+                                    {{ $related_product['description'] }}
                                 </p>
-                                <a class="btn btn-small pull-right" href="product_details.html">View Details</a>
+                                <a class="btn btn-small pull-right" href="{{ route('product.detail', $related_product['id']) }}">View Details</a>
                                 <br class="clr">
                             </div>
                             <div class="span3 alignR">
                                 <form class="form-horizontal qtyFrm">
-                                    <h3> BDT.  {{ $related_product['price'] }}</h3>
+                                    <h3> BDT. {{ $related_product['price'] }}</h3>
                                     <label class="checkbox">
                                         <input type="checkbox"> Adds product to compair
                                     </label><br>
@@ -188,7 +188,7 @@
                             </div>
                         </div>
                         <hr class="soft">
-                    @endforeach    
+                        @endforeach
                     </div>
                     <div class="tab-pane active" id="blockView">
                         <ul class="thumbnails">
@@ -196,7 +196,7 @@
                             @foreach($related_products as $related_product)
                             <li class="span3">
                                 <div class="thumbnail">
-                                    <a href="product_details.html"><img src="{{ URL::asset('backend') }}/themes/images/products/2.jpg" alt=""></a>
+                                    <a href="{{ route('product.detail', $related_product['id']) }}"><img src="{{ asset('uploads/product_img_medium/' . $related_product['image']) }}" alt=""></a>
                                     <div class="caption">
                                         <h5>{!! $related_product['title'] !!}</h5>
                                         <p>
