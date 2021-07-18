@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\ProductAttribute;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\ComparisonMethodDoesNotDeclareBoolReturnTypeException;
@@ -95,7 +96,16 @@ class ProductController extends Controller
     public function detail($id)
     {
         $data['product_details'] = Product::with('brand', 'category', 'attributes', 'images')->find($id)->toArray();
-        //dd($data['product_details']);
+        $data['total_stock'] = ProductAttribute::where('product_id', $id)->sum('stock');
+        //dd($data['total_stock']);
         return view('frontend.pages.products.detail', $data);
+    }
+    public function getProductPrice(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = $request->all();
+            $getProductPrice = ProductAttribute::where(['product_id' => $data['product_id'], 'size' => $data['size']])->first();
+            return $getProductPrice->price;
+        }
     }
 }

@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>eCommerce</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Front style -->
@@ -53,7 +54,7 @@
     <script src="{{ URL::asset('backend') }}/themes/js/google-code-prettify/prettify.js"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/front.js"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/jquery.lightbox-0.5.js"></script>
-    <script src="{{ URL::asset('backend') }}/js/_frontend.js"></script>
+    <script src="{{ URL::asset('backend') }}/dist/js/front_end.js"></script>
 
 
 

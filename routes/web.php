@@ -20,6 +20,8 @@ Route::namespace('Frontend')->group(function () {
     foreach ($catSlugs as $slug) {
         Route::get('/' . $slug, 'ProductController@listing')->name('slug');
     }
+    //Get proeuct attributes
+    Route::post('get-product-price', 'ProductController@getProductPrice');
 });
 Auth::routes();
 Route::prefix('/admin')->namespace('Admin')->group(function () {
