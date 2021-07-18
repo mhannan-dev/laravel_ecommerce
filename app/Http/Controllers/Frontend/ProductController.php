@@ -95,10 +95,15 @@ class ProductController extends Controller
     }
     public function detail($id)
     {
-        $data['product_details'] = Product::with('brand', 'category', 'attributes', 'images')->find($id)->toArray();
-        $data['total_stock'] = ProductAttribute::where('product_id', $id)->sum('stock');
-        //dd($data['total_stock']);
-        return view('frontend.pages.products.detail', $data);
+        $product_details = Product::with('brand', 'category', 'attributes', 'images')->find($id)->toArray();
+        //dd($data['product_details']);
+        $total_stock = ProductAttribute::where('product_id', $id)->sum('stock');
+        $related_products = Product::where('category_id', $product_details['category']['id'])->where('id', '!=', $id)->get()->toArray();
+        //echo "<pre>";
+        //print_r($related_products);
+        //die;
+
+        return view('frontend.pages.products.detail', compact('product_details', 'total_stock', 'related_products'));
     }
     public function getProductPrice(Request $request)
     {

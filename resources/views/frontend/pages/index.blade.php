@@ -13,7 +13,7 @@
                             <li class="span3">
                                 <div class="thumbnail">
                                     <i class="tag"></i>
-                                    <a href="product_details.html">
+                                    <a href="{{ route('product.detail', $feature['id']) }}">
                                         @if (!empty($feature['image']))
                                         <img src="{{ asset('uploads/product_img_medium/' . $feature['image']) }}" alt="{!! $feature['title'] !!}">
                                         @else

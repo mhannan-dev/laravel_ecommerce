@@ -274,7 +274,6 @@ class ProductController extends Controller
 
     public function deleteImage($id)
     {
-
         try {
             $productImage = ProductsImage::select('images')->where('id', $id)->first();
             //dd($productImag);
