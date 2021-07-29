@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Section;
 use App\Models\Category;
-use Illuminate\Http\Request;
-
 use App\Models\ProductsImage;
 use App\Models\ProductAttribute;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\ProductRequest;
 
 class ProductController extends Controller
@@ -32,8 +30,8 @@ class ProductController extends Controller
             }, 'category' => function ($query) {
                 $query->select('id', 'title');
             }
-        ])->get();
-        //  dd($data['products']);
+        ])->orderBy('id', 'DESC')->get();
+        //dd($data['products']);
         return view('admin.pages.product.index', $data);
     }
     /**
