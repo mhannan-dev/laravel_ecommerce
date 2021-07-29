@@ -22,6 +22,7 @@ Route::namespace('Frontend')->group(function () {
     }
     //Get proeuct attributes
     Route::post('get-product-price', 'ProductController@getProductPrice');
+    Route::post('add-to-cart', 'ProductController@addToCart');
 });
 Auth::routes();
 Route::prefix('/admin')->namespace('Admin')->group(function () {

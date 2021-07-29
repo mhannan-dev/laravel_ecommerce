@@ -52,16 +52,18 @@
             <small>- {{ $product_details['brand']['title'] }}</small>
             <hr class="soft">
             <small><span class="badge badge-primary">{{ $total_stock }}</span> items in stock</small>
-            <form class="form-horizontal qtyFrm">
+            <form action="{{ url('add-to-cart')}}" method="post" class="form-horizontal qtyFrm">
+                @csrf
+                <input type="hidden" name="product_id" value="{{ $product_details['id'] }}">
                 <div class="control-group">
                     <h4 class="getAttrPrice">BDT.{{ $product_details['price'] }}</h4>
-                    <select name="getPrice" id="getPrice" product_id={{ $product_details['id'] }} class="span2 pull-left">
+                    <select name="size" id="getPrice" product_id={{ $product_details['id'] }} class="span2 pull-left" required>
                         <option value="">Select Size</option>
                         @foreach ($product_details['attributes'] as $attribute)
                         <option value="{{ $attribute['id'] }}">{{ $attribute['size'] }}</option>
                         @endforeach
                     </select>
-                    <input type="number" class="span1" placeholder="Qty.">
+                    <input type="number" name="quantity" class="span1" placeholder="Qty." required>
                     <button type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
                 </div>
             </form>
@@ -175,7 +177,7 @@
                                 <br class="clr">
                             </div>
                             <div class="span3 alignR">
-                                <form class="form-horizontal qtyFrm">
+                                <form  class="form-horizontal qtyFrm">
                                     <h3> BDT. {{ $related_product['price'] }}</h3>
                                     <label class="checkbox">
                                         <input type="checkbox"> Adds product to compair
@@ -218,5 +220,4 @@
         </div>
     </div>
 </div>
-
 @endsection
