@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
-
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Category;
@@ -10,7 +8,6 @@ use App\Models\ProductAttribute;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-
 class ProductController extends Controller
 {
     public function listing(Request $request)
@@ -32,17 +29,14 @@ class ProductController extends Controller
                 if (isset($data['sleeve']) && !empty($data['sleeve'])) {
                     $categoryProducts->whereIn('products.sleeve', $data['sleeve']);
                 }
-
                 //If product pattern is selected
                 if (isset($data['pattern']) && !empty($data['pattern'])) {
                     $categoryProducts->whereIn('products.pattern', $data['pattern']);
                 }
-
                 //If product occasion is selected
                 if (isset($data['occasion']) && !empty($data['occasion'])) {
                     $categoryProducts->whereIn('products.occasion', $data['occasion']);
                 }
-
                 //If product fit is selected
                 if (isset($data['fit']) && !empty($data['fit'])) {
                     $categoryProducts->whereIn('products.fit', $data['fit']);
@@ -65,7 +59,6 @@ class ProductController extends Controller
                 }
                 //After doing filter work this paginate
                 $categoryProducts = $categoryProducts->paginate(6);
-
                 $title = "Listing";
                 return view('frontend.pages.products.ajax_prd_listing')->with(compact('categoryDetails', 'categoryProducts', 'slug', 'title'));
             } else {
@@ -104,7 +97,6 @@ class ProductController extends Controller
         //echo "<pre>";
         //print_r($related_products);
         //die;
-
         return view('frontend.pages.products.detail', compact('product_details', 'total_stock', 'related_products'));
     }
     public function getProductPrice(Request $request)
@@ -141,7 +133,6 @@ class ProductController extends Controller
                 Session::flash('product_exist_msg', 'This product is already exist in cart');
                 return redirect()->back();
             }
-
             //Save product to cart
             Cart::insert([
                 'session_id' => $session_id,
