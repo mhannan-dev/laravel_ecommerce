@@ -63,7 +63,7 @@ class BannerController extends Controller
             toast("Banner has been saved successfully", 'success', 'top-right');
             return redirect()->route('banner.index');
         } catch (\Throwable $th) {
-            dd($th);
+            //dd($th);
             toast("banner has been saved successfully", 'warning', 'top-right');
             return redirect()->back();
         }

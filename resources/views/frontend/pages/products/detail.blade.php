@@ -8,6 +8,7 @@
         </li>
         <li class="active">{{ $product_details['title'] }}</li>
     </ul>
+
     <div class="row">
         <div id="gallery" class="span3">
             <a href="{{ asset('uploads/product_img_medium/' . $product_details['image']) }}" title="Blue Casual T-Shirt">
@@ -48,6 +49,9 @@
             </div>
         </div>
         <div class="span6">
+            {{-- Stock error message --}}
+            @include('frontend.partials.flash_msg')
+
             <h3>{{ $product_details['title'] }}</h3>
             <small>- {{ $product_details['brand']['title'] }}</small>
             <hr class="soft">
@@ -60,11 +64,12 @@
                     <select name="size" id="getPrice" product_id={{ $product_details['id'] }} class="span2 pull-left" required>
                         <option value="">Select Size</option>
                         @foreach ($product_details['attributes'] as $attribute)
-                        <option value="{{ $attribute['id'] }}">{{ $attribute['size'] }}</option>
+                        <option value="{{ $attribute['size'] }}">{{ $attribute['size'] }}</option>
                         @endforeach
                     </select>
                     <input type="number" name="quantity" class="span1" placeholder="Qty." required>
                     <button type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
+
                 </div>
             </form>
         </div>

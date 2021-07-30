@@ -185,7 +185,7 @@
             var attribute_id = $(this).attr("attribute_id");
             $.ajax({
                 type: 'post',
-                url: '/admin/catalogue/update-product-attr-status',
+                url: '/admin/update-attribute-status',
                 data: {
                     status: status,
                     attribute_id: attribute_id
