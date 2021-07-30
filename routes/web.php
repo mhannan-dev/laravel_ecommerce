@@ -1,5 +1,4 @@
 <?php
-
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -10,7 +9,6 @@ use PhpParser\Node\Stmt\Foreach_;
 | Web Routes
 |--------------------------------------------------------------------------
 */
-
 Route::namespace('Frontend')->group(function () {
     // Home route
     Route::get('/', 'IndexController@index')->name('frontend.home');
@@ -22,13 +20,15 @@ Route::namespace('Frontend')->group(function () {
     }
     //Get proeuct attributes
     Route::post('get-product-price', 'ProductController@getProductPrice');
+    //Add to cart
     Route::post('add-to-cart', 'ProductController@addToCart');
+    //Carts
+    Route::get('cart','ProductController@cart');
 });
 Auth::routes();
 Route::prefix('/admin')->namespace('Admin')->group(function () {
     Route::get('/login', 'AdminController@showLoginForm')->name('admin.loginForm');
     Route::post('/login', 'AdminController@login')->name('admin.login.submit');
-
     Route::group(['middleware' => ['admin']], function () {
         Route::get('dashboard', 'AdminController@dashboard');
         Route::get('change-password', 'AdminController@change_pwd')->name('change_pwd');

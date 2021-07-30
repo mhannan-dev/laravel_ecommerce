@@ -80,10 +80,6 @@ Product product
                                                                 alt="{{ $product->title }}"> -->
                                             <img style="width: 60px;" src="{{ asset('uploads/product_img_medium/' . $product->image) }}" alt="{{ $product->title }}">
 
-
-
-
-
                                             @else
                                             <!-- <img style="width: 60px; border: 3px solid red" src="{{ url('/storage/product/no_image.png') }}" alt="No Image"> -->
                                             <img style="width: 60px;" src="{{ url('/storage/product/no_image.png') }}" alt="{{ $product->title }}">
