@@ -20,11 +20,11 @@ class Cart extends Model
     {
         if (Auth::check()) {
             $userCartItems = Cart::with(['product'=>function($query){
-                $query->select('id','title','image','code','color');
+                $query->select('id','title','image','code','color','discount_amt');
             }])->where('user_id', Auth::user()->id)->orderBy('id','DESC')->get()->toArray();
         } else {
             $userCartItems = Cart::with(['product'=>function($query){
-                $query->select('id','title','image','code','color');
+                $query->select('id','title','image','code','color','discount_amt');
             }])->where('session_id', Session::get('session_id'))->orderBy('id','DESC')->get()->toArray();
         }
         return $userCartItems;
@@ -37,5 +37,13 @@ class Cart extends Model
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
+    }
+
+
+    //Get Product Size wise Price
+    public static function getProductAttributePrice($product_id, $size)
+    {
+        $attrPrice = ProductAttribute::select('price')->where(['product_id'=> $product_id, 'size'=> $size])->first()->toArray();
+        return $attrPrice['price'];
     }
 }

@@ -8,7 +8,6 @@
         </li>
         <li class="active">{{ $product_details['title'] }}</li>
     </ul>
-
     <div class="row">
         <div id="gallery" class="span3">
             <a href="{{ asset('uploads/product_img_medium/' . $product_details['image']) }}" title="Blue Casual T-Shirt">
@@ -36,7 +35,6 @@
                                                                         <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
                                                                         -->
             </div>
-
             <div class="btn-toolbar">
                 <div class="btn-group">
                     <span class="btn"><i class="icon-envelope"></i></span>
@@ -51,7 +49,6 @@
         <div class="span6">
             {{-- Stock error message --}}
             @include('frontend.partials.flash_msg')
-
             <h3>{{ $product_details['title'] }}</h3>
             <small>- {{ $product_details['brand']['title'] }}</small>
             <hr class="soft">
@@ -69,23 +66,18 @@
                     </select>
                     <input type="number" name="quantity" class="span1" placeholder="Qty." required>
                     <button type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
-
                 </div>
             </form>
         </div>
-
-
         <hr class="soft clr">
         <p class="span6">
             {{ $product_details['description'] }}
-
         </p>
         <a class="btn btn-small pull-right" href="#detail">More Details</a>
         <br class="clr">
         <a href="#" name="detail"></a>
         <hr class="soft">
     </div>
-
     <div class="span9">
         <ul id="productDetail" class="nav nav-tabs">
             <li class="active"><a href="#home" data-toggle="tab">Product Details</a></li>
@@ -149,7 +141,6 @@
                         @endif
                     </tbody>
                 </table>
-
                 <h5>Washcare</h5>
                 <p>{{ $product_details['wash_care'] }}</p>
                 <h5>Disclaimer</h5>
@@ -199,7 +190,6 @@
                     </div>
                     <div class="tab-pane active" id="blockView">
                         <ul class="thumbnails">
-
                             @foreach($related_products as $related_product)
                             <li class="span3">
                                 <div class="thumbnail">
