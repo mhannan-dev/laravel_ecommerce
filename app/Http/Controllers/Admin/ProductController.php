@@ -346,7 +346,7 @@ class ProductController extends Controller
             return redirect()->back();
         }
         $title = "Product Attributes";
-        $product =  Product::select('id', 'title', 'code', 'color', 'image')->with('attributes')->find($id);
+        $product =  Product::select('id', 'title', 'code', 'color', 'image','price')->with('attributes')->find($id);
         $product = json_decode(json_encode($product),  true);
         //echo "<pre>"; print_r($product); die;
         return view('admin.pages.product.attribute')->with(compact('product', 'title'));

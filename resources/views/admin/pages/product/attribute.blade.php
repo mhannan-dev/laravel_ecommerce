@@ -35,16 +35,20 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="name">Product Name </label>
+                                            <label for="name">Name : </label>
                                             {{ $product['title'] }}
                                         </div>
                                         <div class="form-group">
-                                            <label for="name">Produce Code</label>
+                                            <label for="name">Code : </label>
                                             {{ $product['code'] }}
                                         </div>
                                         <div class="form-group">
-                                            <label for="name">Produce Color</label>
+                                            <label for="name">Color : </label>
                                             {{ $product['color'] }}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="name">Price : </label>
+                                            {{ $product['price'] }}
                                         </div>
                                     </div>
                                     <div class="col-md-6">

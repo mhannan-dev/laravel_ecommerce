@@ -76,4 +76,24 @@ class Product extends Model
         $product_filters['fits'] = array('Regular', 'Slim');
         return $product_filters;
     }
+
+    public static function getDiscountedPrice($product_id)
+    {
+        $proDetails = Product::select('price', 'discount_amt', 'category_id')->where('id', $product_id)->first()->toArray();
+        //echo "<pre>"; print_r($proDetails); die;
+        $catDetails = Category::select('discount_amt')->where('id', $proDetails['category_id'])->first()->toArray();
+        if ($proDetails['discount_amt'] > 0) {
+            //Calculations below
+            // Sale price = Cost Price - Discount Price
+            // 500 = 500 - (500*10/100) or
+            // 500 = 500 - (500*10%)
+            $discounted_price = $proDetails['price'] - ($proDetails['price'] * $proDetails['discount_amt'] / 100);
+        } else if ($catDetails['discount_amt'] > 0) {
+            # code...
+            $discounted_price = $proDetails['price'] - ($proDetails['price'] * $catDetails['discount_amt'] / 100);
+        } else {
+            $discounted_price = 0;
+        }
+        return $discounted_price;
+    }
 }

@@ -18,6 +18,6 @@ class ProductAttribute extends Model
      */
     public function product()
     {
-        return $this->belongsTo(User::class, 'foreign_key', 'other_key');
+        return $this->belongsTo(User::class);
     }
 }

@@ -58,9 +58,10 @@ use App\Models\Cart;
                 </tr>
             </thead>
             <tbody>
+                <?php $total_price = 0; ?>
                 @foreach ($userCartItems as $item)
                     <?php
-                    $total_price = 0;
+
                     $attrPrice = Cart::getProductAttributePrice($item['product_id'], $item['size']);
                     //dd($attrPrice);
                     ?>
@@ -84,8 +85,8 @@ use App\Models\Cart;
                             </div>
                         </td>
                         <td>BDT. {{ $attrPrice }}</td>
-                        <td>BDT. 0.00</td>
-                        <td>BDT. {{ $total_price + ($attrPrice * $item['quantity']) }}</td>
+                        <td>BDT. {{  $item['product']['discount_amt'] }}</td>
+                        <td>BDT. {{ $attrPrice * $item['quantity'] }}</td>
                     </tr>
                     <?php $total_price = $total_price + ($attrPrice * $item['quantity']); ?>
                 @endforeach
@@ -98,8 +99,8 @@ use App\Models\Cart;
                     <td> BDT. 0.00</td>
                 </tr>
                 <tr>
-                    <td colspan="5" style="text-align:right"><strong>TOTAL (BDT. 3000 - BDT. 0 + BDT. 0) =</strong></td>
-                    <td class="label label-important" style="display:block"> <strong> BDT. 3000.00 </strong></td>
+                    <td colspan="5" style="text-align:right"><strong>GRAND TOTAL (BDT. {{  $total_price }} - BDT. 0 + BDT. 0) =</strong></td>
+                    <td class="label label-important" style="display:block"> <strong> BDT. {{ $total_price }} </strong></td>
                 </tr>
             </tbody>
         </table>
