@@ -1,11 +1,8 @@
 <?php
-
 namespace App\Models;
-
 use Illuminate\Support\Str;
 use App\Models\ProductAttribute;
 use Illuminate\Database\Eloquent\Model;
-
 class Product extends Model
 {
     protected $table = 'products';
@@ -45,7 +42,6 @@ class Product extends Model
     {
         return $this->belongsTo('App\Models\Category', 'category_id');
     }
-
     /**
      * Get all of the comments for the Product
      *
@@ -65,7 +61,6 @@ class Product extends Model
     {
         return $this->hasMany(ProductsImage::class);
     }
-
     public static function product_filters()
     {
         //Product filters
@@ -76,7 +71,6 @@ class Product extends Model
         $product_filters['fits'] = array('Regular', 'Slim');
         return $product_filters;
     }
-
     public static function getDiscountedPrice($product_id)
     {
         $proDetails = Product::select('price', 'discount_amt', 'category_id')->where('id', $product_id)->first()->toArray();
@@ -91,6 +85,21 @@ class Product extends Model
         } else if ($catDetails['discount_amt'] > 0) {
             # code...
             $discounted_price = $proDetails['price'] - ($proDetails['price'] * $catDetails['discount_amt'] / 100);
+        } else {
+            $discounted_price = 0;
+        }
+        return $discounted_price;
+    }
+    public static function getDiscountedAttrPrice($product_id, $size)
+    {
+        $proAttrPrice = ProductAttribute::where(['product_id'=>$product_id, 'size'=> $size])->first()->toArray();
+        $proDetails = Product::select('discount_amt', 'category_id')->where('id', $product_id)->first()->toArray();
+        $catDetails = Category::select('discount_amt')->where('id', $proDetails['category_id'])->first()->toArray();
+        if ($proDetails['discount_amt'] > 0) {
+            $discounted_price = $proAttrPrice['price'] - ($proAttrPrice['price'] * $proDetails['discount_amt'] / 100);
+        } else if ($catDetails['discount_amt'] > 0) {
+            # code...
+            $discounted_price = $proAttrPrice['price'] - ($proAttrPrice['price'] * $catDetails['discount_amt'] / 100);
         } else {
             $discounted_price = 0;
         }
