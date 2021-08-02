@@ -65,9 +65,9 @@
                     <div class="control-group">
                         <?php $discounted_price = Product::getDiscountedPrice($product_details['id']); ?>
                         @if ($discounted_price > 0)
-                            <del>
+                            {{-- <del>
                                 BDT.{{ $product_details['price'] }}
-                            </del>
+                            </del> --}}
                             <h5 class="getAttrPrice">BDT.{{ $discounted_price }}</h5>
                         @else
                             <h4 class="getAttrPrice">BDT.{{ $product_details['price'] }}</h4>

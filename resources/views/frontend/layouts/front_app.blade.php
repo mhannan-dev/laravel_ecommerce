@@ -54,7 +54,7 @@
     <script src="{{ URL::asset('backend') }}/themes/js/google-code-prettify/prettify.js"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/front.js"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/jquery.lightbox-0.5.js"></script>
-    <script src="{{ URL::asset('backend') }}/dist/js/front_end.js"></script>
+    <script src="{{ URL::asset('') }}js/front_end.js"></script>
 
 
 

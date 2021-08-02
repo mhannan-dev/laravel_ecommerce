@@ -103,6 +103,6 @@ class Product extends Model
         } else {
             $discounted_price = 0;
         }
-        return $discounted_price;
+        return array('price'=> $proAttrPrice['price'], 'discounted_price'=> $discounted_price);
     }
 }

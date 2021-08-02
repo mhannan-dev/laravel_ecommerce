@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
-
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Category;
@@ -11,7 +9,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-
 class ProductController extends Controller
 {
     public function listing(Request $request)
@@ -33,17 +30,14 @@ class ProductController extends Controller
                 if (isset($data['sleeve']) && !empty($data['sleeve'])) {
                     $categoryProducts->whereIn('products.sleeve', $data['sleeve']);
                 }
-
                 //If product pattern is selected
                 if (isset($data['pattern']) && !empty($data['pattern'])) {
                     $categoryProducts->whereIn('products.pattern', $data['pattern']);
                 }
-
                 //If product occasion is selected
                 if (isset($data['occasion']) && !empty($data['occasion'])) {
                     $categoryProducts->whereIn('products.occasion', $data['occasion']);
                 }
-
                 //If product fit is selected
                 if (isset($data['fit']) && !empty($data['fit'])) {
                     $categoryProducts->whereIn('products.fit', $data['fit']);
@@ -66,7 +60,6 @@ class ProductController extends Controller
                 }
                 //After doing filter work this paginate
                 $categoryProducts = $categoryProducts->paginate(6);
-
                 $title = "Listing";
                 return view('frontend.pages.products.ajax_prd_listing')->with(compact('categoryDetails', 'categoryProducts', 'slug', 'title'));
             } else {
@@ -105,15 +98,14 @@ class ProductController extends Controller
         //echo "<pre>";
         //print_r($related_products);
         //die;
-
         return view('frontend.pages.products.detail', compact('product_details', 'total_stock', 'related_products'));
     }
     public function getProductPrice(Request $request)
     {
         if ($request->ajax()) {
             $data = $request->all();
-            $getProductPrice = ProductAttribute::where(['product_id' => $data['product_id'], 'size' => $data['size']])->first();
-            return $getProductPrice->price;
+            $getDiscountedAttrPrice = Product::getDiscountedAttrPrice($data['product_id'], $data['size']);
+            return $getDiscountedAttrPrice;
         }
     }
     public function addToCart(Request $request)
@@ -135,7 +127,6 @@ class ProductController extends Controller
                 Session::put('session_id', $session_id);
             }
             //Check product if exist in cart
-
             if (Auth::check()) {
                 $countProduct = Cart::where([
                     'product_id' => $data['product_id'],
@@ -149,12 +140,10 @@ class ProductController extends Controller
                     'session_id' => Session::get('session_id')
                 ])->count();
             }
-
             if ($countProduct > 0) {
                 Session::flash('product_exist_msg', 'This product is already exist in cart');
                 return redirect()->back();
             }
-
             //Save product to cart
             Cart::insert([
                 'session_id' => $session_id,
@@ -170,6 +159,6 @@ class ProductController extends Controller
     {
         $userCartItems = Cart::userCartItems();
         //echo "<pre>"; print_r($userCartItems); die;
-        return view('frontend.pages.products.cart',compact('userCartItems'));
+        return view('frontend.pages.products.cart', compact('userCartItems'));
     }
 }

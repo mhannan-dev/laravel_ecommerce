@@ -73,8 +73,6 @@ $(function () {
             }
         });
     });
-
-
     //Pattern filter
     $('.pattern').on('click', function () {
         var fabric = get_filter('fabric');
@@ -102,7 +100,6 @@ $(function () {
             }
         });
     });
-
     //Occasions Filter
     $('.occasion').on('click', function () {
         var fabric = get_filter('fabric');
@@ -130,7 +127,6 @@ $(function () {
             }
         });
     });
-
     //Fit Filter
     $('.fit').on('click', function () {
         var fabric = get_filter('fabric');
@@ -158,7 +154,6 @@ $(function () {
             }
         });
     });
-
     function get_filter(class_name) {
         var filter = [];
         $('.' + class_name + ':checked').each(function () {
@@ -166,7 +161,6 @@ $(function () {
         });
         return filter;
     }
-
     //getPrice
    $("#getPrice").on('change', function(){
         var size = $(this).find(":selected").text();
@@ -176,14 +170,15 @@ $(function () {
             url: '/get-product-price',
             data: { size: size, product_id: product_id },
             success: function (resp) {
-                //alert(resp);
-                $('.getAttrPrice').html("BDT. "+resp);
+                if (resp['discounted_price'] > 0) {
+                    $('.getAttrPrice').html("<del>BDT."+resp['price']+"</del> BDT."+resp['discounted_price']);
+                } else {
+                    $('.getAttrPrice').html("BDT."+resp['price']);
+                }
             },
             error: function () {
                 alert("Error")
             }
-
         });
     });
-
 });
