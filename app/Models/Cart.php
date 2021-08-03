@@ -13,19 +13,19 @@ class Cart extends Model
     protected $table = 'carts';
     protected $fillable =
     [
-        'session_id','user_id','product_id','size','quantity','created_at','updated_at'
+        'session_id', 'user_id', 'product_id', 'size', 'quantity', 'created_at', 'updated_at'
     ];
     //Items that added to cart
     public static function userCartItems()
     {
         if (Auth::check()) {
-            $userCartItems = Cart::with(['product'=>function($query){
-                $query->select('id','title','image','code','color','discount_amt');
-            }])->where('user_id', Auth::user()->id)->orderBy('id','DESC')->get()->toArray();
+            $userCartItems = Cart::with(['product' => function ($query) {
+                $query->select('id', 'title', 'image', 'code', 'color', 'discount_amt');
+            }])->where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->get()->toArray();
         } else {
-            $userCartItems = Cart::with(['product'=>function($query){
-                $query->select('id','title','image','code','color','discount_amt');
-            }])->where('session_id', Session::get('session_id'))->orderBy('id','DESC')->get()->toArray();
+            $userCartItems = Cart::with(['product' => function ($query) {
+                $query->select('id', 'title', 'image', 'code', 'color', 'discount_amt');
+            }])->where('session_id', Session::get('session_id'))->orderBy('id', 'DESC')->get()->toArray();
         }
         return $userCartItems;
     }
@@ -43,7 +43,7 @@ class Cart extends Model
     //Get Product Size wise Price
     public static function getProductAttributePrice($product_id, $size)
     {
-        $attrPrice = ProductAttribute::select('price')->where(['product_id'=> $product_id, 'size'=> $size])->first()->toArray();
+        $attrPrice = ProductAttribute::select('price')->where(['product_id' => $product_id, 'size' => $size])->first()->toArray();
         return $attrPrice['price'];
     }
 }

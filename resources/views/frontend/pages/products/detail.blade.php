@@ -37,9 +37,9 @@
                         </div>
                     </div>
                     <!--
-                                                                                            <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-                                                                                <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-                                                                                -->
+                                                                                                        <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+                                                                                            <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+                                                                                            -->
                 </div>
                 <div class="btn-toolbar">
                     <div class="btn-group">
@@ -64,14 +64,15 @@
                     <input type="hidden" name="product_id" value="{{ $product_details['id'] }}">
                     <div class="control-group">
                         <?php $discounted_price = Product::getDiscountedPrice($product_details['id']); ?>
-                        @if ($discounted_price > 0)
-                            {{-- <del>
+
+                        <h4 class="getAttrPrice">
+                            @if ($discounted_price > 0)
+                                <del>BDT.{{ $product_details['price'] }}</del>
+                                BDT.{{ $discounted_price }}
+                            @else
                                 BDT.{{ $product_details['price'] }}
-                            </del> --}}
-                            <h5 class="getAttrPrice">BDT.{{ $discounted_price }}</h5>
-                        @else
-                            <h4 class="getAttrPrice">BDT.{{ $product_details['price'] }}</h4>
-                        @endif
+                            @endif
+                        </h4>
                         <select name="size" id="getPrice" product_id={{ $product_details['id'] }} class="span2 pull-left"
                             required>
                             <option value="">Select Size</option>

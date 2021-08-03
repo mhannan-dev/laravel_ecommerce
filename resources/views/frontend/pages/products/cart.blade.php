@@ -61,7 +61,6 @@ use App\Models\Cart;
                 <?php $total_price = 0; ?>
                 @foreach ($userCartItems as $item)
                     <?php
-
                     $attrPrice = Cart::getProductAttributePrice($item['product_id'], $item['size']);
                     //dd($attrPrice);
                     ?>
