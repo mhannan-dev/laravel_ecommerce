@@ -33,6 +33,10 @@ use App\Models\Product;
                                         BDT. {{ $product['price'] }}
                                     </del>
                                 </button>
+                            @else
+                                <button class="btn btn-success">
+                                    BDT. {{ $product['price'] }}
+                                </button>
                             @endif
 
                         </h4>

@@ -25,9 +25,17 @@ use App\Models\Product;
                                                     @endif
                                                 </a>
                                                 <div class="caption">
+                                                    <?php $discounted_price = Product::getDiscountedPrice($feature['id']); ?>
                                                     <h5>{!! $feature['title'] !!}</h5>
-                                                    <h4><a class="btn" href="product_details.html">VIEW</a> <span
-                                                            class="pull-right">BDT.{!! $feature['price'] !!}</span></h4>
+                                                    @if ($discounted_price > 0)
+                                                        <del>
+                                                            <p>BDT. {{ $feature['price'] }}</p>
+                                                        </del>
+                                                        <p>BDT. {{ $discounted_price }}</p>
+                                                    @else
+                                                        <p>BDT. {{ $feature['price'] }}</p>
+                                                    @endif
+                                                    <a href="{{ route('product.detail', $feature['id']) }}" class="btn btn-block">View</a>
                                                 </div>
                                             </div>
                                         </li>
@@ -63,33 +71,19 @@ use App\Models\Product;
                                 <a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn"
                                     href="#">Add to <i class="icon-shopping-cart"></i></a>
                                 <?php $discounted_price = Product::getDiscountedPrice($new_product['id']); ?>
-                                {{-- @if ($discounted_price > 0)
+                                @if ($discounted_price > 0)
                                     <button class="btn btn-warning">
                                         <del>
                                             BDT. {{ $new_product['price'] }}
                                         </del>
                                     </button>
-                                @endif
-                                @if ($discounted_price > 0)
-                                    <h4 style="text-align:center">
-                                        <button class="btn btn-primary">
-                                            Discount Price BDT. {!! $discounted_price !!}
-                                        </button>
-                                    </h4>
-                                @endif --}}
-                                @if ($discounted_price > 0)
-                                <button class="btn btn-warning">
-                                    <del>
-                                        BDT. {{ $new_product['price'] }}
-                                    </del>
-                                </button>
                                     <button class="btn btn-primary">
                                         BDT.{{ $discounted_price }}
                                     </button>
                                 @else
-                                <button class="btn btn-success">
-                                    BDT.{{ $new_product['price'] }}
-                                </button>
+                                    <button class="btn btn-success">
+                                        BDT.{{ $new_product['price'] }}
+                                    </button>
                                 @endif
                             </h4>
                         </div>
