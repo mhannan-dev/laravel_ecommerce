@@ -1,5 +1,6 @@
 <?php
 use App\Models\Cart;
+use App\Models\Product;
 ?>
 @extends('frontend.layouts.front_app')
 @section('content')
@@ -58,11 +59,16 @@ use App\Models\Cart;
                 </tr>
             </thead>
             <tbody>
-                <?php $total_price = 0; ?>
+                <?php
+                $sub_total_price = 0;
+                $total_discount = 0;
+                $total_price = 0;
+                ?>
                 @foreach ($userCartItems as $item)
                     <?php
-                    $attrPrice = Cart::getProductAttributePrice($item['product_id'], $item['size']);
-                    //dd($attrPrice);
+                    $attrPrice = Product::getDiscountedAttrPrice($item['product_id'], $item['size']);
+                    //$attrPrice = Product::getDiscountedAttrPrice($item['product_id'], $item['size']);
+                    //dd($attrPrice['price']);
                     ?>
                     <tr>
                         <td>
@@ -76,30 +82,35 @@ use App\Models\Cart;
                         </td>
                         <td>
                             <div class="input-append">
-                                <input class="span1" style="max-width:34px" value="{{ $item['quantity']  }}" id="appendedInputButtons"
-                                    size="16" type="text">
+                                <input class="span1" style="max-width:34px" value="{{ $item['quantity'] }}"
+                                    id="appendedInputButtons" size="16" type="text">
                                 <button class="btn" type="button"><i class="icon-minus"></i></button>
                                 <button class="btn" type="button"><i class="icon-plus"></i></button>
                                 <button class="btn btn-danger" type="button"><i class="icon-remove icon-white"></i></button>
                             </div>
                         </td>
-                        <td>BDT. {{ $attrPrice }}</td>
-                        <td>BDT. {{  $item['product']['discount_amt'] }}</td>
-                        <td>BDT. {{ $attrPrice * $item['quantity'] }}</td>
+                        <td>BDT. {{ $attrPrice['price'] }}</td>
+                        <td>BDT. {{ $attrPrice['discount'] }}</td>
+                        <td>BDT. {{ $attrPrice['final_price'] * $item['quantity'] }}</td>
                     </tr>
-                    <?php $total_price = $total_price + ($attrPrice * $item['quantity']); ?>
+                    <?php
+                    $sub_total_price = $sub_total_price + $attrPrice['final_price'] * $item['quantity'];
+                    $total_discount = $total_discount + $attrPrice['discount'];
+                    $total_price = $sub_total_price - $total_discount;
+                    ?>
                 @endforeach
                 <tr>
-                    <td colspan="5" style="text-align:right">Total Price: </td>
-                    <td> BDT. {{ $total_price }}</td>
+                    <td colspan="5" style="text-align:right">Sub Total Price: </td>
+                    <td> BDT. {{ $sub_total_price }}</td>
                 </tr>
                 <tr>
-                    <td colspan="5" style="text-align:right">Total Discount: </td>
-                    <td> BDT. 0.00</td>
+                    <td colspan="5" style="text-align:right">Voucher Discount: </td>
+                    <td> BDT. {{  $total_discount }}</td>
                 </tr>
                 <tr>
-                    <td colspan="5" style="text-align:right"><strong>GRAND TOTAL (BDT. {{  $total_price }} - BDT. 0 + BDT. 0) =</strong></td>
-                    <td class="label label-important" style="display:block"> <strong> BDT. {{ $total_price }} </strong></td>
+                    <td colspan="5" style="text-align:right"><strong>GRAND TOTAL (BDT. {{ $sub_total_price }} - BDT. {{ $total_discount }}) =</strong></td>
+                    <td class="label label-important" style="display:block"> <strong> BDT. {{ number_format($total_price, 2) }} </strong>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -121,31 +132,31 @@ use App\Models\Cart;
             </tbody>
         </table>
         <!-- <table class="table table-bordered">
-           <tr><th>ESTIMATE YOUR SHIPPING </th></tr>
-           <tr>
-           <td>
-            <form class="form-horizontal">
-            <div class="control-group">
-             <label class="control-label" for="inputCountry">Country </label>
-             <div class="controls">
-             <input type="text" id="inputCountry" placeholder="Country">
-             </div>
-            </div>
-            <div class="control-group">
-             <label class="control-label" for="inputPost">Post Code/ Zipcode </label>
-             <div class="controls">
-             <input type="text" id="inputPost" placeholder="Postcode">
-             </div>
-            </div>
-            <div class="control-group">
-             <div class="controls">
-             <button type="submit" class="btn">ESTIMATE </button>
-             </div>
-            </div>
-            </form>
-           </td>
-           </tr>
-                    </table> -->
+                       <tr><th>ESTIMATE YOUR SHIPPING </th></tr>
+                       <tr>
+                       <td>
+                        <form class="form-horizontal">
+                        <div class="control-group">
+                         <label class="control-label" for="inputCountry">Country </label>
+                         <div class="controls">
+                         <input type="text" id="inputCountry" placeholder="Country">
+                         </div>
+                        </div>
+                        <div class="control-group">
+                         <label class="control-label" for="inputPost">Post Code/ Zipcode </label>
+                         <div class="controls">
+                         <input type="text" id="inputPost" placeholder="Postcode">
+                         </div>
+                        </div>
+                        <div class="control-group">
+                         <div class="controls">
+                         <button type="submit" class="btn">ESTIMATE </button>
+                         </div>
+                        </div>
+                        </form>
+                       </td>
+                       </tr>
+                                </table> -->
         <a href="products.html" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
         <a href="login.html" class="btn btn-large pull-right">Next <i class="icon-arrow-right"></i></a>
     </div>

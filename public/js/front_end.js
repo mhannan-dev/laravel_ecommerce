@@ -170,8 +170,8 @@ $(function () {
             url: '/get-product-price',
             data: { size: size, product_id: product_id },
             success: function (resp) {
-                if (resp['discounted_price'] > 0) {
-                    $('.getAttrPrice').html("<del>BDT."+resp['price']+"</del> BDT."+resp['discounted_price']);
+                if (resp['discount'] > 0) {
+                    $('.getAttrPrice').html("<del>BDT."+resp['price']+"</del> BDT."+resp['final_price']);
                 } else {
                     $('.getAttrPrice').html("BDT."+resp['price']);
                 }

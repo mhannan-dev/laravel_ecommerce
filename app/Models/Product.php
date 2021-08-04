@@ -1,8 +1,11 @@
 <?php
+
 namespace App\Models;
+
 use Illuminate\Support\Str;
 use App\Models\ProductAttribute;
 use Illuminate\Database\Eloquent\Model;
+
 class Product extends Model
 {
     protected $table = 'products';
@@ -92,17 +95,20 @@ class Product extends Model
     }
     public static function getDiscountedAttrPrice($product_id, $size)
     {
-        $proAttrPrice = ProductAttribute::where(['product_id'=>$product_id, 'size'=> $size])->first()->toArray();
+        $proAttrPrice = ProductAttribute::where(['product_id' => $product_id, 'size' => $size])->first()->toArray();
         $proDetails = Product::select('discount_amt', 'category_id')->where('id', $product_id)->first()->toArray();
         $catDetails = Category::select('discount_amt')->where('id', $proDetails['category_id'])->first()->toArray();
         if ($proDetails['discount_amt'] > 0) {
-            $discounted_price = $proAttrPrice['price'] - ($proAttrPrice['price'] * $proDetails['discount_amt'] / 100);
+            $final_price = $proAttrPrice['price'] - ($proAttrPrice['price'] * $proDetails['discount_amt'] / 100);
+            $discount = $proAttrPrice['price'] - $final_price;
         } else if ($catDetails['discount_amt'] > 0) {
             # code...
-            $discounted_price = $proAttrPrice['price'] - ($proAttrPrice['price'] * $catDetails['discount_amt'] / 100);
+            $final_price = $proAttrPrice['price'] - ($proAttrPrice['price'] * $catDetails['discount_amt'] / 100);
+            $discount = $proAttrPrice['price'] - $final_price;
         } else {
-            $discounted_price = 0;
+            $final_price = $proAttrPrice['price'];
+            $discount = 0;
         }
-        return array('price'=> $proAttrPrice['price'], 'discounted_price'=> $discounted_price);
+        return array('price' => $proAttrPrice['price'], 'final_price' => $final_price, 'discount'=> $discount);
     }
 }

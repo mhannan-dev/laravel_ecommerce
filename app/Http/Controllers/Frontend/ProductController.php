@@ -152,7 +152,7 @@ class ProductController extends Controller
                 'quantity' => $data['quantity'],
             ]);
             Session::flash('product_added_to_cart_msg', 'Product added to cart');
-            return redirect()->back();
+            return redirect('cart');
         }
     }
     public function cart()
