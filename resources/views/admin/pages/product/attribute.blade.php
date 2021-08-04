@@ -6,7 +6,15 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>{{ $title }}</h1>
+                    <h1>
+                        {{ $title }}
+
+                        <a title="Add Images"
+                            href="{{ route('add.images', $product['id']) }}"
+                            class="btn btn-primary btn-sm"> 
+                            <i class="fa fa-camera" aria-hidden="true"></i>
+                        </a>
+                    </h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
