@@ -2,10 +2,10 @@ $(function () {
     //X-CSRF-TOKEN
     $.ajaxSetup({
         headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
     });
-    $('#sort').on('change', function () {
+    $("#sort").on("change", function () {
         var sort = $(this).val();
         var slug = $("#slug").val();
         $.ajax({
@@ -13,20 +13,20 @@ $(function () {
             method: "post",
             data: {
                 sort: sort,
-                url: slug
+                url: slug,
             },
             success: function (data) {
-                $('.filter_products_ajax').html(data);
-            }
+                $(".filter_products_ajax").html(data);
+            },
         });
     });
     //Fabric filter
-    $('.fabric').on('click', function () {
-        var fabric = get_filter('fabric');
-        var sleeve = get_filter('sleeve');
-        var pattern = get_filter('pattern');
-        var occasion = get_filter('occasion');
-        var fit = get_filter('fit');
+    $(".fabric").on("click", function () {
+        var fabric = get_filter("fabric");
+        var sleeve = get_filter("sleeve");
+        var pattern = get_filter("pattern");
+        var occasion = get_filter("occasion");
+        var fit = get_filter("fit");
         var sort = $("#sort option:selected").text();
         var slug = $("#slug").val();
         $.ajax({
@@ -39,20 +39,20 @@ $(function () {
                 occasion: occasion,
                 fit: fit,
                 sort: sort,
-                url: slug
+                url: slug,
             },
             success: function (data) {
-                $('.filter_products_ajax').html(data);
-            }
+                $(".filter_products_ajax").html(data);
+            },
         });
     });
     //Fabric filter
-    $('.sleeve').on('click', function () {
-        var fabric = get_filter('fabric');
-        var sleeve = get_filter('sleeve');
-        var pattern = get_filter('pattern');
-        var occasion = get_filter('occasion');
-        var fit = get_filter('fit');
+    $(".sleeve").on("click", function () {
+        var fabric = get_filter("fabric");
+        var sleeve = get_filter("sleeve");
+        var pattern = get_filter("pattern");
+        var occasion = get_filter("occasion");
+        var fit = get_filter("fit");
         var sort = $("#sort option:selected").text();
         var slug = $("#slug").val();
         //console.log(sleeve);
@@ -66,20 +66,20 @@ $(function () {
                 occasion: occasion,
                 fit: fit,
                 sort: sort,
-                url: slug
+                url: slug,
             },
             success: function (data) {
-                $('.filter_products_ajax').html(data);
-            }
+                $(".filter_products_ajax").html(data);
+            },
         });
     });
     //Pattern filter
-    $('.pattern').on('click', function () {
-        var fabric = get_filter('fabric');
-        var sleeve = get_filter('sleeve');
-        var pattern = get_filter('pattern');
-        var occasion = get_filter('occasion');
-        var fit = get_filter('fit');
+    $(".pattern").on("click", function () {
+        var fabric = get_filter("fabric");
+        var sleeve = get_filter("sleeve");
+        var pattern = get_filter("pattern");
+        var occasion = get_filter("occasion");
+        var fit = get_filter("fit");
         var sort = $("#sort option:selected").text();
         var slug = $("#slug").val();
         //console.log(pattern);
@@ -93,20 +93,20 @@ $(function () {
                 occasion: occasion,
                 fit: fit,
                 sort: sort,
-                url: slug
+                url: slug,
             },
             success: function (data) {
-                $('.filter_products_ajax').html(data);
-            }
+                $(".filter_products_ajax").html(data);
+            },
         });
     });
     //Occasions Filter
-    $('.occasion').on('click', function () {
-        var fabric = get_filter('fabric');
-        var sleeve = get_filter('sleeve');
-        var pattern = get_filter('pattern');
-        var occasion = get_filter('occasion');
-        var fit = get_filter('fit');
+    $(".occasion").on("click", function () {
+        var fabric = get_filter("fabric");
+        var sleeve = get_filter("sleeve");
+        var pattern = get_filter("pattern");
+        var occasion = get_filter("occasion");
+        var fit = get_filter("fit");
         var sort = $("#sort option:selected").text();
         var slug = $("#slug").val();
         //console.log(pattern);
@@ -120,20 +120,20 @@ $(function () {
                 occasion: occasion,
                 fit: fit,
                 sort: sort,
-                url: slug
+                url: slug,
             },
             success: function (data) {
-                $('.filter_products_ajax').html(data);
-            }
+                $(".filter_products_ajax").html(data);
+            },
         });
     });
     //Fit Filter
-    $('.fit').on('click', function () {
-        var fabric = get_filter('fabric');
-        var sleeve = get_filter('sleeve');
-        var pattern = get_filter('pattern');
-        var occasion = get_filter('occasion');
-        var fit = get_filter('fit');
+    $(".fit").on("click", function () {
+        var fabric = get_filter("fabric");
+        var sleeve = get_filter("sleeve");
+        var pattern = get_filter("pattern");
+        var occasion = get_filter("occasion");
+        var fit = get_filter("fit");
         var sort = $("#sort option:selected").text();
         var slug = $("#slug").val();
         //console.log(pattern);
@@ -147,38 +147,67 @@ $(function () {
                 occasion: occasion,
                 fit: fit,
                 sort: sort,
-                url: slug
+                url: slug,
             },
             success: function (data) {
-                $('.filter_products_ajax').html(data);
-            }
+                $(".filter_products_ajax").html(data);
+            },
         });
     });
+
     function get_filter(class_name) {
         var filter = [];
-        $('.' + class_name + ':checked').each(function () {
+        $("." + class_name + ":checked").each(function () {
             filter.push($(this).val());
         });
         return filter;
     }
     //getPrice
-   $("#getPrice").on('change', function(){
+    $("#getPrice").on("change", function () {
         var size = $(this).find(":selected").text();
-        var product_id    =  $(this).attr("product_id");
+        var product_id = $(this).attr("product_id");
         $.ajax({
-            type: 'POST',
-            url: '/get-product-price',
-            data: { size: size, product_id: product_id },
+            type: "POST",
+            url: "/get-product-price",
+            data: {
+                size: size,
+                product_id: product_id,
+            },
             success: function (resp) {
-                if (resp['discount'] > 0) {
-                    $('.getAttrPrice').html("<del>BDT."+resp['price']+"</del> BDT."+resp['final_price']);
+                if (resp["discount"] > 0) {
+                    $(".getAttrPrice").html(
+                        "<del>BDT." +
+                            resp["price"] +
+                            "</del> BDT." +
+                            resp["final_price"]
+                    );
                 } else {
-                    $('.getAttrPrice').html("BDT."+resp['price']);
+                    $(".getAttrPrice").html("BDT." + resp["price"]);
                 }
             },
             error: function () {
-                alert("Error")
-            }
+                alert("Error");
+            },
         });
+    });
+
+    //Items update using ajax in carts page
+    $(document).on("click", ".btnItemUpdate", function () {
+        if ($(this).hasClass("qtyMinus")) {
+            //If minus button->icon is clicked
+            var quantity = $(this).prev().val();
+            alert(quantity);
+            if (quantity == 1) {
+                alert("Quantity must be 1 or greater!");
+                return false;
+            } else {
+                new_qty = parseInt(quantity) - 1;
+            }
+        }
+        if ($(this).hasClass("qtyPlus")) {
+            var quantity = $(this).prev().prev().val();
+            new_qty = parseInt(quantity) + 1;
+        }
+        //alert(new_qty);
     });
 });
