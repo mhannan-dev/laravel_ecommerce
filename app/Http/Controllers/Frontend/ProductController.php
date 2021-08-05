@@ -169,10 +169,35 @@ class ProductController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-            //echo '<pre>';print_r($data); die;
-            Cart::where("id",$data['cart_id'])->update(["quantity" => $data['qty']]);
+            //Cart Details
+            $cartDetails = Cart::find($data['cart_id']);
+            $availableleStock = ProductAttribute::select('stock')->where(['product_id' => $cartDetails['product_id'], 'size' => $cartDetails['size']])->first()->toArray();
+            //echo '<pre>';print_r($availiableStock); die;
+            //Check stock is available or not
+            if ($data['qty'] > $availableleStock['stock']) {
+                $userCartItems = Cart::userCartItems();
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Product size is not available',
+                    'view' => (string)View::make('frontend.pages.products.cart_items', compact(['userCartItems']))
+                ]);
+            }
+            //Check size is available or not
+            $availableleSize = ProductAttribute::where(['product_id'=>$cartDetails['product_id'], 'size'=> $cartDetails['size'], 'status'=> 1])->count();
+            if($availableleSize == 0){
+                $userCartItems = Cart::userCartItems();
+                return response()->json([
+                    'status' => false,
+                    'view' => (string)View::make('frontend.pages.products.cart_items', compact(['userCartItems']))
+                ]);
+
+            }
+            Cart::where("id", $data['cart_id'])->update(["quantity" => $data['qty']]);
             $userCartItems = Cart::userCartItems();
-            return response()->json(['view'=>(String)View::make('frontend.pages.products.cart_items',compact(['userCartItems']))]);
+            return response()->json([
+                'status'=>true,
+                'view' => (string)View::make('frontend.pages.products.cart_items', compact(['userCartItems']))
+            ]);
         }
     }
 }

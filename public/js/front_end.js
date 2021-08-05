@@ -221,7 +221,11 @@ $(function () {
                 cart_id: cartId
             },
             success: function (resp) {
-                //alert(resp);
+                //alert(resp.status);
+                if(resp.status == false){
+                    //alert('Produc stock is not available');
+                    alert(resp.message);
+                }
                 $("#AppendCartItems").html(resp.view);
             },
             error: function () {
