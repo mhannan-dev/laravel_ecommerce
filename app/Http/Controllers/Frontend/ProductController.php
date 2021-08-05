@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers\Frontend;
+use Illuminate\Support\Facades\View;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Category;
@@ -156,10 +157,22 @@ class ProductController extends Controller
             //return redirect('cart');
         }
     }
+    //Cart
     public function cart()
     {
         $userCartItems = Cart::userCartItems();
         //echo "<pre>"; print_r($userCartItems); die;
         return view('frontend.pages.products.cart', compact('userCartItems'));
+    }
+    // updateCartItemQty using ajax in carts item page
+    public function updateCartItemQty(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = $request->all();
+            //echo '<pre>';print_r($data); die;
+            Cart::where("id",$data['cart_id'])->update(["quantity" => $data['qty']]);
+            $userCartItems = Cart::userCartItems();
+            return response()->json(['view'=>(String)View::make('frontend.pages.products.cart_items',compact(['userCartItems']))]);
+        }
     }
 }

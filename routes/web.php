@@ -24,6 +24,7 @@ Route::namespace('Frontend')->group(function () {
     Route::post('add-to-cart', 'ProductController@addToCart');
     //Carts
     Route::get('cart','ProductController@cart');
+    Route::post('update-cart-item-qty','ProductController@updateCartItemQty');
 });
 Auth::routes();
 Route::prefix('/admin')->namespace('Admin')->group(function () {

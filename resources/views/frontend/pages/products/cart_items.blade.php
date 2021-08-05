@@ -1,5 +1,4 @@
 <?php
-use App\Models\Cart;
 use App\Models\Product;
 ?>
 <table class="table table-bordered">
@@ -39,8 +38,8 @@ use App\Models\Product;
                     <div class="input-append">
                         <input class="span1" style="max-width:34px" value="{{ $item['quantity'] }}"
                             id="appendedInputButtons" size="16" type="text">
-                        <button class="btn btnItemUpdate qtyMinus" cart_id={{ $item['id'] }} type="button"><i class="icon-minus"></i></button>
-                        <button class="btn btnItemUpdate qtyPlus" cart_id={{ $item['id'] }} type="button"><i class="icon-plus"></i></button>
+                        <button class="btn btnItemUpdate qtyMinus" data-cart_id={{ $item['id'] }} type="button"><i class="icon-minus"></i></button>
+                        <button class="btn btnItemUpdate qtyPlus" data-cart_id={{ $item['id'] }} type="button"><i class="icon-plus"></i></button>
                         <button class="btn btn-danger" type="button"><i class="icon-remove icon-white"></i></button>
                     </div>
                 </td>

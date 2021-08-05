@@ -2,8 +2,8 @@ $(function () {
     //X-CSRF-TOKEN
     $.ajaxSetup({
         headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+        }
     });
     $("#sort").on("change", function () {
         var sort = $(this).val();
@@ -13,11 +13,11 @@ $(function () {
             method: "post",
             data: {
                 sort: sort,
-                url: slug,
+                url: slug
             },
             success: function (data) {
                 $(".filter_products_ajax").html(data);
-            },
+            }
         });
     });
     //Fabric filter
@@ -39,11 +39,11 @@ $(function () {
                 occasion: occasion,
                 fit: fit,
                 sort: sort,
-                url: slug,
+                url: slug
             },
             success: function (data) {
                 $(".filter_products_ajax").html(data);
-            },
+            }
         });
     });
     //Fabric filter
@@ -66,11 +66,11 @@ $(function () {
                 occasion: occasion,
                 fit: fit,
                 sort: sort,
-                url: slug,
+                url: slug
             },
             success: function (data) {
                 $(".filter_products_ajax").html(data);
-            },
+            }
         });
     });
     //Pattern filter
@@ -93,11 +93,11 @@ $(function () {
                 occasion: occasion,
                 fit: fit,
                 sort: sort,
-                url: slug,
+                url: slug
             },
             success: function (data) {
                 $(".filter_products_ajax").html(data);
-            },
+            }
         });
     });
     //Occasions Filter
@@ -120,11 +120,11 @@ $(function () {
                 occasion: occasion,
                 fit: fit,
                 sort: sort,
-                url: slug,
+                url: slug
             },
             success: function (data) {
                 $(".filter_products_ajax").html(data);
-            },
+            }
         });
     });
     //Fit Filter
@@ -147,11 +147,11 @@ $(function () {
                 occasion: occasion,
                 fit: fit,
                 sort: sort,
-                url: slug,
+                url: slug
             },
             success: function (data) {
                 $(".filter_products_ajax").html(data);
-            },
+            }
         });
     });
 
@@ -164,22 +164,24 @@ $(function () {
     }
     //getPrice
     $("#getPrice").on("change", function () {
-        var size = $(this).find(":selected").text();
+        var size = $(this)
+            .find(":selected")
+            .text();
         var product_id = $(this).attr("product_id");
         $.ajax({
             type: "POST",
             url: "/get-product-price",
             data: {
                 size: size,
-                product_id: product_id,
+                product_id: product_id
             },
             success: function (resp) {
                 if (resp["discount"] > 0) {
                     $(".getAttrPrice").html(
                         "<del>BDT." +
-                            resp["price"] +
-                            "</del> BDT." +
-                            resp["final_price"]
+                        resp["price"] +
+                        "</del> BDT." +
+                        resp["final_price"]
                     );
                 } else {
                     $(".getAttrPrice").html("BDT." + resp["price"]);
@@ -187,7 +189,7 @@ $(function () {
             },
             error: function () {
                 alert("Error");
-            },
+            }
         });
     });
 
@@ -196,7 +198,7 @@ $(function () {
         if ($(this).hasClass("qtyMinus")) {
             //If minus button->icon is clicked
             var quantity = $(this).prev().val();
-            alert(quantity);
+            //alert(quantity);
             if (quantity == 1) {
                 alert("Quantity must be 1 or greater!");
                 return false;
@@ -209,5 +211,22 @@ $(function () {
             new_qty = parseInt(quantity) + 1;
         }
         //alert(new_qty);
+        var cartId = $(this).data("cart_id");
+        //alert(cartId);
+        $.ajax({
+            type: "POST",
+            url: "/update-cart-item-qty",
+            data: {
+                qty: new_qty,
+                cart_id: cartId
+            },
+            success: function (resp) {
+                //alert(resp);
+                $("#AppendCartItems").html(resp.view);
+            },
+            error: function () {
+                alert("Error");
+            }
+        });
     });
 });
