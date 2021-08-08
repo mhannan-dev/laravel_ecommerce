@@ -5,14 +5,17 @@
             <li><a href="index.html">Home</a> <span class="divider">/</span></li>
             <li class="active">Login</li>
         </ul>
+
         <h3> Login</h3>
         <hr class="soft">
         <div class="row">
             <div class="span4">
+                @include('frontend.partials.flash_msg')
                 <div class="well">
                     <h5>CREATE YOUR ACCOUNT</h5><br>
                     Fill in the forom to create an account.<br><br><br>
-                    <form action="{{ route('register') }}" method="post"> @csrf
+                    <form action="{{ url('/user-register') }}" method="post">
+                        @csrf
                         <div class="control-group">
                             <label class="control-label" for="inputEmail0">Name</label>
                             <div class="controls">
@@ -34,7 +37,7 @@
                         <div class="control-group">
                             <label class="control-label" for="inputEmail0">Password</label>
                             <div class="controls">
-                                <input class="span3" type="password" id="password" placeholder="Password">
+                                <input class="span3" type="password" id="password" name="password" placeholder="Password">
                             </div>
                         </div>
                         <div class="controls">

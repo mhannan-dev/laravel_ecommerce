@@ -12,13 +12,13 @@ class AddNewFieldsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->text('address')->after('name');
-            $table->string('city')->after('address');;
-            $table->string('state')->after('city');;
-            $table->string('country')->after('state');;
-            $table->string('pin_code')->after('country');;
-            $table->string('mobile')->after('pin_code');;
-            $table->tinyInteger('status')->after('mobile');;
+            $table->text('address')->after('name')->nullable();
+            $table->string('city')->after('address')->nullable();
+            $table->string('state')->after('city')->nullable();
+            $table->string('country')->after('state')->nullable();
+            $table->string('pin_code')->after('country')->nullable();
+            $table->string('mobile')->after('pin_code')->nullable()->unique();
+            $table->tinyInteger('status')->after('mobile')->nullable()->default(1)->comment('1 = Audience user');
         });
     }
     /**
