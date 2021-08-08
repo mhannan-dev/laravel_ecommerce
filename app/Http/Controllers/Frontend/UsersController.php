@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use GuzzleHttp\Psr7\Request;
 
 class UsersController extends Controller
 {
@@ -15,8 +16,14 @@ class UsersController extends Controller
     {
         # code...
     }
-    public function registerUser()
+    public function registerUser(Request $request)
     {
-        # code...
+        dd($request);
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            echo "<pre>";
+            print_r($data);
+            die;
+        }
     }
 }

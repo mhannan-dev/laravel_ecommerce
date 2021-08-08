@@ -20,7 +20,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'address',
+        'city',
+        'state',
+        'country',
+        'pin_code',
+        'mobile',
+        'status'
     ];
+
 
     /**
      * The attributes that should be hidden for arrays.

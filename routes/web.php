@@ -33,7 +33,7 @@ Route::namespace('Frontend')->group(function () {
     //Login user
     Route::post('/login', 'UsersController@loginUser');
     //Register user
-    Route::post('/register', 'UsersController@registerUser');
+    Route::post('/register', 'UsersController@registerUser')->name('register');
 });
 Auth::routes();
 Route::prefix('/admin')->namespace('Admin')->group(function () {

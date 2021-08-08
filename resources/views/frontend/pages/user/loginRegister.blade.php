@@ -12,7 +12,7 @@
                 <div class="well">
                     <h5>CREATE YOUR ACCOUNT</h5><br>
                     Fill in the forom to create an account.<br><br><br>
-                    <form action="register.html">
+                    <form action="{{ route('register') }}" method="post"> @csrf
                         <div class="control-group">
                             <label class="control-label" for="inputEmail0">Name</label>
                             <div class="controls">
