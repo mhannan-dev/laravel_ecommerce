@@ -1,5 +1,8 @@
 
 @extends('frontend.layouts.front_app')
+@section('title')
+Product Cart
+@endsection
 @section('content')
     <!-- Sidebar end=============================================== -->
     <div class="span9">

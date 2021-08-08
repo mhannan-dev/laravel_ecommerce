@@ -1,4 +1,7 @@
 @extends('frontend.layouts.front_app')
+@section('title')
+Product List
+@endsection
 @section('content')
 @if (count($categoryProducts) > 0)
 
@@ -33,7 +36,7 @@
         </div>
     </form>
 
-   
+
     <br class="clr">
     <div class="tab-content filter_products_ajax">
        @include('frontend/pages/products/ajax_prd_listing')

@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
-    <title>eCommerce</title>
+    <title>@yield('title', 'eCommerce')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="description" content="">
@@ -25,17 +24,15 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="themes/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="themes/images/ico/apple-touch-icon-57-precomposed.png">
     <style type="text/css" id="enject"></style>
+    @yield('styles')
 </head>
-
 <body>
     @include('frontend.partials.navigation')
     {{-- @if (Request::segment(2) == null)
-
 <!-- Header End====================================================================== -->
 @include('frontend.partials.slider')
 @endif --}}
     @if (isset($page_file_name) && $page_file_name == 'index')
-
         <!-- Header End====================================================================== -->
         @include('frontend.partials.slider')
     @endif
@@ -50,14 +47,14 @@
     @include('frontend.partials.footer')
     <!-- Placed at the end of the document so the pages load faster ============================================= -->
     <script src="{{ URL::asset('backend') }}/themes/js/jquery.js" type="text/javascript"></script>
+    <!-- jquery-validation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/front.min.js" type="text/javascript"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/google-code-prettify/prettify.js"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/front.js"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/jquery.lightbox-0.5.js"></script>
     <script src="{{ URL::asset('') }}js/front_end.js"></script>
-
-
-
+    @yield('scripts')
 </body>
-
 </html>

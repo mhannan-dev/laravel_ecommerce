@@ -1,5 +1,8 @@
 <?php use App\Models\Product; ?>
 @extends('frontend.layouts.front_app')
+@section('title')
+Product Details
+@endsection
 @section('content')
     <div class="span9">
         <ul class="breadcrumb">
