@@ -183,19 +183,29 @@ class ProductController extends Controller
                 ]);
             }
             //Check size is available or not
-            $availableleSize = ProductAttribute::where(['product_id'=>$cartDetails['product_id'], 'size'=> $cartDetails['size'], 'status'=> 1])->count();
-            if($availableleSize == 0){
+            $availableleSize = ProductAttribute::where(['product_id' => $cartDetails['product_id'], 'size' => $cartDetails['size'], 'status' => 1])->count();
+            if ($availableleSize == 0) {
                 $userCartItems = Cart::userCartItems();
                 return response()->json([
                     'status' => false,
                     'view' => (string)View::make('frontend.pages.products.cart_items', compact(['userCartItems']))
                 ]);
-
             }
             Cart::where("id", $data['cart_id'])->update(["quantity" => $data['qty']]);
             $userCartItems = Cart::userCartItems();
             return response()->json([
-                'status'=>true,
+                'status' => true,
+                'view' => (string)View::make('frontend.pages.products.cart_items', compact(['userCartItems']))
+            ]);
+        }
+    }
+    public function deleteCartItem(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = $request->all();
+            Cart::where('id', $data['cart_id'])->delete();
+            $userCartItems = Cart::userCartItems();
+            return response()->json([
                 'view' => (string)View::make('frontend.pages.products.cart_items', compact(['userCartItems']))
             ]);
         }

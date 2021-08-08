@@ -40,7 +40,7 @@ use App\Models\Product;
                             id="appendedInputButtons" size="16" type="text">
                         <button class="btn btnItemUpdate qtyMinus" data-cart_id={{ $item['id'] }} type="button"><i class="icon-minus"></i></button>
                         <button class="btn btnItemUpdate qtyPlus" data-cart_id={{ $item['id'] }} type="button"><i class="icon-plus"></i></button>
-                        <button class="btn btn-danger" type="button"><i class="icon-remove icon-white"></i></button>
+                        <button class="btn btn-danger btnItemDelete" data-cart_id={{ $item['id'] }} type="button"><i class="icon-remove icon-white"></i></button>
                     </div>
                 </td>
                 <td>BDT. {{ $attrPrice['price'] }}</td>

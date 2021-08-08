@@ -22,9 +22,10 @@ Route::namespace('Frontend')->group(function () {
     Route::post('get-product-price', 'ProductController@getProductPrice');
     //Add to cart
     Route::post('add-to-cart', 'ProductController@addToCart');
-    //Carts
+    //Cart
     Route::get('cart','ProductController@cart');
     Route::post('update-cart-item-qty','ProductController@updateCartItemQty');
+    Route::post('delete-cart-item','ProductController@deleteCartItem');
 });
 Auth::routes();
 Route::prefix('/admin')->namespace('Admin')->group(function () {

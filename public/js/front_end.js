@@ -154,7 +154,6 @@ $(function () {
             }
         });
     });
-
     function get_filter(class_name) {
         var filter = [];
         $("." + class_name + ":checked").each(function () {
@@ -192,7 +191,6 @@ $(function () {
             }
         });
     });
-
     //Items update using ajax in carts page
     $(document).on("click", ".btnItemUpdate", function () {
         if ($(this).hasClass("qtyMinus")) {
@@ -222,7 +220,7 @@ $(function () {
             },
             success: function (resp) {
                 //alert(resp.status);
-                if(resp.status == false){
+                if (resp.status == false) {
                     //alert('Produc stock is not available');
                     alert(resp.message);
                 }
@@ -232,5 +230,26 @@ $(function () {
                 alert("Error");
             }
         });
+    });
+    //Items update using ajax in carts page
+    $(document).on("click", ".btnItemDelete", function () {
+        var cartId = $(this).data("cart_id");
+        var result = confirm("Dou you want to remove this item?");
+        if (result) {
+            $.ajax({
+                type: "POST",
+                url: "/delete-cart-item",
+                data: {
+                    cart_id: cartId
+                },
+                success: function (resp) {
+                    //alert(resp.status);
+                    $("#AppendCartItems").html(resp.view);
+                },
+                error: function () {
+                    alert("Error");
+                }
+            });
+        }
     });
 });
