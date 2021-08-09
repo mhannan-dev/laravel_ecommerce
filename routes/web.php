@@ -29,11 +29,14 @@ Route::namespace('Frontend')->group(function () {
     //Login Register Page
     Route::get('/login-register', 'UsersController@loginRegisterPage');
     //Login user
-    Route::post('/login', 'UsersController@loginUser');
+    Route::post('/login-user', 'UsersController@loginUser');
     //Register user
     Route::post('/register-user', 'UsersController@registerUser');
     //User logout
     Route::get('logout', 'UsersController@logoutUser');
+    //Check Email and Mobile is Exist
+    Route::match(['get', 'post'], 'check-email', 'UsersController@checkEmail');
+    Route::match(['get', 'post'], 'check-mobile', 'UsersController@checkMobileNo');
 });
 Auth::routes();
 Route::prefix('/admin')->namespace('Admin')->group(function () {

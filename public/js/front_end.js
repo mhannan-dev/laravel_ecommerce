@@ -252,8 +252,5 @@ $(function () {
             });
         }
     });
-    // Registration form validation
-    $('form[id="user_reg_form"]').validate({
-        
-    });
+
 });

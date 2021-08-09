@@ -1,11 +1,14 @@
 <?php
+
 namespace App\Http\Controllers\Frontend;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Frontend\UserRegRequest;
+
 class UsersController extends Controller
 {
     public function loginRegisterPage()
@@ -36,14 +39,44 @@ class UsersController extends Controller
                     // echo "<pre>";print_r(Auth::user());die;
                     return redirect('cart');
                 }
-                Session::flash('user_reg_msg','Registration successfull');
+                Session::flash('user_reg_msg', 'Registration successfull');
                 return redirect()->back();
             }
         }
     }
-    public function loginUser()
+    public function loginUser(Request $request)
     {
-        # code...
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
+                return redirect('/cart');
+            } else {
+                Session::flash('user_login_err', 'Invalid password or user name');
+                return redirect()->back();
+            }
+        }
+    }
+
+
+    public function checkEmail(Request $request)
+    {
+        $data = $request->all();
+        $emailCount = User::where('email', $data['email'])->count();
+        if ($emailCount > 0) {
+            return "false";
+        } else {
+            return "true";
+        }
+    }
+    public function checkMobileNo(Request $request)
+    {
+        $data = $request->all();
+        $moblCount = User::where('mobile', $data['mobile'])->count();
+        if ($moblCount > 0) {
+            return "false";
+        } else {
+            return "true";
+        }
     }
     public function logoutUser(Request $request)
     {

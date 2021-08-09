@@ -3,11 +3,16 @@
     User login and registration
 @endsection
 @section('styles')
-<style>
-    span.error.invalid-feedback {
-    color: #f41616;
-    }
-</style>
+    <style>
+        span.error.invalid-feedback {
+            color: #f41616;
+        }
+
+        span.text-danger {
+            color: #f21818;
+        }
+
+    </style>
 @endsection
 @section('content')
     <div class="span9">
@@ -15,11 +20,13 @@
             <li><a href="index.html">Home</a> <span class="divider">/</span></li>
             <li class="active">Login</li>
         </ul>
-        <h3> Login</h3>
+        <h3>Login / Registration</h3>
+        @include('frontend.partials.flash_msg')
         <hr class="soft">
         <div class="row">
+
             <div class="span4">
-                @include('frontend.partials.flash_msg')
+
                 <div class="well">
                     <h5>CREATE YOUR ACCOUNT</h5><br>
                     Fill in the forom to create an account.<br><br><br>
@@ -28,7 +35,7 @@
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" name="name" class="span3" id="name" placeholder="Enter Full Name"
-                                value="{{ old('name') }}">
+                                value="{{ old('name') }}"><br>
                             @if ($errors->has('name'))
                                 <span class="text-danger">{{ $errors->first('name') }}</span>
                             @endif
@@ -36,7 +43,7 @@
                         <div class="form-group">
                             <label for="email">Email address</label>
                             <input type="email" name="email" class="span3" id="email" placeholder="Enter Valid Email"
-                                value="{{ old('email') }}">
+                                value="{{ old('email') }}"> <br>
                             @if ($errors->has('email'))
                                 <span class="text-danger">{{ $errors->first('email') }}</span>
                             @endif
@@ -44,7 +51,7 @@
                         <div class="form-group">
                             <label for="mobile">Mobile</label>
                             <input type="text" name="mobile" class="span3" id="mobile" placeholder="Enter Valid Mobile No"
-                                value="{{ old('mobile') }}">
+                                value="{{ old('mobile') }}"> <br>
                             @if ($errors->has('mobile'))
                                 <span class="text-danger">{{ $errors->first('mobile') }}</span>
                             @endif
@@ -52,14 +59,14 @@
                         <div class="form-group">
                             <label for="password">Password</label>
                             <input type="password" name="password" class="span3" id="password"
-                                placeholder="Please Enter Secure Password" value="{{ old('password') }}">
+                                placeholder="Please Enter Secure Password" value="{{ old('password') }}"> <br>
                             @if ($errors->has('password'))
                                 <span class="text-danger">{{ $errors->first('password') }}</span>
                             @endif
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Create Your Account</button>
                         </div>
                     </form>
                 </div>
@@ -67,20 +74,29 @@
             <div class="span1"> &nbsp;</div>
             <div class="span4">
                 <div class="well">
+
                     <h5>ALREADY REGISTERED ?</h5>
-                    <form>
-                        <div class="control-group">
-                            <label class="control-label" for="inputEmail1">Email</label>
-                            <div class="controls">
-                                <input class="span3" type="text" id="inputEmail1" placeholder="Email">
-                            </div>
+
+                    <form id="loginForm" action="{{ url('/login-user') }}" method="post"> @csrf
+                        @csrf
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" name="email" class="span3" id="email" placeholder="Enter Valid Email"
+                                value="{{ old('email') }}"> <br>
+                            @if ($errors->has('email'))
+                                <span class="text-danger">{{ $errors->first('email') }}</span>
+                            @endif
                         </div>
-                        <div class="control-group">
-                            <label class="control-label" for="inputPassword1">Password</label>
-                            <div class="controls">
-                                <input type="password" class="span3" id="inputPassword1" placeholder="Password">
-                            </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" class="span3" id="password"
+                                placeholder="Please Enter Secure Password" value="{{ old('password') }}"> <br>
+                            @if ($errors->has('password'))
+                                <span class="text-danger">{{ $errors->first('password') }}</span>
+                            @endif
                         </div>
+
                         <div class="control-group">
                             <div class="controls">
                                 <button type="submit" class="btn">Sign in</button> <a href="forgetpass.html">Forget
@@ -89,33 +105,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="well">
-                    <form id="quickForm" novalidate="novalidate">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Email address</label>
-                                <input type="email" name="email" class="form-control" id="exampleInputEmail1"
-                                    placeholder="Enter email">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Password</label>
-                                <input type="password" name="password" class="form-control" id="exampleInputPassword1"
-                                    placeholder="Password">
-                            </div>
-                            <div class="form-group mb-0">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck1">
-                                    <label class="custom-control-label" for="exampleCheck1">I agree to the <a href="#">terms
-                                            of service</a>.</label>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.card-body -->
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
+
             </div>
         </div>
     </div>
@@ -123,28 +113,28 @@
 @section('scripts')
     <script>
         $(function() {
-            $.validator.setDefaults({
-                submitHandler: function() {
-                    alert("Form successful submitted!");
-                }
-            });
+            // Registration form validation
             $('#quickForm').validate({
                 rules: {
                     name: {
                         required: true,
                         name: true,
                     },
+                    mobile: {
+                        required: true,
+                        minlength: 11,
+                        maxlength: 11,
+                        digits: true,
+                        //remote:"check-mobile" // check-mobile is laravel  route
+                    },
                     email: {
                         required: true,
                         email: true,
-                    },
-                    mobile: {
-                        required: true,
-                        mobile: true,
+                        remote:"check-email" // check-email is laravel  route
                     },
                     password: {
                         required: true,
-                        minlength: 5
+                        minlength: 8
                     },
                 },
                 messages: {
@@ -154,19 +144,56 @@
                     },
                     email: {
                         required: "Please enter a email address",
-                        email: "Please enter a email address"
+                        email: "Please enter a email address",
+                        remote:"Email is already exist use email or login"
                     },
                     mobile: {
                         required: "Please enter a mobile no",
                         mobile: "Please enter a mobile no",
                         minlength: "Your mobile must consist of 10 digits",
                         maxlength: "Your mobile max consist of 10 digits",
-                        digits: "Please enter your valid mobile"
+                        digits: "Please enter your valid mobile",
+                        //remote: "This is mobile no is already exist"
 
                     },
                     password: {
                         required: "Please provide a password",
-                        minlength: "Your password must be at least 5 characters long"
+                        minlength: "Your password must be at least 8 characters long"
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+            $('#loginForm').validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true,
+                    },
+                    password: {
+                        required: true,
+                        minlength: 8
+                    },
+                },
+                messages: {
+
+                    email: {
+                        required: "Please enter your email address",
+                        email: "Please enter your email address"
+                    },
+
+                    password: {
+                        required: "Please enter your password",
+                        minlength: "Your password must be at least 8 characters long"
                     },
                 },
                 errorElement: 'span',
