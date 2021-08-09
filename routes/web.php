@@ -31,7 +31,7 @@ Route::namespace('Frontend')->group(function () {
     //Login user
     Route::post('/login', 'UsersController@loginUser');
     //Register user
-    Route::post('/user-register', 'UsersController@registerUser');
+    Route::post('/register-user', 'UsersController@registerUser');
     //User logout
     Route::get('logout', 'UsersController@logoutUser');
 });

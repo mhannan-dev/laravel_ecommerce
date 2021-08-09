@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\Http\Requests\Frontend\UserRegRequest;
 class UsersController extends Controller
 {
     public function loginRegisterPage()
@@ -20,19 +21,22 @@ class UsersController extends Controller
                 Session::flash('user_exist_msg', 'User already exist!');
                 return redirect()->back();
             } else {
-                $user = new User;
-                $user->name = $data['name'];
-                $user->mobile = $data['email'];
-                $user->email = $data['email'];
-                $user->password = bcrypt($data['password']);
-                $user->status = 1;
-                $user->save();
+                // Form validation
+                $validatedData = $request->validate([
+                    'name' => 'required',
+                    'email' => 'required|email',
+                    'mobile' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+                    'password' => 'required',
+                ]);
+                $validatedData['password'] = bcrypt($validatedData['password']);
+                $validatedData['status'] = 1;
+                User::create($validatedData);
                 // Attempt to login the user
                 if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
                     // echo "<pre>";print_r(Auth::user());die;
                     return redirect('cart');
                 }
-                Session::flash('user_reg_msg', 'Registration successfull');
+                Session::flash('user_reg_msg','Registration successfull');
                 return redirect()->back();
             }
         }

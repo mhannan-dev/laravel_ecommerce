@@ -39,6 +39,7 @@ return array(
     'App\\Http\\Requests\\Admin\\BrandRequest' => $baseDir . '/app/Http/Requests/Admin/BrandRequest.php',
     'App\\Http\\Requests\\Admin\\CategoryRequest' => $baseDir . '/app/Http/Requests/Admin/CategoryRequest.php',
     'App\\Http\\Requests\\Admin\\ProductRequest' => $baseDir . '/app/Http/Requests/Admin/ProductRequest.php',
+    'App\\Http\\Requests\\Frontend\\UserRegRequest' => $baseDir . '/app/Http/Requests/Frontend/UserRegRequest.php',
     'App\\Http\\Requests\\SectionRequest' => $baseDir . '/app/Http/Requests/SectionRequest.php',
     'App\\Models\\Admin' => $baseDir . '/app/Models/Admin.php',
     'App\\Models\\Banner' => $baseDir . '/app/Models/Banner.php',

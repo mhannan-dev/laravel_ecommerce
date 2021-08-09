@@ -48,8 +48,8 @@
     <!-- Placed at the end of the document so the pages load faster ============================================= -->
     <script src="{{ URL::asset('backend') }}/themes/js/jquery.js" type="text/javascript"></script>
     <!-- jquery-validation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.js" type="text/javascript"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/front.min.js" type="text/javascript"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/google-code-prettify/prettify.js"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/front.js"></script>
