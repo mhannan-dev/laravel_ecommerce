@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -36,7 +37,12 @@ class UsersController extends Controller
                 User::create($validatedData);
                 // Attempt to login the user
                 if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
-                    // echo "<pre>";print_r(Auth::user());die;
+                    //Update user cart with user id
+                    if (!empty(Session::get('session_id'))) {
+                        $user_id = Auth::user()->id;
+                        $session_id = Session::get('session_id');
+                        Cart::where('session_id', $session_id)->update(['user_id' => $user_id]);
+                    }
                     return redirect('cart');
                 }
                 Session::flash('user_reg_msg', 'Registration successfull');
@@ -49,6 +55,14 @@ class UsersController extends Controller
         if ($request->isMethod('post')) {
             $data = $request->all();
             if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
+                //Update user cart with user id
+                if (!empty(Session::get('session_id'))) {
+                    $user_id = Auth::user()->id;
+                    $session_id = Session::get('session_id');
+                    Cart::where('session_id', $session_id)->update(['user_id' => $user_id]);
+                }
+
+
                 return redirect('/cart');
             } else {
                 Session::flash('user_login_err', 'Invalid password or user name');

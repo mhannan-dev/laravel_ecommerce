@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Frontend;
+
 use Illuminate\Support\Facades\View;
 use App\Models\Cart;
 use App\Models\Product;
@@ -10,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+
 class ProductController extends Controller
 {
     public function listing(Request $request)
@@ -145,9 +148,17 @@ class ProductController extends Controller
                 Session::flash('product_exist_msg', 'This product is already exist in cart');
                 return redirect()->back();
             }
+
+            if (Auth::check()) {
+                $user_id = Auth::user()->id;
+            } else {
+                $user_id = 0;
+            }
+
             //Save product to cart
             Cart::insert([
                 'session_id' => $session_id,
+                'user_id' => $user_id,
                 'product_id' => $data['product_id'],
                 'size' => $data['size'],
                 'quantity' => $data['quantity'],
