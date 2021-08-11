@@ -6,8 +6,8 @@ $sections = Section::sections();
 <div id="header">
     <div class="container">
         <div id="welcomeLine" class="row">
-            <div class="span6">Welcome!<strong> User</strong></div>
-            <div class="span6">
+
+            <div class="span12">
                 <div class="pull-right">
                     <a href="{{ url('/cart') }}"><span class="btn btn-mini btn-primary"><i
                                 class="icon-shopping-cart icon-white"></i> [ 3 ] Items in your cart </span> </a>

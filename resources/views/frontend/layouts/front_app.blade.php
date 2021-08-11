@@ -8,6 +8,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Front style -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+        rel="stylesheet"
+    />
     <link id="callCss" rel="stylesheet" href="{{ URL::asset('backend') }}/themes/css/front.min.css" media="screen" />
     <link href="{{ URL::asset('backend') }}/themes/css/base.css" rel="stylesheet" media="screen" />
     <!-- Front style responsive -->

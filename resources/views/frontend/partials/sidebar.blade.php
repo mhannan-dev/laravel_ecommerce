@@ -6,9 +6,7 @@ $sections = Section::with('categories')
 @endphp
 <!-- Sidebar ================================================== -->
 <div id="sidebar" class="span3">
-    <div class="well well-small"><a id="myCart" href="#"><img src="{{ URL::asset('backend')}}/themes/images/ico-cart.png" alt="cart">3 Items in
-            your cart</a>
-    </div>
+    
     <ul id="sideManu" class="nav nav-tabs nav-stacked">
         @foreach ($sections as $section)
             @if (count($section['categories']) > 0)
