@@ -13,10 +13,11 @@ $sections = Section::with('categories')
                 <li class="subMenu"><a>{!! $section['title'] !!}</a>
                     @foreach ($section['categories'] as $category)
                         <ul>
-                            <li><a href="{{ route('slug', $category['slug']) }}"><i
+
+                            <li><a href="{{ url($category['slug']) }}"><i
                                         class="icon-chevron-right"></i><strong>{!! $category['title'] !!}</strong></a></li>
                             @foreach ($category['subcategories'] as $subcategory)
-                                <li><a href="{{ route('slug', $subcategory['slug']) }}"><i
+                                <li><a href="{{ url($subcategory['slug']) }}"><i
                                             class="icon-chevron-right"></i>{!! $subcategory['title'] !!}</a></li>
                             @endforeach
                         </ul>
@@ -44,21 +45,21 @@ $sections = Section::with('categories')
         <div class="well well-small">
             <h5 class="subMenu">Patterns</h5>
             @foreach ($patterns as $pattern)
-                <input class="pattern" style="margin-top: -3px;" type="checkbox" name="pattern[]" id="{{ $pattern }}"
-                    value="{{ $pattern }}"> &nbsp;{{ $pattern }} <br>
+                <input class="pattern" style="margin-top: -3px;" type="checkbox" name="pattern[]"
+                    id="{{ $pattern }}" value="{{ $pattern }}"> &nbsp;{{ $pattern }} <br>
             @endforeach<br>
         </div>
         <div class="well well-small">
             <h5 class="subMenu">Occasions</h5>
             @foreach ($occasions as $occasion)
-                <input class="occasion" style="margin-top: -3px;" type="checkbox" name="occasion[]" id="{{ $occasion }}"
-                    value="{{ $occasion }}"> &nbsp;{{ $occasion }} <br>
+                <input class="occasion" style="margin-top: -3px;" type="checkbox" name="occasion[]"
+                    id="{{ $occasion }}" value="{{ $occasion }}"> &nbsp;{{ $occasion }} <br>
             @endforeach<br>
         </div>
         <div class="well well-small">
             <h5 class="subMenu">Fits</h5>
             @foreach ($fits as $fit)
-                <input style="margin-top: -3px;"  class="fit" type="checkbox" name="fit[]" id="{{ $fit }}"
+                <input style="margin-top: -3px;" class="fit" type="checkbox" name="fit[]" id="{{ $fit }}"
                     value="{{ $fit }}"> &nbsp; {!! $fit !!} <br>
             @endforeach<br>
         </div>
@@ -68,6 +69,6 @@ $sections = Section::with('categories')
 
     @endif
     <br />
-    
+
 </div>
 <!-- Sidebar end=============================================== -->

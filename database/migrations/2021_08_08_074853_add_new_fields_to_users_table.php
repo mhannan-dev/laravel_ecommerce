@@ -17,8 +17,8 @@ class AddNewFieldsToUsersTable extends Migration
             $table->string('state')->after('city')->nullable();
             $table->string('country')->after('state')->nullable();
             $table->string('pin_code')->after('country')->nullable();
-            $table->string('mobile')->after('pin_code')->nullable()->unique();
-            $table->tinyInteger('status')->after('mobile')->nullable()->default(1)->comment('1 = Audience user');
+            $table->string('mobile')->after('pin_code')->nullable();
+            $table->tinyInteger('status')->after('mobile')->nullable()->default(1)->comment('0 = Not activated 1 = Activated');
         });
     }
     /**
