@@ -35,8 +35,10 @@ Route::namespace('Frontend')->group(function () {
     //User logout
     Route::get('logout', 'UsersController@logoutUser');
     //Check Email and Mobile is Exist
-    Route::match(['get', 'post'], 'check-email', 'UsersController@checkEmail');
-    Route::match(['get', 'post'], 'check-mobile', 'UsersController@checkMobileNo');
+    Route::match(['get', 'post'], '/check-email', 'UsersController@checkEmail');
+    Route::match(['get', 'post'], '/check-mobile', 'UsersController@checkMobileNo');
+    //Confirm user account
+    Route::match(['GET', 'POST'], '/confirm/{code}', 'UsersController@confirmAccount');
 });
 Auth::routes();
 Route::prefix('/admin')->namespace('Admin')->group(function () {

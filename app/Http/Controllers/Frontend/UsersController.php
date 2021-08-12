@@ -56,7 +56,6 @@ class UsersController extends Controller
                 $message = "Please confirm your email to active your email";
                 Session::put('success_message', $message);
                 return redirect()->back();
-
                 // Attempt to login the user
                 // if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
                 //     //Update user cart with user id
@@ -85,8 +84,8 @@ class UsersController extends Controller
             $data = $request->all();
             if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
                 //Checking user activated or not
-                $userStatus = User::where('email',$data['email'])->first();
-                if($userStatus->status == 0){
+                $userStatus = User::where('email', $data['email'])->first();
+                if ($userStatus->status == 0) {
                     Auth::logout();
                     $message = "Please confirm your email first";
                     Session::put('error_message', $message);
@@ -123,6 +122,41 @@ class UsersController extends Controller
             return "false";
         } else {
             return "true";
+        }
+    }
+    public function confirmAccount($email)
+    {
+        Session::forget('error_message');
+        Session::forget('success_message');
+        //Decode user email
+        $email = base64_decode($email);
+        //Check user email exist
+        $userCount = User::where('email', $email)->count();
+        
+        if ($userCount > 0) {
+            //User email alrady activated or not
+            $userDetails = User::where('email', $email)->first();
+            if ($userDetails->status == 1) {
+                $message = "Your email account is already activated! Please login";
+                Session::put('error_message', $message);
+                return redirect('login-register');
+            } else {
+                //Update user status to 1
+                User::where('email', $email)->update(['status' => 1]);
+
+                //Send register email
+                $messageData = ['name' => $userDetails['name'], 'email' => $userDetails['email'], 'mobile' => $userDetails['mobile'], 'email' => $email];
+                Mail::send('emails.register', $messageData, function ($message) use ($email) {
+                    $message->to($email);
+                    $message->subject('Welcome to eCommerce website');
+                });
+
+                $message = "Your email account is activated! You can login now";
+                Session::put('success_message', $message);
+                return redirect('login-register');
+            }
+        } else {
+            abort(404);
         }
     }
     public function logoutUser(Request $request)
