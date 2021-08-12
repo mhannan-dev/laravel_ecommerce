@@ -39,6 +39,7 @@ Route::namespace('Frontend')->group(function () {
     Route::match(['get', 'post'], '/check-mobile', 'UsersController@checkMobileNo');
     //Confirm user account
     Route::match(['GET', 'POST'], '/confirm/{code}', 'UsersController@confirmAccount');
+    Route::match(['GET', 'POST'], '/forgot-password', 'UsersController@forgotPassword');
 });
 Auth::routes();
 Route::prefix('/admin')->namespace('Admin')->group(function () {

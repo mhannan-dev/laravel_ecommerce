@@ -1,9 +1,8 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
-
 use App\Models\Cart;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +11,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Frontend\UserRegRequest;
 use Illuminate\Contracts\Session\Session as SessionSession;
-
 class UsersController extends Controller
 {
     public function loginRegisterPage()
@@ -21,9 +19,9 @@ class UsersController extends Controller
     }
     public function registerUser(Request $request)
     {
+        Session::forget('error_message');
+        Session::forget('success_message');
         if ($request->isMethod('post')) {
-            Session::forget('error_message');
-            Session::forget('success_message');
             $data = $request->all();
             $userCount = User::where('email', $data['email'])->count();
             if ($userCount > 0) {
@@ -56,40 +54,46 @@ class UsersController extends Controller
                 $message = "Please confirm your email to active your email";
                 Session::put('success_message', $message);
                 return redirect()->back();
-                // Attempt to login the user
-                // if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
-                //     //Update user cart with user id
-                //     if (!empty(Session::get('session_id'))) {
-                //         $user_id = Auth::user()->id;
-                //         $session_id = Session::get('session_id');
-                //         Cart::where('session_id', $session_id)->update(['user_id' => $user_id]);
-                //     }
-                //     //Send mail after user registration
-                //     $email = $data['email'];
-                //     $messageData = ['name'=>$data['name'], 'email'=>$data['email'],'mobile'=>$data['mobile'],'email'=>$data['email']];
-                //     Mail::send('emails.register', $messageData, function ($message)use($email) {
-                //         $message->to($email);
-                //         $message->subject('Welcome to eCommerce website');
-                //     });
-                //     return redirect()->back();
-                // }
             }
         }
     }
     public function loginUser(Request $request)
     {
+        // if ($request->isMethod('post')) {
+        //     Session::forget('error_message');
+        //     Session::forget('success_message');
+        //     $data = $request->all();
+        //     if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
+        //         //Checking user activated or not
+        //         $userStatus = User::where('email', $data['email'])->first();
+        //         if ($userStatus->status == 0) {
+        //             Auth::logout();
+        //             $message = "Please confirm your email first";
+        //             Session::put('error_message', $message);
+        //             return redirect()->back();
+        //         }
+        //         //Update user cart with user id
+        //         if (!empty(Session::get('session_id'))) {
+        //             $user_id = Auth::user()->id;
+        //             $session_id = Session::get('session_id');
+        //             Cart::where('session_id', $session_id)->update(['user_id' => $user_id]);
+        //         }
+        //         return redirect('/cart');
+        //     } else {
+        //         Session::flash('user_login_err', 'Invalid password or user name');
+        //         return redirect()->back();
+        //     }
+        // }
         if ($request->isMethod('post')) {
-            Session::forget('error_message');
-            Session::forget('success_message');
+            Session::flush('error_message');
+            Session::flush('success_message');
             $data = $request->all();
             if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
                 //Checking user activated or not
                 $userStatus = User::where('email', $data['email'])->first();
                 if ($userStatus->status == 0) {
                     Auth::logout();
-                    $message = "Please confirm your email first";
-                    Session::put('error_message', $message);
-                    return redirect()->back();
+                    return redirect()->back()->with('error_message','Please confirm your email first');
                 }
                 //Update user cart with user id
                 if (!empty(Session::get('session_id'))) {
@@ -99,8 +103,7 @@ class UsersController extends Controller
                 }
                 return redirect('/cart');
             } else {
-                Session::flash('user_login_err', 'Invalid password or user name');
-                return redirect()->back();
+                return redirect()->back()->with('error_message','Invalid password or user name');
             }
         }
     }
@@ -132,7 +135,6 @@ class UsersController extends Controller
         $email = base64_decode($email);
         //Check user email exist
         $userCount = User::where('email', $email)->count();
-        
         if ($userCount > 0) {
             //User email alrady activated or not
             $userDetails = User::where('email', $email)->first();
@@ -143,14 +145,12 @@ class UsersController extends Controller
             } else {
                 //Update user status to 1
                 User::where('email', $email)->update(['status' => 1]);
-
                 //Send register email
                 $messageData = ['name' => $userDetails['name'], 'email' => $userDetails['email'], 'mobile' => $userDetails['mobile'], 'email' => $email];
                 Mail::send('emails.register', $messageData, function ($message) use ($email) {
                     $message->to($email);
                     $message->subject('Welcome to eCommerce website');
                 });
-
                 $message = "Your email account is activated! You can login now";
                 Session::put('success_message', $message);
                 return redirect('login-register');
@@ -158,6 +158,39 @@ class UsersController extends Controller
         } else {
             abort(404);
         }
+    }
+    public function forgotPassword(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            $emailCount = User::where('email', $data['email'])->count();
+            if ($emailCount == 0) {
+                $message = "This email does not exist";
+                Session::put('error_message', $message);
+                return redirect()->back();
+            }
+            $random_password = Str::random(8);
+            $new_password = Hash::make($random_password);
+            $userName = User::select('name')->where('email', $data['email'])->first();
+            //Send forgot password email
+            $email = $data['email'];
+            $name = $userName->name;
+            $messageData = [
+                'email' => $email,
+                'name' => $name,
+                'password'=> $new_password
+            ];
+            Mail::send('emails.forgot_pass', $messageData, function ($message) use ($email) {
+                $message->to($email);
+                $message->subject('New password eCommerce website');
+            });
+            //Return back to login page
+            $message = "Please check your inbox for new passsord";
+            Session::put('success_message', $message);
+            Session::forget('error_message');
+            return redirect('login-register');
+        }
+        return view('frontend.pages.user.forgotPass');
     }
     public function logoutUser(Request $request)
     {

@@ -30,9 +30,6 @@
             <td>Password : ***** (as chooses by you)</td>
         </tr>
         <tr>
-            <td>Please activate your email by clicking <a href="#">click</a></td>
-        </tr>
-        <tr>
             <td>Thanks and regards,</td>
         </tr>
         <tr>
