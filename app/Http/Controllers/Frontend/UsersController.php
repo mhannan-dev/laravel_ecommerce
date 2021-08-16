@@ -180,7 +180,8 @@ class UsersController extends Controller
                 'name' => $name,
                 'password'=> $new_password
             ];
-            Mail::send('emails.forgot_pass', $messageData, function ($message) use ($email) {
+            Mail::send('emails.forgot_pass', $messageData,
+            function ($message) use ($email) {
                 $message->to($email);
                 $message->subject('New password eCommerce website');
             });
