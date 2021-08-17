@@ -1,81 +1,93 @@
 <?php
+
 use App\Models\Category;
+use PhpParser\Node\Stmt\Foreach_;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
-use PhpParser\Node\Stmt\Foreach_;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\SectionController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Frontend\IndexController;
+use App\Http\Controllers\Frontend\UsersController;
+use App\Http\Controllers\Frontend\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 */
+
 Route::namespace('Frontend')->group(function () {
     // Home route
-    Route::get('/', 'IndexController@index')->name('frontend.home');
+    Route::get('/', [HomeController::class, 'index']);
     // Product Detail
-    Route::get('/product/{id}', 'ProductController@detail')->name('product.detail');
+    Route::get('/product/{id}', [ProductController::class, 'detail']);
     $catSlugs = Category::select('slug')->where('status', 1)->get()->pluck('slug')->toArray();
     foreach ($catSlugs as $slug) {
-        Route::get('/' . $slug, 'ProductController@listing')->name('slug');
+        Route::get('/' . $slug, [ProductController::class, 'listing'])->name('slug');
     }
     //Get proeuct attributes
-    Route::post('get-product-price', 'ProductController@getProductPrice');
+    Route::post('get-product-price', [ProductController::class, 'getProductPrice']);
     //Add to cart
-    Route::post('add-to-cart', 'ProductController@addToCart');
+    Route::post('add-to-cart', [ProductController::class, 'addToCart']);
     //Cart
-    Route::get('cart', 'ProductController@cart');
-    Route::post('update-cart-item-qty', 'ProductController@updateCartItemQty');
-    Route::post('delete-cart-item', 'ProductController@deleteCartItem');
+    Route::get('cart', [ProductController::class, 'cart']);
+    Route::post('update-cart-item-qty', [ProductController::class, 'updateCartItemQty']);
+    Route::post('delete-cart-item', [ProductController::class, 'deleteCartItem']);
     //Login Register Page
-    Route::get('/login-register', 'UsersController@loginRegisterPage');
+    Route::get('login-register', [UsersController::class, 'loginRegisterPage']);
     //Login user
-    Route::post('/login-user', 'UsersController@loginUser');
+    Route::post('login-user', [UsersController::class, 'loginUser']);
     //Register user
-    Route::post('/register-user', 'UsersController@registerUser');
+    Route::post('register-user', [UsersController::class, 'registerUser']);
     //User logout
-    Route::get('logout', 'UsersController@logoutUser');
+    Route::get('logout', [UsersController::class, 'logoutUser']);
     //Check Email and Mobile is Exist
-    Route::match(['get', 'post'], '/check-email', 'UsersController@checkEmail');
-    Route::match(['get', 'post'], '/check-mobile', 'UsersController@checkMobileNo');
+    Route::match(['get', 'post'], 'check-email', [UsersController::class, 'checkEmail']);
+    Route::match(['get', 'post'], 'check-mobile', [UsersController::class, 'checkMobileNo']);
     //Confirm user account
-    Route::match(['GET', 'POST'], '/confirm/{code}', 'UsersController@confirmAccount');
-    Route::match(['GET', 'POST'], '/forgot-password', 'UsersController@forgotPassword');
+    Route::match(['GET', 'POST'], '/confirm/{code}', [UsersController::class, 'confirmAccount']);
+    Route::match(['GET', 'POST'], '/forgot-password', [UsersController::class, 'forgotPassword']);
+    Route::match(['GET', 'POST'], '/account', [UsersController::class, 'account']);
 });
 Auth::routes();
-Route::prefix('/admin')->namespace('Admin')->group(function () {
-    Route::get('/login', 'AdminController@showLoginForm')->name('admin.loginForm');
-    Route::post('/login', 'AdminController@login')->name('admin.login.submit');
+Route::prefix('/sadmin')->namespace('Admin')->group(function () {
+    Route::match(['get', 'post'], '/', [AdminController::class, 'login']);
     Route::group(['middleware' => ['admin']], function () {
-        Route::get('dashboard', 'AdminController@dashboard');
-        Route::get('change-password', 'AdminController@change_pwd')->name('change_pwd');
-        Route::get('logout', 'AdminController@logout')->name('admin.logout');
-        Route::post('check-current-pwd', 'AdminController@check_current_pwd')->name('check_current_pwd');
-        Route::post('update-current-pwd', 'AdminController@update_current_pwd')->name('update_current_pwd');
-        Route::match(['GET', 'POST'], '/profile-update', 'AdminController@profile_update')->name('profile_update');
-        Route::resource('banner', 'BannerController');
-        Route::post('update-banner-status', 'BannerController@update_banner_status');
-        // Ecommerce sections or product  route
-        Route::resource('brand', 'BrandsController');
-        Route::post('update-brand-status', 'BrandsController@update_brand_status');
-        Route::post('update-section-status', 'SectionController@update_section_status');
-        //Category
-        Route::resource('category', 'CategoryController');
-        Route::post('update-category-status', 'CategoryController@update_category_status');
-        Route::post('append-category-level', 'CategoryController@append_category_level');
+        Route::get('dashboard', [AdminController::class, 'dashboard']);
+        Route::get('settings', [AdminController::class, 'settings']);
+        Route::post('check-current-pwd', [AdminController::class, 'check_current_pwd']);
+        Route::post('update-current-pwd', [AdminController::class, 'update_current_pwd']);
+        Route::match(['get', 'post'], '/profile-update', [AdminController::class, 'profile_update']);
+        Route::get('logout',  [AdminController::class, 'logout']);
         //Section
-        Route::resource('section', 'SectionController');
+        Route::get('sections', [SectionController::class, 'sections'])->name('sections.index');
+        Route::resource('section', '\App\Http\Controllers\Admin\SectionController')->except('index');
+        Route::post('update-section-status', [SectionController::class, 'update_section_status']);
+        //Category
+        Route::get('categories', [CategoryController::class, 'categories']);
+        Route::resource('category', '\App\Http\Controllers\Admin\CategoryController')->except('index');
+        Route::post('update-category-status', [CategoryController::class, 'update_category_status']);
+        Route::post('append-category-level', [CategoryController::class, 'append_category_level']);
+        //Banner
+        Route::get('banners', [BannerController::class, 'banners']);
+        Route::resource('banner', '\App\Http\Controllers\Admin\BannerController')->except('index');
+        Route::post('update-banner-status', [BannerController::class, 'update_banner_status']);
         //Product
-        Route::resource('product', 'ProductController');
-        Route::post('update-product-status', 'ProductController@update_product_status');
-        //Attribute
-        Route::match(['get', 'post'], 'product-add-attribute/{id}', 'ProductController@add_attributes')->name('add_attribute');
-        Route::get('delete-attribute/{id}', 'ProductController@delete_attribute');
-        Route::post('update-attribute-status', 'ProductController@update_attribute_status');
-        Route::post('edit-attribute', 'ProductController@edit_attributes')->name('edit_attribute');
+        Route::get('products', [ProductController::class, 'products']);
+        Route::resource('product', '\App\Http\Controllers\Admin\ProductController')->except('index');
+        Route::post('update-product-status', [ProductController::class, 'update_product_status']);
         //Images
-        Route::match(['get', 'post'], 'add-product-image/{id}', 'ProductController@add_images')->name('add.images');
-        Route::get('delete-product-image/{id}', 'ProductController@deleteImage');
-        Route::post('update-image-status', 'ProductController@update_img_status');
+        Route::match(['get', 'post'], '/add-product-image/{id}', [ProductController::class, 'add_images']);
+        Route::get('delete-product-image/{id}', [ProductController::class, 'deleteImage']);
+        Route::post('update-image-status', [ProductController::class, 'update_img_status']);
+        //Attribute
+        Route::match(['get', 'post'], '/add-product-attribute/{id}', [ProductController::class, 'add_attributes']);
+        Route::get('delete-attribute/{id}', [ProductController::class, 'delete_attribute']);
+        Route::post('update-attribute-status', [ProductController::class, 'update_attribute_status']);
+        Route::post('update-attribute', [ProductController::class, 'update_attributes'])->name('update-attribute');
     });
 });
 //To clear all cache

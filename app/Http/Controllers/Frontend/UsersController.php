@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Frontend;
+
 use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -11,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Frontend\UserRegRequest;
 use Illuminate\Contracts\Session\Session as SessionSession;
+
 class UsersController extends Controller
 {
     public function loginRegisterPage()
@@ -93,7 +96,7 @@ class UsersController extends Controller
                 $userStatus = User::where('email', $data['email'])->first();
                 if ($userStatus->status == 0) {
                     Auth::logout();
-                    return redirect()->back()->with('error_message','Please confirm your email first');
+                    return redirect()->back()->with('error_message', 'Please confirm your email first');
                 }
                 //Update user cart with user id
                 if (!empty(Session::get('session_id'))) {
@@ -103,7 +106,7 @@ class UsersController extends Controller
                 }
                 return redirect('/cart');
             } else {
-                return redirect()->back()->with('error_message','Invalid password or user name');
+                return redirect()->back()->with('error_message', 'Invalid password or user name');
             }
         }
     }
@@ -172,7 +175,7 @@ class UsersController extends Controller
             $random_password = Str::random(8);
             $new_password = Hash::make($random_password);
             //Update password
-            User::where('email', $data['email'])->update(['password'=> $new_password]);
+            User::where('email', $data['email'])->update(['password' => $new_password]);
             //Get user name
             $userName = User::select('name')->where('email', $data['email'])->first();
             //Send forgot password email
@@ -181,14 +184,17 @@ class UsersController extends Controller
             $messageData = [
                 'email' => $email,
                 'name' => $name,
-                'password'=> $random_password
+                'password' => $random_password
             ];
             //dd($messageData['password']);
-            Mail::send('emails.forgot_pass', $messageData,
-            function ($message) use ($email) {
-                $message->to($email);
-                $message->subject('New password eCommerce website');
-            });
+            Mail::send(
+                'emails.forgot_pass',
+                $messageData,
+                function ($message) use ($email) {
+                    $message->to($email);
+                    $message->subject('New password eCommerce website');
+                }
+            );
             //Return back to login page
             $message = "Please check your inbox for new passsord";
             Session::put('success_message', $message);
@@ -202,4 +208,30 @@ class UsersController extends Controller
         Auth::logout();
         return redirect('/');
     }
+    public function account(Request $request)
+    {
+        $title = "User account";
+        $user_id = Auth::user()->id;
+        $userDetails = User::find($user_id)->toArray();
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            $user = User::find($user_id);
+            $user->name = $data['name'];
+            $user->address = $data['address'];
+            $user->country = $data['country'];
+            $user->state = $data['state'];
+            $user->city = $data['city'];
+            $user->pin_code = $data['pin_code'];
+            $user->mobile = $data['mobile'];
+            $user->save();
+            $message = "Your information is updated";
+            Session::put('success_message', $message);
+            Session::forget('error_message');
+            return redirect()->back();
+        }
+        return view('frontend.pages.user.account', compact('title', 'userDetails'));
+    }
 }
+
+
+
