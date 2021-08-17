@@ -171,6 +171,9 @@ class UsersController extends Controller
             }
             $random_password = Str::random(8);
             $new_password = Hash::make($random_password);
+            //Update password
+            User::where('email', $data['email'])->update(['password'=> $new_password]);
+            //Get user name
             $userName = User::select('name')->where('email', $data['email'])->first();
             //Send forgot password email
             $email = $data['email'];
@@ -178,8 +181,9 @@ class UsersController extends Controller
             $messageData = [
                 'email' => $email,
                 'name' => $name,
-                'password'=> $new_password
+                'password'=> $random_password
             ];
+            //dd($messageData['password']);
             Mail::send('emails.forgot_pass', $messageData,
             function ($message) use ($email) {
                 $message->to($email);
