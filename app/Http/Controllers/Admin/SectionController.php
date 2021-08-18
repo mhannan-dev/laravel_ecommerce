@@ -4,6 +4,9 @@ use App\Models\Section;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SectionRequest;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
+
 class SectionController extends Controller
 {
     /**
@@ -11,12 +14,13 @@ class SectionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function sections()
     {
-        $data['title'] = "Product Section";
+        Session::put('page', 'sections');
+        $data['title'] = "Section";
         $sections = Section::orderBy('created_at', 'desc')->get();
         $data['sections'] = json_decode(json_encode($sections), true);
-        return view('admin.pages.section.index', $data);
+        return view('admin.pages.section.sections', $data);
     }
     /**
      * Display a listing of the resource.
@@ -27,6 +31,7 @@ class SectionController extends Controller
     {
             if ($request->ajax()) {
                 $data = $request->all();
+                //dd($data);
                 if ($data['status'] == "Active") {
                     $status = 0;
                 } else {
@@ -43,7 +48,8 @@ class SectionController extends Controller
      */
     public function create()
     {
-        $data['title']      = "New Section";
+
+        $data['title']      = "Section";
         $data['section']   = new Section();
         return view("admin.pages.section.add", $data);
     }
@@ -59,7 +65,7 @@ class SectionController extends Controller
             $sectionFillable        = $request->only($section->getFillable());
             $section->fill($sectionFillable)->save();
             toast('Section has been saved!','success','top-right');
-            return redirect()->route('section.index');
+            return Redirect::to('sadmin/sections');
         } catch (\Throwable $th) {
             toast('Section has not been saved!','success','top-right');
             return redirect()->route('section.index');
@@ -104,8 +110,10 @@ class SectionController extends Controller
             $sectionFillable = $request->only($section->getFillable());
             $section->fill($sectionFillable)->update();
             toast('Your section has been updated!','success','top-right');
-            return redirect()->route('section.index');
+            //return redirect()->url('sadmin/sections');
+            return Redirect::to('sadmin/sections');
         } catch (\Throwable $th) {
+            dd($th);
             toast('Section has not been updated!','success','top-right');
             return redirect()->back();
         }

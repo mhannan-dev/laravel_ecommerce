@@ -10,9 +10,8 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\UsersController;
-use App\Http\Controllers\Frontend\ProductController;
+use App\Http\Controllers\Admin\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes

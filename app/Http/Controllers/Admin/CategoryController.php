@@ -9,7 +9,9 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\Admin\CategoryRequest;
 
 class CategoryController extends Controller
@@ -22,12 +24,12 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function categories()
     {
+        Session::put('page', 'categories');
         $data['title'] = "Category";
         $data['categories'] = Category::with(['section', 'parent_category'])->get();
-        //dd($data['categories']);
-        return view('admin.pages.category.index', $data);
+        return view('admin.pages.category.categories', $data);
     }
     /**
      * Show the form for creating a new resource.
@@ -76,7 +78,6 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request, Category $category)
     {
-
         try {
             $image = $request->file('image');
             if (isset($image)) {
@@ -93,7 +94,7 @@ class CategoryController extends Controller
             $categoryFillable['image']  = $imageName;
             $category->fill($categoryFillable)->save();
             toast("Category has been saved successfully", 'success', 'top-right');
-            return redirect()->route('category.index');
+            return Redirect::to('sadmin/categories');
         } catch (\Throwable $th) {
             //dd($th);
             toast("Category has been saved successfully", 'warning', 'top-right');
@@ -137,7 +138,6 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-
         try {
             $image = $request->file('image');
             if (isset($image)) {
@@ -160,15 +160,13 @@ class CategoryController extends Controller
             $categoryFillable['image']  = $imageName;
             $category->fill($categoryFillable)->save();
             toast("Category has been updated successfully", 'success', 'top-right');
-            return redirect()->route('category.index');
+            return Redirect::to('sadmin/categories');
         } catch (\Throwable $th) {
             //dd($th);
             toast("Category not updated successfully", 'warning', 'top-right');
             return redirect()->back();
         }
     }
-
-
     /**
      * Remove the specified resource from storage.
      *
@@ -184,9 +182,10 @@ class CategoryController extends Controller
                 $category->delete();
                 unlink($image_path);
                 toast('Your category has been deleted.', 'success', 'top-right');
-                return redirect()->route('category.index');
+                return Redirect::to('sadmin/categories');
             }
         } catch (\Throwable $th) {
+            dd($th);
             toast('Your category not deleted.', 'success', 'top-right');
             return redirect()->back();
         }

@@ -10,15 +10,15 @@
                         {{ $title }}
 
                         <a title="Add Images"
-                            href="{{ route('add.images', $product['id']) }}"
-                            class="btn btn-primary btn-sm"> 
+                            href="{{ url('sadmin/add-product-image/', $product['id']) }}"
+                            class="btn btn-primary btn-sm">
                             <i class="fa fa-camera" aria-hidden="true"></i>
                         </a>
                     </h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('sadmin/dashboard') }}">Home</a></li>
                         <li class="breadcrumb-item active">{{ $title }}</li>
                     </ol>
                 </div>
@@ -32,7 +32,7 @@
             <div class="row">
                 <div class="col-md-12">
                     @include('admin.partials.message')
-                    <form action="{{ route('add_attribute',$product['id'])}}" method="post">
+                    <form action="{{ url('sadmin/add-product-attribute',$product['id'])}}" method="post">
                         <div class="card">
                             <div class="card-header">
                                 {{ $title }}
@@ -102,7 +102,7 @@
                         </div>
                     </div>
                     <!-- /.card-header -->
-                    <form action="{{ route('edit_attribute', $product['id'])}}" method="post"> @csrf
+                    <form action="{{ route('update-attribute', $product['id'])}}" method="post"> @csrf
                         <div class="card-body table-responsive p-0">
                             <table class="table table-hover text-nowrap">
                                 <thead>
@@ -139,7 +139,7 @@
                                                 In Active
                                             </a>
                                             @endif
-                                            &nbsp;&nbsp; / &nbsp;&nbsp; <a href="{{ url('admin/delete-attribute', $attribute['id'])}}" class="button delete-confirm text-danger">
+                                            &nbsp;&nbsp; / &nbsp;&nbsp; <a href="{{ url('sadmin/delete-attribute', $attribute['id'])}}" class="button delete-confirm text-danger">
                                                 <i class="fa fa-trash"></i>
                                             </a>
                                         </td>
@@ -197,7 +197,7 @@
             var attribute_id = $(this).attr("attribute_id");
             $.ajax({
                 type: 'post',
-                url: '/admin/update-attribute-status',
+                url: '/sadmin/update-attribute-status',
                 data: {
                     status: status,
                     attribute_id: attribute_id

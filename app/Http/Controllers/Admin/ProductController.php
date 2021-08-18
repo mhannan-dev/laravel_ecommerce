@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Section;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use App\Models\ProductsImage;
 use App\Models\ProductAttribute;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\Admin\ProductRequest;
 
 class ProductController extends Controller
@@ -21,8 +23,9 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function products()
     {
+        Session::put('page', 'products');
         $data['title'] = "Product";
         $data['products'] = Product::with([
             'section' => function ($query) {
@@ -32,7 +35,7 @@ class ProductController extends Controller
             }
         ])->orderBy('id', 'DESC')->get();
         //dd($data['products']);
-        return view('admin.pages.product.index', $data);
+        return view('admin.pages.product.products', $data);
     }
     /**
      * Show the form for creating a new resource.
@@ -135,7 +138,8 @@ class ProductController extends Controller
             $productFillable['image']  = $imageName;
             $product->fill($productFillable)->save();
             toast("Product has been saved successfully", 'success', 'top-right');
-            return redirect()->route('product.index');
+            //return redirect()->route('product.index');
+            return Redirect::to('sadmin/products');
         } catch (\Throwable $th) {
             //dd($th);
             toast("Product not saved successfully", 'warning', 'top-right');
@@ -217,9 +221,9 @@ class ProductController extends Controller
             $productFillable['image']  = $imageName;
             $product->fill($productFillable)->save();
             toast("Product has been updated successfully", 'success', 'top-right');
-            return redirect()->route('product.index');
+            return Redirect::to('sadmin/products');
         } catch (\Throwable $th) {
-            dd($th);
+            //dd($th);
             toast("Product not updated successfully", 'warning', 'top-right');
             return redirect()->back();
         }
@@ -262,7 +266,7 @@ class ProductController extends Controller
                 unlink($medium_image_path);
                 unlink($small_image_path);
                 toast('Your product has been deleted.', 'success', 'top-right');
-                return redirect()->route('product.index');
+                return Redirect::to('sadmin/products');
             }
         } catch (\Throwable $th) {
             toast('Your product not deleted.', 'success', 'top-right');
@@ -307,18 +311,11 @@ class ProductController extends Controller
      */
     public function add_attributes(Request $request, $id)
     {
+
         if ($request->isMethod('post')) {
             $data = $request->all();
             // echo "<pre>"; print_r($data);die;
             foreach ($request->sku as $key => $value) {
-                // $data = array(
-                //     'product_id' => $id,
-                //     'size' => $request->size[$key],
-                //     'sku' => $v,
-                //     'price' => $request->price[$key],
-                //     'stock' => $request->stock[$key]
-                // );
-                // ProductAttribute::insert($data);
                 if (!empty($value)) {
                     //SKU exist check
                     $attrCountSku = ProductAttribute::where('sku', $value)->count();
@@ -351,7 +348,7 @@ class ProductController extends Controller
         //echo "<pre>"; print_r($product); die;
         return view('admin.pages.product.attribute')->with(compact('product', 'title'));
     }
-    public function edit_attributes(Request $request)
+    public function update_attributes(Request $request)
     {
         if ($request->isMethod('post')) {
             $data = $request->all();

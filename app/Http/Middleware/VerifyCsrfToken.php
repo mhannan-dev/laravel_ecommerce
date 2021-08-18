@@ -12,15 +12,15 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        "admin/check-current-pwd",
-        "/admin/update-section-status",
-        "/admin/update-category-status",
-        "/admin/append-category-level",
-        "/admin/update-product-status",
-        "/admin/update-attribute-status",
-        "/admin/update-attribute-status",
-        "/admin/update-image-status",
-        "/admin/update-brand-status",
-        "/admin/update-banner-status"
+        "/sadmin/check-current-pwd",
+        "/sadmin/update-section-status",
+        "/sadmin/update-category-status",
+        "/sadmin/append-category-level",
+        "/sadmin/update-product-status",
+        "/sadmin/update-attribute-status",
+        "/sadmin/update-attribute-status",
+        "/sadmin/update-image-status",
+        "/sadmin/update-brand-status",
+        "/sadmin/update-banner-status"
     ];
 }

@@ -10,7 +10,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('sadmin/dashboard') }}">Home</a></li>
                         <li class="breadcrumb-item active">{{ $title }}</li>
                     </ol>
                 </div>
@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-md-12">
                     @include('admin.partials.message')
-                    <form action="{{ route('add.images',$product_data['id'])}}" method="post" enctype="multipart/form-data">
+                    <form action="{{ url('sadmin/add-product-image',$product_data['id'])}}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="card">
                             <div class="card-header">
@@ -115,7 +115,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ url('admin/delete-product-image', $prd_image['id']) }}" class="delete-confirm">
+                                            <a href="{{ url('sadmin/delete-product-image', $prd_image['id']) }}" class="delete-confirm">
                                                 <button class="btn btn-danger btn-sm">
                                                     <i class="fa fa-trash"></i></button>
                                             </a>
@@ -153,7 +153,7 @@
             var prd_image_id = $(this).attr("prd_image_id");
             $.ajax({
                 type: 'post',
-                url: '/admin/update-image-status',
+                url: '/sadmin/update-image-status',
                 data: {
                     status: status,
                     prd_image_id: prd_image_id
