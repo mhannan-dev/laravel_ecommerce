@@ -41,107 +41,146 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                @if (Session::get('page')=="dashboard"))
-                <?php $active = "active"; ?>
+                @if (Session::get('page') == 'dashboard')
+                    <?php $active = 'active'; ?>
                 @else
-                <?php $active = ""; ?>
+                    <?php $active = ''; ?>
                 @endif
                 <li class="nav-item">
-                    <a href="{{ url('admin/dashboard') }}" class="nav-link {{ $active }}">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <a href="{{ url('sadmin/dashboard') }}" class="nav-link {{ $active }}">
+                        <i class="far fa-circle nav-icon"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="nav-item has-treeview {{( $prefix=='admin/site') ? 'menu-open':''}}">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tools"></i>
+
+                {{-- Settings --}}
+                @if (Session::get('page') == 'banners')
+                    <?php $active = 'active'; ?>
+                @else
+                    <?php $active = ''; ?>
+                @endif
+                <li class="nav-item menu-is-opening menu-open">
+                    <a href="#" class="nav-link {{ $active }}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Site
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
+                    <ul class="nav nav-treeview" style="display: block;">
+                        @if (Session::get('page') == 'banners')
+                            <?php $active = "active"; ?>
+                        @else
+                            <?php $active = ""; ?>
+                        @endif
                         <li class="nav-item">
-                            <a href="{{ route('banner.index') }}" class="nav-link {{($route=='banner.index')?'active':''}}">
+                            <a href="{{ url('sadmin/banners') }}" class="nav-link {{ $active }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>
-                                   Banner
-                                </p>
+                                <p>Banners</p>
                             </a>
                         </li>
 
                     </ul>
                 </li>
-                <li class="nav-item has-treeview {{( $prefix=='admin/settings') ? 'menu-open':''}}">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tools"></i>
+                {{-- Settings --}}
+                @if (Session::get('page') == 'settings'  || Session::get('page') == 'profile_update')
+                    <?php $active = 'active'; ?>
+                @else
+                    <?php $active = ''; ?>
+                @endif
+                <li class="nav-item menu-is-opening menu-open">
+                    <a href="#" class="nav-link {{ $active }}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Settings
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
+                    <ul class="nav nav-treeview" style="display: block;">
+                        @if (Session::get('page') == 'settings')
+                            <?php $active = "active"; ?>
+                        @else
+                            <?php $active = ""; ?>
+                        @endif
                         <li class="nav-item">
-                            <a href="{{ route('change_pwd') }}" class="nav-link {{($route=='change_pwd')?'active':''}}">
+                            <a href="{{ url('sadmin/settings') }}" class="nav-link {{ $active }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>
-                                    Update Password
-                                </p>
+                                <p>Update Password</p>
                             </a>
                         </li>
+                        @if (Session::get('page') == 'profile_update')
+                            <?php $active = 'active'; ?>
+                        @else
+                            <?php $active = ''; ?>
+                        @endif
                         <li class="nav-item">
-                            <a href="{{ route('profile_update') }}" class="nav-link {{($route=='profile_update')?'active':''}}">
+                            <a href="{{ url('sadmin/profile-update') }}" class="nav-link {{ $active }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>
-                                    Update Profile
-                                </p>
+                                <p>Update Information</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item has-treeview {{( $prefix=='admin/catalogue') ? 'menu-open':''}}">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tools"></i>
+
+
+                {{-- Catalogues --}}
+                @if (Session::get('page') == 'section'  || Session::get('page') == 'categories')
+                    <?php $active = 'active'; ?>
+                @else
+                    <?php $active = ''; ?>
+                @endif
+                <li class="nav-item menu-is-opening menu-open">
+                    <a href="#" class="nav-link {{ $active }}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Catalogues
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
+                    <ul class="nav nav-treeview" style="display: block;">
+                        @if (Session::get('page') == 'sections')
+                            <?php $active = "active"; ?>
+                        @else
+                            <?php $active = ""; ?>
+                        @endif
                         <li class="nav-item">
-                            <a href="{{ route('section.index') }}" class="nav-link {{($route=='section.index')?'active':''}}">
+                            <a href="{{ url('sadmin/sections') }}" class="nav-link {{ $active }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>
-                                    Section
-                                </p>
+                                <p>Section</p>
                             </a>
                         </li>
+                        @if (Session::get('page') == 'categories')
+                            <?php $active = 'active'; ?>
+                        @else
+                            <?php $active = ''; ?>
+                        @endif
                         <li class="nav-item">
-                            <a href="{{ route('brand.index') }}" class="nav-link {{($route=='brand.index')?'active':''}}">
+                            <a href="{{ url('sadmin/categories') }}" class="nav-link {{ $active }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>
-                                    Brands
-                                </p>
+                                <p>Categories</p>
                             </a>
                         </li>
+                        @if (Session::get('page') == 'products')
+                            <?php $active = 'active'; ?>
+                        @else
+                            <?php $active = ''; ?>
+                        @endif
                         <li class="nav-item">
-                            <a href="{{ route('category.index') }}" class="nav-link {{($route=='category.index')?'active':''}}">
+                            <a href="{{ url('sadmin/products') }}" class="nav-link {{ $active }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>
-                                    Category
-                                </p>
+                                <p>Products</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('product.index') }}" class="nav-link {{($route=='product.index')?'active':''}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>
-                                    Product
-                                </p>
-                            </a>
-                        </li>
-
                     </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ url('sadmin/logout') }}" class="nav-link">
+                        <i class="nav-icon fas fa-sign-out-alt text-danger"></i>
+                        <p>
+                            Logout
+                        </p>
+                    </a>
                 </li>
             </ul>
         </nav>

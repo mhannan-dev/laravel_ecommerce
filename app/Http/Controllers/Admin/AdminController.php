@@ -22,17 +22,20 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        return view('admin.pages.settings.dashboard');
+        Session::put('page', 'dashboard');
+        $data['title'] = "Dashboard";
+        return view('admin.pages.settings.dashboard', $data);
     }
     /**
      * Check_current_password and settings
      *
      */
-    public function change_pwd()
+    public function settings()
     {
+        Session::put('page', 'settings');
         $data['title'] = "Upate password";
         $data['adminDetails'] = Admin::where('email', Auth::guard('admin')->user()->email)->first();
-        return view('admin.pages.settings.change_password', $data);
+        return view('admin.pages.settings.settings', $data);
     }
     /**
      * Admin Form
@@ -64,12 +67,12 @@ class AdminController extends Controller
             $this->validate($request, $rules, $customMessage);
             if (Auth::guard('admin')->attempt(['email' => $data['email'], 'password' => $data['password']])) {
                 //toast('Successfully logged in !','success');
-                return redirect('admin/dashboard')->with('success', 'Login Successfully!');
+                return redirect('sadmin/dashboard')->with('success', 'Login Successfully!');
             } else {
                 return back()->with('error', 'Username or password is wrong');
             }
         }
-     //   return view('admin.pages.settings.admin_login');
+        return view('admin.pages.settings.admin_login');
     }
     /**
      * Admin logout
