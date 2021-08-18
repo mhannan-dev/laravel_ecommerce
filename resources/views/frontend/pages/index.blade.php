@@ -16,7 +16,7 @@ use App\Models\Product;
                                         <li class="span3">
                                             <div class="thumbnail">
                                                 <i class="tag"></i>
-                                                <a href="{{ route('product.detail', $feature['id']) }}">
+                                                <a href="{{ route('detail', $feature['id']) }}">
                                                     @if (!empty($feature['image']))
                                                         <img src="{{ asset('uploads/product_img_medium/' . $feature['image']) }}"
                                                             alt="{!! $feature['title'] !!}">
@@ -35,7 +35,8 @@ use App\Models\Product;
                                                     @else
                                                         <p>BDT. {{ $feature['price'] }}</p>
                                                     @endif
-                                                    <a href="{{ route('product.detail', $feature['id']) }}" class="btn btn-block">View</a>
+                                                    <a href="{{ url('detail', $feature['id']) }}"
+                                                        class="btn btn-block">View</a>
                                                 </div>
                                             </div>
                                         </li>
@@ -54,7 +55,7 @@ use App\Models\Product;
             @foreach ($new_products as $new_product)
                 <li class="span3">
                     <div class="thumbnail">
-                        <a href="{{ route('product.detail', $new_product['id']) }}">
+                        <a href="{{ route('detail', $new_product['id']) }}">
                             @if (!empty($new_product['image']))
                                 <img src="{{ asset('uploads/product_img_small/' . $new_product['image']) }}"
                                     alt="{!! $new_product['title'] !!}">

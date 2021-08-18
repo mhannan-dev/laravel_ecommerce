@@ -34,15 +34,23 @@
                         </div>
                         <div class="form-group">
                             <label for="address">Address</label>
-                            <input value="{{ $userDetails['address'] }}" type="text" name="address" class="span3" id="address"><br>
+                            <input value="{{ $userDetails['address'] }}" type="text" name="address" class="span3"
+                                id="address"><br>
                         </div>
                         <div class="form-group">
                             <label for="country">Country</label>
-                            <input value="{{ $userDetails['country'] }}" type="text" name="country" class="span3" id="country"><br>
+                            <select class="span3" id="country" name="country">
+                                <option value="0">Select country</option>
+                                @foreach ($countries as $country)
+                                    <option value="{{ $country['country_name'] }}" @if ($country['country_name'] == $userDetails['country']) selected="" @endif>{{ $country['country_name'] }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="state">State</label>
-                            <input value="{{ $userDetails['state'] }}" type="text" name="state" class="span3" id="state"><br>
+                            <input value="{{ $userDetails['state'] }}" type="text" name="state" class="span3"
+                                id="state"><br>
                         </div>
                         <div class="form-group">
                             <label for="city">City</label>
@@ -50,11 +58,13 @@
                         </div>
                         <div class="form-group">
                             <label for="pin_code">Pin code</label>
-                            <input value="{{ $userDetails['pin_code'] }}" type="text" name="pin_code" class="span3" id="pin_code"><br>
+                            <input value="{{ $userDetails['pin_code'] }}" type="text" name="pin_code" class="span3"
+                                id="pin_code"><br>
                         </div>
                         <div class="form-group">
                             <label for="mobile">Mobile</label>
-                            <input value="{{ $userDetails['mobile'] }}" type="text" name="mobile" class="span3" id="mobile"><br>
+                            <input value="{{ $userDetails['mobile'] }}" type="text" name="mobile" class="span3"
+                                id="mobile"><br>
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
@@ -71,16 +81,22 @@
             <div class="span4">
                 <div class="well">
                     <h5>CHANGE PASSWORD</h5>
-                    <form id="loginForm" action="{{ url('/login-user') }}" method="post"> @csrf
+                    <form id="password_form" action="{{ url('/update-user-password') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" name="password" class="span3" id="password"
-                                placeholder="Please enter password"> <br>
+                            <label for="current_password">Current Password</label>
+                            <input type="password" name="current_password" class="span3" id="current_password"
+                                placeholder="Please enter current password"> <br>
+                            <span id="check_current_password"></span>
                         </div>
                         <div class="form-group">
-                            <label for="password">Confirm Password</label>
-                            <input type="password" name="password" class="span3" id="password"
+                            <label for="new_password">New Password</label>
+                            <input type="password" name="new_password" class="span3" id="new_password"
+                                placeholder="Please enter new password"> <br>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm_password">Confirm Password</label>
+                            <input type="password" name="confirm_password" class="span3" id="confirm_password"
                                 placeholder="Please confirm password"> <br>
                         </div>
                         <div class="control-group">
@@ -117,7 +133,6 @@
                         required: "Please enter full name",
                         name: "Please enter full name"
                     },
-
                     mobile: {
                         required: "Please enter a mobile no",
                         mobile: "Please enter a mobile no",
@@ -126,7 +141,6 @@
                         digits: "Please enter your valid mobile",
                         //remote: "This is mobile no is already exist"
                     },
-
                 },
                 errorElement: 'span',
                 errorPlacement: function(error, element) {
@@ -159,6 +173,71 @@
                     password: {
                         required: "Please enter your password",
                         minlength: "Your password must be at least 8 characters long"
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+            //Check current user password field
+            $("#current_password").keyup(function() {
+                var current_password = $(this).val();
+                //alert(current_password);
+                $.ajax({
+                    type: 'POST',
+                    url: '/check-user-password',
+                    data: {
+                        current_password: current_password
+                    },
+                    success: function(resp) {
+                        //alert(resp);
+                        if (resp == "false") {
+                            $("#check_current_password").html(
+                                "<font color=red>Current passsword is wrong</font>")
+                        } else if (resp == "true") {
+                            $("#check_current_password").html(
+                                "<font color=green>Current passsword is correct</font>")
+                        }
+                    },
+                    error: function() {
+                        alert("Error");
+                    }
+                });
+            });
+            $('#password_form').validate({
+                rules: {
+                    current_password: {
+                        required: true,
+                        minlength: 6
+                    },
+                    new_password: {
+                        required: true,
+                        minlength: 6,
+                        maxlength: 8
+                    },
+                    confirm_password: {
+                        required: true,
+                        minlength: 6,
+                        maxlength: 8,
+                        equalTo: "#new_password"
+                    },
+                },
+                messages: {
+                    mobile: {
+                        required: "Please enter a mobile no",
+                        mobile: "Please enter a mobile no",
+                        minlength: "Your mobile must consist of 10 digits",
+                        maxlength: "Your mobile max consist of 10 digits",
+                        digits: "Please enter your valid mobile",
+                        //remote: "This is mobile no is already exist"
                     },
                 },
                 errorElement: 'span',

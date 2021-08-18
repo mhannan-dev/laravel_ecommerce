@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
-class ProductController extends Controller
+class ProductsController extends Controller
 {
     public function listing(Request $request)
     {
@@ -93,15 +93,14 @@ class ProductController extends Controller
     }
     public function detail($id)
     {
+        Session::forget('error_message');
+        Session::forget('success_message');
         $product_details = Product::with(['brand', 'category', 'attributes' => function ($query) {
             $query->where('status', 1);
         }, 'images'])->find($id)->toArray();
-        //dd($data['product_details']);
         $total_stock = ProductAttribute::where('product_id', $id)->sum('stock');
         $related_products = Product::where('category_id', $product_details['category']['id'])->where('id', '!=', $id)->get()->toArray();
-        //echo "<pre>";
-        //print_r($related_products);
-        //die;
+        //echo "<pre>";//print_r($related_products);//die;
         return view('frontend.pages.products.detail', compact('product_details', 'total_stock', 'related_products'));
     }
     public function getProductPrice(Request $request)

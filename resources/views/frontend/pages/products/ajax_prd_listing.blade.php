@@ -6,7 +6,7 @@ use App\Models\Product;
         @foreach ($categoryProducts as $product)
             <li class="span3">
                 <div class="thumbnail">
-                    <a href="{{ route('product.detail', $product['id']) }}">
+                    <a href="{{ route('detail', $product['id']) }}">
 
                         @if (!empty($product['image']))
                             <img src="{{ asset('uploads/product_img_small/' . $product['image']) }}"
@@ -23,7 +23,7 @@ use App\Models\Product;
                         </p>
                         <?php $discounted_price = Product::getDiscountedPrice($product['id']); ?>
                         <h4 style="text-align:center">
-                            <a class="btn" href="{{ route('product.detail', $product['id']) }}">
+                            <a class="btn" href="{{ route('detail', $product['id']) }}">
                                 <i class="icon-zoom-in"></i>
                             </a>
                             <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a>

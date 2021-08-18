@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Models\Cart;
 use App\Models\User;
+use App\Models\Country;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,8 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
-use App\Http\Requests\Frontend\UserRegRequest;
-use Illuminate\Contracts\Session\Session as SessionSession;
 
 class UsersController extends Controller
 {
@@ -164,6 +163,8 @@ class UsersController extends Controller
     }
     public function forgotPassword(Request $request)
     {
+        Session::forget('error_message');
+        Session::forget('success_message');
         if ($request->isMethod('post')) {
             $data = $request->all();
             $emailCount = User::where('email', $data['email'])->count();
@@ -210,9 +211,12 @@ class UsersController extends Controller
     }
     public function account(Request $request)
     {
+        Session::forget('error_message');
+        Session::forget('success_message');
         $title = "User account";
         $user_id = Auth::user()->id;
         $userDetails = User::find($user_id)->toArray();
+        $countries = Country::get()->toArray();
         if ($request->isMethod('post')) {
             $data = $request->all();
             $user = User::find($user_id);
@@ -229,9 +233,41 @@ class UsersController extends Controller
             Session::forget('error_message');
             return redirect()->back();
         }
-        return view('frontend.pages.user.account', compact('title', 'userDetails'));
+        return view('frontend.pages.user.account', compact('title', 'userDetails', 'countries'));
+    }
+    public function checkUserPassword(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+            $data = $request->all();
+            //echo "<pre>"; print_r($data); die;
+            $user_id = Auth::user()->id;
+            $checkPassword = User::select('password')->where('id', $user_id)->first();
+            if (Hash::check($data['current_password'], $checkPassword['password'])) {
+                return "true";
+            } else {
+                return "false";
+            }
+        }
+    }
+    public function updateUserPassword(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+            $data = $request->all();
+            $user_id = Auth::user()->id;
+            $checkPassword = User::select('password')->where('id', $user_id)->first();
+            if (Hash::check($data['current_password'], $checkPassword['password'])) {
+                $new_password = Hash::make($data['new_password']);
+                User::where('id', $user_id)->update(['password' => $new_password]);
+                $message = "Your password is updated";
+                Session::put('success_message', $message);
+                Session::forget('error_message');
+                return redirect()->back();
+            } else {
+                $message = "Your password is incorrect";
+                Session::put('error_message', $message);
+                Session::forget('success_message');
+                return redirect()->back();
+            }
+        }
     }
 }
-
-
-

@@ -1,7 +1,6 @@
-
 @extends('frontend.layouts.front_app')
 @section('title')
-Product Cart
+    Product Cart
 @endsection
 @section('content')
     <!-- Sidebar end=============================================== -->
@@ -34,7 +33,8 @@ Product Cart
                         </div>
                         <div class="control-group">
                             <div class="controls">
-                                <button type="submit" class="btn">Sign in</button> OR <a href="register.html"
+                                <button type="submit" class="btn">Sign in</button> OR
+                                <a href="{{ url('login-register') }}"
                                     class="btn">Register Now!</a>
                             </div>
                         </div>

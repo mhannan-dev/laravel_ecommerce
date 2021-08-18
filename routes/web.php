@@ -1,11 +1,11 @@
 <?php
 
 use App\Models\Category;
-use PhpParser\Node\Stmt\Foreach_;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\ProductsController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\SectionController;
@@ -22,19 +22,19 @@ Route::namespace('Frontend')->group(function () {
     // Home route
     Route::get('/', [HomeController::class, 'index']);
     // Product Detail
-    Route::get('/product/{id}', [ProductController::class, 'detail']);
+    Route::get('/product/{id}', [ProductsController::class, 'detail'])->name('detail');
     $catSlugs = Category::select('slug')->where('status', 1)->get()->pluck('slug')->toArray();
     foreach ($catSlugs as $slug) {
-        Route::get('/' . $slug, [ProductController::class, 'listing'])->name('slug');
+        Route::get('/' . $slug, [ProductsController::class, 'listing'])->name('slug');
     }
     //Get proeuct attributes
-    Route::post('get-product-price', [ProductController::class, 'getProductPrice']);
+    Route::post('get-product-price', [ProductsController::class, 'getProductPrice']);
     //Add to cart
-    Route::post('add-to-cart', [ProductController::class, 'addToCart']);
+    Route::post('add-to-cart', [ProductsController::class, 'addToCart']);
     //Cart
-    Route::get('cart', [ProductController::class, 'cart']);
-    Route::post('update-cart-item-qty', [ProductController::class, 'updateCartItemQty']);
-    Route::post('delete-cart-item', [ProductController::class, 'deleteCartItem']);
+    Route::get('cart', [ProductsController::class, 'cart']);
+    Route::post('update-cart-item-qty', [ProductsController::class, 'updateCartItemQty']);
+    Route::post('delete-cart-item', [ProductsController::class, 'deleteCartItem']);
     //Login Register Page
     Route::get('login-register', [UsersController::class, 'loginRegisterPage']);
     //Login user
@@ -50,6 +50,9 @@ Route::namespace('Frontend')->group(function () {
     Route::match(['GET', 'POST'], '/confirm/{code}', [UsersController::class, 'confirmAccount']);
     Route::match(['GET', 'POST'], '/forgot-password', [UsersController::class, 'forgotPassword']);
     Route::match(['GET', 'POST'], '/account', [UsersController::class, 'account']);
+    Route::post('/check-user-password', [UsersController::class, 'checkUserPassword']);
+    Route::post('/update-user-password', [UsersController::class, 'updateUserPassword']);
+
 });
 Auth::routes();
 Route::prefix('/sadmin')->namespace('Admin')->group(function () {
