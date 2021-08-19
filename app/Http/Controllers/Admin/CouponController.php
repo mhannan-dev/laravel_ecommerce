@@ -29,7 +29,9 @@ class CouponController extends Controller
      */
     public function create()
     {
-        //
+        $data['title']      = "New Coupon";
+        $data['coupon_data']   = new Coupon();
+        return view("admin.pages.coupons.add", $data);
     }
 
     /**
@@ -40,7 +42,10 @@ class CouponController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            dd($data);
+        }
     }
 
     /**
