@@ -17,7 +17,7 @@ class BannerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function banners()
     {
         $data['title'] = "Banner";
         $data['banners'] = Banner::get();

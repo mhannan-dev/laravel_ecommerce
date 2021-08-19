@@ -20,7 +20,7 @@ Product Category
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('sadmin/dashboard') }}">Home</a></li>
                         <li class="breadcrumb-item active">{{ $title }}</li>
                     </ol>
                 </div>
@@ -123,7 +123,7 @@ Product Category
                 success: function(resp) {
                     if (resp['status'] == 0) {
                         $("#banner_" + banner_id).html(
-                            "<a href='javascript:void(0)' class='banner_status'>Inactive</a>"
+                            "<a href='javascript:void(0)' class='banner_status'>In Active</a>"
                         )
                     } else if (resp['status'] == 1) {
                         $("#banner_" + banner_id).html(

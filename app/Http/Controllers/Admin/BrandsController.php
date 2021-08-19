@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Brand;
 use Illuminate\Http\Request;
-use App\Http\Requests\Admin\BrandRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\BrandRequest;
 
 
 class BrandsController extends Controller

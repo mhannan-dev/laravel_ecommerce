@@ -1,16 +1,19 @@
 <?php
+use App\Models\Coupon;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
-use App\Http\Controllers\Frontend\HomeController;
-use App\Http\Controllers\Frontend\ProductsController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SectionController;
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Frontend\UsersController;
-use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Frontend\ProductsController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -90,6 +93,13 @@ Route::prefix('/sadmin')->namespace('Admin')->group(function () {
         Route::get('delete-attribute/{id}', [ProductController::class, 'delete_attribute']);
         Route::post('update-attribute-status', [ProductController::class, 'update_attribute_status']);
         Route::post('update-attribute', [ProductController::class, 'update_attributes'])->name('update-attribute');
+        //Coupon
+        Route::get('coupons', [CouponController::class, 'coupons']);
+        Route::resource('coupon', '\App\Http\Controllers\Admin\CouponController')->except('index');
+        Route::post('update-coupon-status', [CouponController::class, 'updateCouponStatus']);
+
+        
+
     });
 });
 //To clear all cache
