@@ -9,8 +9,8 @@
             <li><a href="index.html">Home</a> <span class="divider">/</span></li>
             <li class="active"> SHOPPING CART</li>
         </ul>
-        <h3> SHOPPING CART [ <small>3 Item(s) </small>]<a href="products.html" class="btn btn-large pull-right"><i
-                    class="icon-arrow-left"></i> Continue Shopping </a></h3>
+        <h3> SHOPPING CART [ <small> <span class="totalCartItems">{{ totalCartItems() }} </span> Item(s) </small>]<a href="{{ url('/') }}"
+                class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>
         <hr class="soft" />
         <table class="table table-bordered">
             <tr>
@@ -34,13 +34,12 @@
                         <div class="control-group">
                             <div class="controls">
                                 <button type="submit" class="btn">Sign in</button> OR
-                                <a href="{{ url('login-register') }}"
-                                    class="btn">Register Now!</a>
+                                <a href="{{ url('login-register') }}" class="btn">Register Now!</a>
                             </div>
                         </div>
                         <div class="control-group">
                             <div class="controls">
-                                <a href="forgetpass.html" style="text-decoration:underline">Forgot password ?</a>
+                                <a href="#" style="text-decoration:underline">Forgot password ?</a>
                             </div>
                         </div>
                     </form>

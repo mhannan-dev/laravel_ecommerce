@@ -193,7 +193,7 @@ Product Details
                                             {{ $related_product['description'] }}
                                         </p>
                                         <a class="btn btn-small pull-right"
-                                            href="{{ route('product.detail', $related_product['id']) }}">View Details</a>
+                                            href="{{ route('detail', $related_product['id']) }}">View Details</a>
                                         <br class="clr">
                                     </div>
                                     <div class="span3 alignR">
@@ -218,7 +218,7 @@ Product Details
                                 @foreach ($related_products as $related_product)
                                     <li class="span3">
                                         <div class="thumbnail">
-                                            <a href="{{ route('product.detail', $related_product['id']) }}"><img
+                                            <a href="{{ route('detail', $related_product['id']) }}"><img
                                                     src="{{ asset('uploads/product_img_medium/' . $related_product['image']) }}"
                                                     alt=""></a>
                                             <div class="caption">
@@ -228,7 +228,7 @@ Product Details
                                                 </p>
                                                 <h4 style="text-align:center">
                                                     <a class="btn"
-                                                        href="{{ route('product.detail', $related_product['id']) }}"> <i
+                                                        href="{{ route('detail', $related_product['id']) }}"> <i
                                                             class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
                                                             class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
                                                         href="#">BDT.{!! $related_product['price'] !!}</a>

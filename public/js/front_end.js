@@ -224,6 +224,7 @@ $(function () {
                     //alert('Produc stock is not available');
                     alert(resp.message);
                 }
+                $(".totalCartItems").html(resp.totalCartItems);
                 $("#AppendCartItems").html(resp.view);
             },
             error: function () {
@@ -244,6 +245,7 @@ $(function () {
                 },
                 success: function (resp) {
                     //alert(resp.status);
+                    $(".totalCartItems").html(resp.totalCartItems);
                     $("#AppendCartItems").html(resp.view);
                 },
                 error: function () {

@@ -36,4 +36,5 @@ return array(
     'ed962a97bd972bc82007176b647d4e36' => $vendorDir . '/facade/ignition/src/helpers.php',
     'f18cc91337d49233e5754e93f3ed9ec3' => $vendorDir . '/laravelcollective/html/src/helpers.php',
     '6b34c85f7b1ad6faa15aa12109e030f2' => $vendorDir . '/realrashid/sweet-alert/src/functions.php',
+    '8fde5feda9697fe0ee53a3938c839fb0' => $baseDir . '/app/Helpers/Helper.php',
 );

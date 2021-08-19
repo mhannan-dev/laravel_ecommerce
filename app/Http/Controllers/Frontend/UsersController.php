@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
-
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Country;
@@ -12,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
-
 class UsersController extends Controller
 {
     public function loginRegisterPage()
@@ -61,31 +58,6 @@ class UsersController extends Controller
     }
     public function loginUser(Request $request)
     {
-        // if ($request->isMethod('post')) {
-        //     Session::forget('error_message');
-        //     Session::forget('success_message');
-        //     $data = $request->all();
-        //     if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
-        //         //Checking user activated or not
-        //         $userStatus = User::where('email', $data['email'])->first();
-        //         if ($userStatus->status == 0) {
-        //             Auth::logout();
-        //             $message = "Please confirm your email first";
-        //             Session::put('error_message', $message);
-        //             return redirect()->back();
-        //         }
-        //         //Update user cart with user id
-        //         if (!empty(Session::get('session_id'))) {
-        //             $user_id = Auth::user()->id;
-        //             $session_id = Session::get('session_id');
-        //             Cart::where('session_id', $session_id)->update(['user_id' => $user_id]);
-        //         }
-        //         return redirect('/cart');
-        //     } else {
-        //         Session::flash('user_login_err', 'Invalid password or user name');
-        //         return redirect()->back();
-        //     }
-        // }
         if ($request->isMethod('post')) {
             Session::flush('error_message');
             Session::flush('success_message');
@@ -211,8 +183,6 @@ class UsersController extends Controller
     }
     public function account(Request $request)
     {
-        Session::forget('error_message');
-        Session::forget('success_message');
         $title = "User account";
         $user_id = Auth::user()->id;
         $userDetails = User::find($user_id)->toArray();
@@ -231,7 +201,7 @@ class UsersController extends Controller
             $message = "Your information is updated";
             Session::put('success_message', $message);
             Session::forget('error_message');
-            return redirect()->back();
+            return redirect()->route('account')->with('success_message', $message);
         }
         return view('frontend.pages.user.account', compact('title', 'userDetails', 'countries'));
     }

@@ -1,5 +1,4 @@
 <?php
-
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +16,6 @@ use App\Http\Controllers\Admin\ProductController;
 | Web Routes
 |--------------------------------------------------------------------------
 */
-
 Route::namespace('Frontend')->group(function () {
     // Home route
     Route::get('/', [HomeController::class, 'index']);
@@ -36,7 +34,7 @@ Route::namespace('Frontend')->group(function () {
     Route::post('update-cart-item-qty', [ProductsController::class, 'updateCartItemQty']);
     Route::post('delete-cart-item', [ProductsController::class, 'deleteCartItem']);
     //Login Register Page
-    Route::get('login-register', [UsersController::class, 'loginRegisterPage']);
+    Route::get('login-register', [UsersController::class, 'loginRegisterPage'])->name('login');
     //Login user
     Route::post('login-user', [UsersController::class, 'loginUser']);
     //Register user
@@ -48,11 +46,13 @@ Route::namespace('Frontend')->group(function () {
     Route::match(['get', 'post'], 'check-mobile', [UsersController::class, 'checkMobileNo']);
     //Confirm user account
     Route::match(['GET', 'POST'], '/confirm/{code}', [UsersController::class, 'confirmAccount']);
-    Route::match(['GET', 'POST'], '/forgot-password', [UsersController::class, 'forgotPassword']);
-    Route::match(['GET', 'POST'], '/account', [UsersController::class, 'account']);
-    Route::post('/check-user-password', [UsersController::class, 'checkUserPassword']);
-    Route::post('/update-user-password', [UsersController::class, 'updateUserPassword']);
-
+    //Auth routes group
+    Route::group(['middleware' => ['auth']], function () {
+        Route::match(['GET', 'POST'], '/forgot-password', [UsersController::class, 'forgotPassword']);
+        Route::match(['GET', 'POST'], '/account', [UsersController::class, 'account'])->name('account');
+        Route::post('/check-user-password', [UsersController::class, 'checkUserPassword']);
+        Route::post('/update-user-password', [UsersController::class, 'updateUserPassword']);
+    });
 });
 Auth::routes();
 Route::prefix('/sadmin')->namespace('Admin')->group(function () {

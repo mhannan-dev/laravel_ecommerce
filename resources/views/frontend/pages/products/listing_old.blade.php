@@ -104,7 +104,7 @@
             <hr class="soft">
         </div>
     </div>
-    <a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
+    <a href="#" class="btn btn-large pull-right">Compair Product</a>
     <div class="pagination">
 
         @if (isset($_GET['sort_products']) && !empty($_GET['sort_products']))

@@ -1,15 +1,9 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
-
 use App\Models\Product;
 use App\Http\Controllers\Controller;
-
-
 class HomeController extends Controller
 {
-
-
     /**
      * Show the application dashboard.
      *
@@ -26,7 +20,4 @@ class HomeController extends Controller
         //dd($data['new_products']);
         return view('frontend.pages.index', $data);
     }
-
-
-
 }

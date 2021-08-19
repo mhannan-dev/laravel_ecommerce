@@ -9,8 +9,12 @@ $sections = Section::sections();
 
             <div class="span12">
                 <div class="pull-right">
-                    <a href="{{ url('/cart') }}"><span class="btn btn-mini btn-primary"><i
-                                class="icon-shopping-cart icon-white"></i> [ 3 ] Items in your cart </span> </a>
+                    <a href="{{ url('/cart') }}">
+                        <span class="btn btn-mini btn-primary">
+                            <i class="icon-shopping-cart icon-white"></i>
+                            [ <span class="totalCartItems">{{ totalCartItems() }} </span> ] Items in your
+                            cart </span>
+                        </a>
                 </div>
             </div>
         </div>

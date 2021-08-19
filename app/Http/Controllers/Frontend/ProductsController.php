@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Illuminate\Support\Facades\View;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Category;
@@ -10,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\ProductAttribute;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -203,8 +203,10 @@ class ProductsController extends Controller
             }
             Cart::where("id", $data['cart_id'])->update(["quantity" => $data['qty']]);
             $userCartItems = Cart::userCartItems();
+            $totalCartItems  = totalCartItems();
             return response()->json([
                 'status' => true,
+                'totalCartItems'  => $totalCartItems,
                 'view' => (string)View::make('frontend.pages.products.cart_items', compact(['userCartItems']))
             ]);
         }
@@ -215,7 +217,10 @@ class ProductsController extends Controller
             $data = $request->all();
             Cart::where('id', $data['cart_id'])->delete();
             $userCartItems = Cart::userCartItems();
+            $totalCartItems  = totalCartItems();
+
             return response()->json([
+                'totalCartItems'  => $totalCartItems,
                 'view' => (string)View::make('frontend.pages.products.cart_items', compact(['userCartItems']))
             ]);
         }

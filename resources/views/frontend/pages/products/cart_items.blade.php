@@ -43,9 +43,9 @@ use App\Models\Product;
                         <button class="btn btn-danger btnItemDelete" data-cart_id={{ $item['id'] }} type="button"><i class="icon-remove icon-white"></i></button>
                     </div>
                 </td>
-                <td>BDT. {{ $attrPrice['price'] }}</td>
-                <td>BDT. {{ $attrPrice['discount'] }}</td>
-                <td>BDT. {{ $attrPrice['final_price'] * $item['quantity'] }}</td>
+                <td>BDT. {{ number_format($attrPrice['price'], 2)  }}</td>
+                <td>BDT. {{ number_format($attrPrice['discount'], 2)   }}</td>
+                <td>BDT. {{ number_format($attrPrice['final_price'] * $item['quantity'],2) }}</td>
             </tr>
             <?php
             $sub_total_price = $sub_total_price + $attrPrice['final_price'] * $item['quantity'];
@@ -55,11 +55,11 @@ use App\Models\Product;
         @endforeach
         <tr>
             <td colspan="5" style="text-align:right">Sub Total Price: </td>
-            <td> BDT. {{ $sub_total_price }}</td>
+            <td> BDT. {{ number_format($sub_total_price, 2) }}</td>
         </tr>
         <tr>
             <td colspan="5" style="text-align:right">Voucher Discount: </td>
-            <td> BDT. {{ $total_discount }}</td>
+            <td> BDT. {{ number_format($total_discount, 2) }}</td>
         </tr>
         <tr>
             <td colspan="5" style="text-align:right"><strong>GRAND TOTAL (BDT. {{ $sub_total_price }} - BDT.
