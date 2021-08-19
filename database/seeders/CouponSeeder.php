@@ -24,6 +24,8 @@ class CouponSeeder extends Seeder
                 'amount_type' => 'Percentage',
                 'amount' => '10',
                 'expiry_date' => '2021-09-30',
+                'title' => 'Coupon one title',
+                'alt_text' => 'Coupon one alt text',
                 'status' => 1
             ],
             [
@@ -35,6 +37,8 @@ class CouponSeeder extends Seeder
                 'amount_type' => 'Percentage',
                 'amount' => '20',
                 'expiry_date' => '2021-10-31',
+                'title' => 'Coupon two title',
+                'alt_text' => 'Coupon two alt text',
                 'status' => 1
             ],
         ];
