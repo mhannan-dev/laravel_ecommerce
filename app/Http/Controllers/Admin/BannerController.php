@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 use Carbon\Carbon;
 use App\Models\Banner;
@@ -7,11 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Redirect;
 class BannerController extends Controller
 {
-
-
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +21,6 @@ class BannerController extends Controller
         //dd($data['banners']);
         return view('admin.pages.banner.index', $data);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -36,7 +32,6 @@ class BannerController extends Controller
         $data['banner_data']   = new Banner();
         return view("admin.pages.banner.add", $data);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -61,14 +56,13 @@ class BannerController extends Controller
             $bannerFillable['banner_image']  = $imageName;
             $banner->fill($bannerFillable)->save();
             toast("Banner has been saved successfully", 'success', 'top-right');
-            return redirect()->route('banner.index');
+            return redirect()->to('sadmin/banners');
         } catch (\Throwable $th) {
             //dd($th);
-            toast("banner has been saved successfully", 'warning', 'top-right');
+            toast("Banner has been saved successfully", 'warning', 'top-right');
             return redirect()->back();
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -79,7 +73,6 @@ class BannerController extends Controller
     {
         //
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -93,7 +86,6 @@ class BannerController extends Controller
         $data['banner_data'] = json_decode(json_encode($banner_data), true);
         return view('admin.pages.banner.edit', $data);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -115,7 +107,6 @@ class BannerController extends Controller
                     Storage::disk('public')->delete('banner/'.$banner->banner_image);
                 }
                 //Saving image
-
                 $bannerImage = Image::make($image)->resize(1170, 480)->save(storage_path('banner'));
                 Storage::disk('public')->put('banner/'. $imageName, $bannerImage);
             } else {
@@ -126,14 +117,13 @@ class BannerController extends Controller
             $bannerFillable['banner_image']  = $imageName;
             $banner->fill($bannerFillable)->save();
             toast("Banner has been updated successfully", 'success', 'top-right');
-            return redirect()->route('banner.index');
+            return redirect()->to('sadmin/banners');
         } catch (\Throwable $th) {
-           // dd($th);
+            //dd($th);
             toast("Banner not updated successfully", 'warning', 'top-right');
             return redirect()->back();
         }
     }
-
     public function update_banner_status(Request $request)
     {
         if ($request->ajax()) {
@@ -147,7 +137,6 @@ class BannerController extends Controller
             return  response()->json(['status' => $status, 'banner_id' => $data['banner_id']]);
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -163,7 +152,7 @@ class BannerController extends Controller
                 $banner->delete();
                 unlink($image_path);
                 toast('Your banner has been deleted.', 'success', 'top-right');
-                return redirect()->route('banner.index');
+                return redirect()->to('sadmin/banners');
             }
         } catch (\Throwable $th) {
            // dd($th);
