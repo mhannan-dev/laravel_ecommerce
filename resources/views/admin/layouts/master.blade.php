@@ -21,10 +21,12 @@
     <link rel="stylesheet" href="{{ URL::asset('backend') }}/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
+
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ URL::asset('backend') }}/plugins/select2/css/select2.min.css">
     <link rel="stylesheet"
         href="{{ URL::asset('backend') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
     @yield('styles')
 </head>
 
@@ -208,6 +210,8 @@
     <script src="{{ URL::asset('backend') }}/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ URL::asset('backend') }}/dist/js/demo.js"></script>
+    {{-- Custom JS --}}
+    <script src="{{ URL::asset('backend') }}/dist/js/admin_js.js"></script>
     <!-- Page specific script -->
     <script src="{{ URL::asset('backend') }}/plugins/select2/js/select2.full.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
