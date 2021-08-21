@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +11,8 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ URL::asset('backend') }}/plugins/fontawesome-free/css/all.min.css">
     <!-- DataTables -->
-    <link rel="stylesheet" href="{{ URL::asset('backend') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet"
+        href="{{ URL::asset('backend') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet"
         href="{{ URL::asset('backend') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet"
@@ -25,6 +27,7 @@
         href="{{ URL::asset('backend') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     @yield('styles')
 </head>
+
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <!-- Navbar -->
@@ -35,10 +38,10 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{ url('/')}}" class="nav-link">Home</a>
+                    <a href="{{ url('/') }}" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{ url('sadmin/dashboard')}}" class="nav-link">Contact</a>
+                    <a href="{{ url('sadmin/dashboard') }}" class="nav-link">Contact</a>
                 </li>
             </ul>
             <!-- Right navbar links -->
@@ -207,13 +210,15 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     {{-- Date picker using tempusdominus --}}
     <script src="{{ URL::asset('backend') }}/plugins/moment/moment.min.js"></script>
-    <script src="{{ URL::asset('backend') }}/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="{{ URL::asset('backend') }}/plugins/inputmask/jquery.inputmask.min.js"></script>
     <script type="text/javascript">
         $(function() {
-            $('#datetimepicker4').datetimepicker({
-                format: 'L',
-                todayHighlight: true
-            });
+            //Datemask dd/mm/yyyy
+            $('#datemask').inputmask('dd/mm/yyyy', {
+                'placeholder': 'dd/mm/yyyy'
+            })
+            //Money Euro
+            $('[data-mask]').inputmask()
         });
     </script>
     {{-- Data Table --}}
@@ -242,4 +247,5 @@
     @include('sweetalert::alert')
     @yield('scripts')
 </body>
+
 </html>

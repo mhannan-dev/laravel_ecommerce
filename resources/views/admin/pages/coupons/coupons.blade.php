@@ -25,9 +25,11 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
+
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
+                @include('admin.partials.message')
                 <div class="row">
                     <div class="col-12">
                         <!-- /.card -->
@@ -60,53 +62,64 @@
                                                 <td>{{ $coupon['expiry_date'] }}</td>
                                                 <td>
                                                     {{ $coupon['amount'] }}
-                                                    @if ($coupon['amount_type'] == "percentage")
+                                                    @if ($coupon['amount_type'] == 'percentage')
                                                         %
                                                     @else
                                                         BDT.
                                                     @endif
                                                 </td>
-                                                <td>@if ($coupon['status'] == 1 )
-                                                    <a title="Change" coupon_id="{{ $coupon['id'] }}" class="text-success coupon_status" id="coupon_{{ $coupon['id'] }}" href="javascript:void(0)"> Active
-                                                    </a>
+                                                <td>
+                                                    @if ($coupon['status'] == 1)
+                                                        <a title="Change" coupon_id="{{ $coupon['id'] }}"
+                                                            class="text-success coupon_status"
+                                                            id="coupon_{{ $coupon['id'] }}" href="javascript:void(0)">
+                                                            Active
+                                                        </a>
                                                     @else
-                                                    <a title="Change" coupon_id="{{ $coupon['id'] }}" class="coupon_status text-danger" id="coupon_{{ $coupon['id'] }}" href="javascript:void(0)"> In Active
-                                                    </a>
+                                                        <a title="Change" coupon_id="{{ $coupon['id'] }}"
+                                                            class="coupon_status text-danger"
+                                                            id="coupon_{{ $coupon['id'] }}" href="javascript:void(0)"> In
+                                                            Active
+                                                        </a>
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-warning btn-sm" href="#">
+                                                    <a class="btn btn-warning btn-sm"
+                                                        href="{{ url('sadmin/add-edit-coupon', $coupon['id']) }}">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
-                                                    {{-- <form style="display: inline-block" action="{{ url('delete-coupon', $coupon['id']) }}" class="form-delete" method="post">
 
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger btn-sm" onclick="return confirm('Are you sure?')">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </form> --}}
-                                                    <a href="#deleteModal{{ $coupon['id'] }}" data-toggle="modal" class="btn btn-sm btn-danger btn-sm">
+                                                    <a href="#deleteModal{{ $coupon['id'] }}" data-toggle="modal"
+                                                        class="btn btn-sm btn-danger btn-sm">
                                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                                     </a>
 
                                                     <!-- Delete Modal -->
-                                                    <div class="modal fade" id="deleteModal{{ $coupon['id'] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal fade" id="deleteModal{{ $coupon['id'] }}"
+                                                        tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                                        aria-hidden="true">
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLabel">Are sure to delete?</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Are sure
+                                                                        to delete?</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <form action="{{ url('sadmin/delete-coupon', $coupon['id'] ) }}"  method="post">
+                                                                    <form
+                                                                        action="{{ url('sadmin/delete-coupon', $coupon['id']) }}"
+                                                                        method="post">
                                                                         {{ csrf_field() }}
-                                                                        <button type="submit" class="btn btn-danger">Permanent Delete</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger">Permanent Delete</button>
                                                                     </form>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Cancel</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -133,36 +146,35 @@
 @endsection
 
 @section('scripts')
-<script type="text/javascript">
-    //Jquery ready function
-    $(document).ready(function() {
-        $(".coupon_status").click(function() {
-            var status = $(this).text();
-            var coupon_id = $(this).attr("coupon_id");
-            $.ajax({
-                type: 'post',
-                url: '/sadmin/update-coupon-status',
-                data: {
-                    status: status,
-                    coupon_id: coupon_id
-                },
-                success: function(resp) {
-                    if (resp['status'] == 0) {
-                        $("#coupon_" + coupon_id).html(
-                            "<a href='javascript:void(0)' class='coupon_status'>In Active</a>"
-                        )
-                    } else if (resp['status'] == 1) {
-                        $("#coupon_" + coupon_id).html(
-                            "<a href='javascript:void(0)' class='coupon_status'>Active</a>"
-                        )
+    <script type="text/javascript">
+        //Jquery ready function
+        $(document).ready(function() {
+            $(".coupon_status").click(function() {
+                var status = $(this).text();
+                var coupon_id = $(this).attr("coupon_id");
+                $.ajax({
+                    type: 'post',
+                    url: '/sadmin/update-coupon-status',
+                    data: {
+                        status: status,
+                        coupon_id: coupon_id
+                    },
+                    success: function(resp) {
+                        if (resp['status'] == 0) {
+                            $("#coupon_" + coupon_id).html(
+                                "<a href='javascript:void(0)' class='coupon_status'>In Active</a>"
+                            )
+                        } else if (resp['status'] == 1) {
+                            $("#coupon_" + coupon_id).html(
+                                "<a href='javascript:void(0)' class='coupon_status'>Active</a>"
+                            )
+                        }
+                    },
+                    error: function() {
+                        alert("Error");
                     }
-                },
-                error: function() {
-                    alert("Error");
-                }
+                });
             });
         });
-    });
-</script>
+    </script>
 @endsection
-
