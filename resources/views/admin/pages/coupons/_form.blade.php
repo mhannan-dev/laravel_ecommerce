@@ -41,7 +41,11 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-3">
+        <label for="caregories">Amount</label>
+        <input type="text" class="form-control" name="amount" id="amount" placeholder="Enter amount">
+    </div>
+    <div class="col-sm-3">
         <div class="form-group">
             <label for="caregories">Categores</label>
             <select name="caregories[]" id="caregories" class="select2bs4" multiple="multiple"
@@ -59,7 +63,7 @@
             </select>
         </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-3">
         <div class="form-group">
             <label>Users</label>
             <select name="users[]" id="users" class="select2bs4" multiple="multiple" data-placeholder="Select a State"
@@ -71,9 +75,16 @@
             </select>
         </div>
     </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label>Expiry Date</label>
+            <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker4" />
+                <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <button type="submit" class="btn btn-primary">{{ $buttonText }}</button>
-@section('scripts')
-    <script type="text/javascript">
-    </script>
-@endsection

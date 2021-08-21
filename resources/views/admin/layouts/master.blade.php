@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Ecommerce Dashboard')</title>
-
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -21,15 +19,12 @@
     <link rel="stylesheet" href="{{ URL::asset('backend') }}/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
-
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ URL::asset('backend') }}/plugins/select2/css/select2.min.css">
     <link rel="stylesheet"
         href="{{ URL::asset('backend') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-
     @yield('styles')
 </head>
-
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <!-- Navbar -->
@@ -172,9 +167,7 @@
             </ul>
         </nav>
         <!-- /.navbar -->
-
         @include('admin.partials.sidebar')
-
         <!-- Content Wrapper. Contains page content -->
         @yield('content')
         <!-- /.content-wrapper -->
@@ -184,11 +177,8 @@
             </div>
             <strong>Copyright &copy; 2014-2020 <a href="#">M Hannan</a>.</strong> All rights reserved.
         </footer>
-
-
     </div>
     <!-- ./wrapper -->
-
     <!-- jQuery -->
     <script src="{{ URL::asset('backend') }}/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
@@ -215,6 +205,17 @@
     <!-- Page specific script -->
     <script src="{{ URL::asset('backend') }}/plugins/select2/js/select2.full.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    {{-- Date picker using tempusdominus --}}
+    <script src="{{ URL::asset('backend') }}/plugins/moment/moment.min.js"></script>
+    <script src="{{ URL::asset('backend') }}/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('#datetimepicker4').datetimepicker({
+                format: 'L'
+            });
+        });
+    </script>
+    {{-- Data Table --}}
     <script>
         $(function() {
             $("#example1").DataTable({
@@ -223,25 +224,21 @@
                 "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-
         });
     </script>
-    <!-- Page specific script -->
+    <!-- Select2 Page specific script -->
     <script>
         $(function() {
             //Initialize Select2 Elements
             $('.select2').select2()
-
             //Initialize Select2 Elements
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             })
-
-
         })
     </script>
+    {{-- Sweet alert --}}
     @include('sweetalert::alert')
     @yield('scripts')
 </body>
-
 </html>
