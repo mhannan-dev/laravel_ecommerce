@@ -58,7 +58,14 @@
                                                 <td>{{ $coupon['coupon_code'] }}</td>
                                                 <td>{{ $coupon['coupon_type'] }}</td>
                                                 <td>{{ $coupon['expiry_date'] }}</td>
-                                                <td>{{ $coupon['amount'] }}</td>
+                                                <td>
+                                                    {{ $coupon['amount'] }}
+                                                    @if ($coupon['amount_type'] == "percentage")
+                                                        %
+                                                    @else
+                                                        BDT.
+                                                    @endif
+                                                </td>
                                                 <td>@if ($coupon['status'] == 1 )
                                                     <a title="Change" coupon_id="{{ $coupon['id'] }}" class="text-success coupon_status" id="coupon_{{ $coupon['id'] }}" href="javascript:void(0)"> Active
                                                     </a>

@@ -23,8 +23,8 @@ class CreateCouponsTable extends Migration
             $table->string('amount_type');
             $table->float('amount');
             $table->date('expiry_date');
-            $table->string('title');
-            $table->string('alt_text');
+            $table->string('title')->nullable();
+            $table->string('alt_text')->nullable();
             $table->tinyInteger('status');
             $table->timestamps();
         });

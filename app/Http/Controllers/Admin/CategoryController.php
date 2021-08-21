@@ -185,7 +185,7 @@ class CategoryController extends Controller
                 return Redirect::to('sadmin/categories');
             }
         } catch (\Throwable $th) {
-            dd($th);
+            //dd($th);
             toast('Your category not deleted.', 'success', 'top-right');
             return redirect()->back();
         }
