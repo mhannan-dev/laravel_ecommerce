@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\User;
 use App\Models\Coupon;
+use App\Models\Section;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
@@ -31,6 +33,10 @@ class CouponController extends Controller
     {
         $data['title']      = "New Coupon";
         $data['coupon_data']   = new Coupon();
+        $categories = Section::with('categories')->get();
+        $data['categories'] = json_decode(json_encode($categories), true);
+        $data['users'] = User::select('email')->where('status', 1)->get()->toArray();
+        
         return view("admin.pages.coupons.add", $data);
     }
 

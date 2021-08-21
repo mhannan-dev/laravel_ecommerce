@@ -53,7 +53,6 @@ class ProductController extends Controller
         $data['patterns'] = $product_filters['patterns'];
         $data['occasions'] = $product_filters['occasions'];
         $data['fits'] = $product_filters['fits'];
-
         $categories = Section::with('categories')->get();
         $data['categories'] = json_decode(json_encode($categories), true);
         $brands = Brand::select('id', 'title')->where('status', 1)->get();
