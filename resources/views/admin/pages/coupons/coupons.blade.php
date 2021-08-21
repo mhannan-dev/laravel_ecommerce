@@ -34,7 +34,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">{{ $title }}</h3>
-                                <a href="{{ route('coupon.create') }}" class="btn btn-success float-right">
+                                <a href="{{ url('sadmin/add-edit-coupon') }}" class="btn btn-success float-right">
                                     <i class="fa fa-plus-circle" aria-hidden="true"></i> {{ $title }}</a>
                             </div>
                             <!-- /.card-header -->
@@ -75,16 +75,43 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-warning btn-sm" href="{{ route('coupon.edit', $coupon['id']) }}">
+                                                    <a class="btn btn-warning btn-sm" href="#">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
-                                                    <form style="display: inline-block" action="{{ route('coupon.destroy', $coupon['id']) }}" class="form-delete" method="post">
-                                                        @csrf
+                                                    {{-- <form style="display: inline-block" action="{{ url('delete-coupon', $coupon['id']) }}" class="form-delete" method="post">
+
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-sm btn-danger btn-sm" onclick="return confirm('Are you sure?')">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
-                                                    </form>
+                                                    </form> --}}
+                                                    <a href="#deleteModal{{ $coupon['id'] }}" data-toggle="modal" class="btn btn-sm btn-danger btn-sm">
+                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                                    </a>
+
+                                                    <!-- Delete Modal -->
+                                                    <div class="modal fade" id="deleteModal{{ $coupon['id'] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Are sure to delete?</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form action="{{ url('sadmin/delete-coupon', $coupon['id'] ) }}"  method="post">
+                                                                        {{ csrf_field() }}
+                                                                        <button type="submit" class="btn btn-danger">Permanent Delete</button>
+                                                                    </form>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Delete Modal -->
                                                 </td>
                                             </tr>
                                         @endforeach

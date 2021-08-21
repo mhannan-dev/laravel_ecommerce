@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
+
 use App\Models\User;
 use App\Models\Coupon;
 use App\Models\Section;
@@ -23,34 +25,29 @@ class CouponController extends Controller
         $data['coupons'] = Coupon::get()->toArray();
         return view('admin.pages.coupons.coupons', $data);
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function addEditCoupon(Request $request, $id = null)
     {
-        $data['title']      = "New Coupon";
-        $data['coupon']   = new Coupon();
-        $categories = Section::with('categories')->get();
-        $data['categories'] = json_decode(json_encode($categories), true);
-        $data['users'] = User::select('email')->where('status', 1)->get()->toArray();
-        return view("admin.pages.coupons.add", $data);
-    }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(CouponRequest $request, Coupon $coupon)
-    {
-        if ($request->isMethod('post')) {
+        if ($id == "") {
+            $coupon   = new Coupon;
+            // $selCats = array();
+            // $selUsers = array();
+            $title = "Add Coupon";
+            //$message = "Coupon Added Successfully";
+            $buttonText = "Save";
+        } else {
+            $coupon = Coupon::find($id);
+            //$selCats = explode(',', $coupon['categories']);
+            //$selUsers = explode(',', $coupon['users']);
+            $title = "Edit Coupon";
+            //$message = "Coupon Updated Successfully";
+            $buttonText = "Update";
+        }
+        if ($request->isMethod('POST')) {
             $data = $request->all();
             //dd($data);
             if ($data['users']) {
                 $users = implode(',', $data['users']);
-            } else{
+            } else {
                 $users = "";
             }
             if ($data['categories']) {
@@ -80,7 +77,26 @@ class CouponController extends Controller
                 return redirect()->back();
             }
         }
+        $categories = Section::with('categories')->get();
+        $categories = json_decode(json_encode($categories), true);
+        $users = User::select('email')->where('status', 1)->get()->toArray();
+        return view('admin.pages.coupons.addEditCoupon', compact('title', 'coupon', 'categories', 'users', 'buttonText'));
     }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $data['title']      = "New Coupon";
+        $data['coupon']   = new Coupon();
+        $categories = Section::with('categories')->get();
+        $data['categories'] = json_decode(json_encode($categories), true);
+        $data['users'] = User::select('email')->where('status', 1)->get()->toArray();
+        return view("admin.pages.coupons.add", $data);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -97,9 +113,17 @@ class CouponController extends Controller
      * @param  \App\Models\Coupon  $coupon
      * @return \Illuminate\Http\Response
      */
-    public function edit(Coupon $coupon)
+    public function edit($id)
     {
-        //
+        $title = "Update";
+        $coupon = Coupon::find($id);
+        $categories = explode(',', $coupon['categories']);
+        $users = explode(',', $coupon['users']);
+        if (!is_null($coupon)) {
+            return view('admin.pages.coupons.edit', compact('coupon', 'categories', 'title'));
+        } else {
+            return redirect()->to('sadmin/coupons');
+        }
     }
     /**
      * Update the specified resource in storage.
@@ -118,7 +142,7 @@ class CouponController extends Controller
      * @param  \App\Models\Coupon  $coupon
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function deleteCoupon($id)
     {
         try {
             $coupon = Coupon::findOrFail($id);
@@ -128,7 +152,7 @@ class CouponController extends Controller
                 return redirect()->back();
             }
         } catch (\Throwable $th) {
-            //dd($th);
+            dd($th);
             toast('Your coupon not deleted.', 'success', 'top-right');
             return redirect()->back();
         }

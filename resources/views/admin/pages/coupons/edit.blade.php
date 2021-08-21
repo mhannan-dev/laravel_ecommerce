@@ -28,11 +28,9 @@
                     <div class="card">
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <form action="{{ route('banner.update', $banner_data['id']) }}" method="POST"
-                                enctype="multipart/form-data">
+                            <form action="{{ route('coupon.update', $coupon['id']) }}" method="POST">
                                 @method('put')
-
-                                @include('admin.pages.banner._form', ['buttonText' => 'Update'])
+                                @include('admin.pages.coupons._form', ['buttonText' => 'Update'])
                             </form>
 
                         </div>

@@ -26,7 +26,8 @@ Route::namespace('Frontend')->group(function () {
     Route::get('/product/{id}', [ProductsController::class, 'detail'])->name('detail');
     $catSlugs = Category::select('slug')->where('status', 1)->get()->pluck('slug')->toArray();
     foreach ($catSlugs as $slug) {
-        Route::get('/' . $slug, [ProductsController::class, 'listing'])->name('slug');
+        //Route::get('/' . $slug, [ProductsController::class, 'listing'])->name('slug');
+        Route::get('/' . $slug, [ProductsController::class, 'listing']);
     }
     //Get proeuct attributes
     Route::post('get-product-price', [ProductsController::class, 'getProductPrice']);
@@ -57,7 +58,7 @@ Route::namespace('Frontend')->group(function () {
         Route::post('/update-user-password', [UsersController::class, 'updateUserPassword']);
     });
 });
-Auth::routes();
+//Auth::routes();
 Route::prefix('/sadmin')->namespace('Admin')->group(function () {
     Route::match(['get', 'post'], '/', [AdminController::class, 'login']);
     Route::group(['middleware' => ['admin']], function () {
@@ -95,10 +96,11 @@ Route::prefix('/sadmin')->namespace('Admin')->group(function () {
         Route::post('update-attribute', [ProductController::class, 'update_attributes'])->name('update-attribute');
         //Coupon
         Route::get('coupons', [CouponController::class, 'coupons']);
-        Route::resource('coupon', '\App\Http\Controllers\Admin\CouponController')->except('index');
+        Route::match(['GET', 'POST'], 'add-edit-coupon/{id?}', [CouponController::class, 'addEditCoupon']);
         Route::post('update-coupon-status', [CouponController::class, 'updateCouponStatus']);
+        Route::post('delete-coupon/{id}',[CouponController::class, 'deleteCoupon']);
 
-        
+
 
     });
 });
