@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use App\Models\Coupon;
 use App\Models\Section;
+use App\Models\Todo;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Admin\CouponRequest;
+use App\Models\Admin\Todo as AdminTodo;
 
 class CouponController extends Controller
 {
@@ -25,28 +27,52 @@ class CouponController extends Controller
         Session::put('page', 'coupons');
         $data['title'] = "Coupon";
         $data['coupons'] = Coupon::get()->toArray();
+        $data['todos'] = Todo::get()->toArray();
         return view('admin.pages.coupons.coupons', $data);
+    }
+    public function addEditTodo(Request $request, $id = null)
+    {
+        if ($id == "") {
+            $todo   = new Todo();
+            $buttonText = "Save";
+            $message = "Todo has been saved successfully";
+        } else {
+            $todo = Todo::findOrFail($id);
+            //dd($todo);
+            $title = "Edit Todo";
+            $buttonText = "Update";
+            $message = "Todo has been updated successfully";
+        }
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            $todo->title = $data['title'];
+            $todo->save();
+            return redirect()->to('sadmin/coupons')->with('SUCCESS', $message);
+        }
+        return view('admin.pages.coupons.addEditTodo', compact('todo'));
     }
     public function addEditCoupon(Request $request, $id = null)
     {
-        if ($id == "") {
-            $coupon   = new Coupon();
+        if($id==""){
+            // Add Coupon Code
+            $coupon = new Coupon;
             $selCats = array();
             $selUsers = array();
             $title = "Add Coupon";
             $buttonText = "Save";
-            $message = "Coupon has been saved successfully";
-        } else {
-            $coupon = Coupon::findOrFail($id);
-            $selCats = explode(',', $coupon['categories']);
-            $selUsers = explode(',', $coupon['users']);
+            $message = "Coupon has been saved successfully!";
+        }else {
+            // Update Coupon Code
+            $coupon = Coupon::find($id);
+            $selCats = explode(',',$coupon['categories']);
+            $selUsers = explode(',',$coupon['users']);
             $title = "Edit Coupon";
             $buttonText = "Update";
-            $message = "Coupon has been updated successfully";
+            $message = "Coupon has been updated successfully!";
         }
-        if ($request->isMethod('post')) {
+        if ($request->isMethod('POST')) {
             $data = $request->all();
-            //dd($data);
+            //echo '<pre>'; print_r($data); die;
             if (isset($data['users'])) {
                 $users = implode(',', $data['users']);
             } else {
@@ -59,16 +85,15 @@ class CouponController extends Controller
                 $coupon_code = Str::random(8);
             } else {
                 $coupon_code = $data['coupon_code'];
+                //dd($coupon_code);
             }
             $coupon->coupon_option = $data['coupon_option'];
-            $coupon->coupon_type = $data['coupon_type'];
             $coupon->coupon_code = $coupon_code;
             $coupon->categories = $categories;
             $coupon->users = $users;
+            $coupon->coupon_type = $data['coupon_type'];
             $coupon->amount_type = $data['amount_type'];
-            //$coupon->expiry_date = $data['expiry_date'];
             $coupon->expiry_date = date('Y-m-d', strtotime($data['expiry_date']));
-            //dd($coupon->expiry_date);
             $coupon->amount = $data['amount'];
             $coupon->status = 1;
             $coupon->save();
@@ -88,7 +113,6 @@ class CouponController extends Controller
             'message'
         ));
     }
-
     /**
      * Remove the specified resource from storage.
      *

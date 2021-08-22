@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             BrandsSeeder::class,
             BannerSeeder::class,
             CouponSeeder::class,
+            TodoSeeder::class,
         ]);
     }
     // public function run()

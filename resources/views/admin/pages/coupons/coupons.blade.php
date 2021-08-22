@@ -25,7 +25,6 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
-
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -85,15 +84,13 @@
                                                 </td>
                                                 <td>
                                                     <a class="btn btn-warning btn-sm"
-                                                        href="{{ url('sadmin/add-edit-coupon', $coupon['id']) }}">
+                                                        href="{{ url('sadmin/add-edit-coupon/' . $coupon['id']) }}">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
-
                                                     <a href="#deleteModal{{ $coupon['id'] }}" data-toggle="modal"
                                                         class="btn btn-sm btn-danger btn-sm">
                                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                                     </a>
-
                                                     <!-- Delete Modal -->
                                                     <div class="modal fade" id="deleteModal{{ $coupon['id'] }}"
                                                         tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -130,6 +127,29 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">First <a href="{{ url('sadmin/add-edit-todo/') }}">Add New</a> </th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($todos as $item)
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>{{ $item['title'] }}</td>
+                                                <td>
+                                                    <a class="btn btn-warning btn-sm"
+                                                        href="{{ url('sadmin/add-edit-todo/'.$item['id']) }}">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -144,7 +164,6 @@
         <!-- /.content -->
     </div>
 @endsection
-
 @section('scripts')
     <script type="text/javascript">
         //Jquery ready function

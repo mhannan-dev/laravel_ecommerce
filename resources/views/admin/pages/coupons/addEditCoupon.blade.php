@@ -56,7 +56,7 @@
                                                 <div class="form-group" id="couponField" style="display: none">
                                                     <label for="coupon_code">Coupon code : </label>
                                                     <input type="text" name="coupon_code" class="form-control "
-                                                        id="coupon_code" placeholder="Coupon code">
+                                                        id="coupon_code" placeholder="Enter Coupon Code">
                                                 </div>
                                                 @if ($errors->has('coupon_option'))
                                                     <span class="alert alert-danger">
