@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
-
 use App\Models\User;
 use App\Models\Coupon;
 use App\Models\Section;
@@ -12,7 +10,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Admin\CouponRequest;
 use App\Models\Admin\Todo as AdminTodo;
-
 class CouponController extends Controller
 {
     /**
@@ -51,9 +48,10 @@ class CouponController extends Controller
         }
         return view('admin.pages.coupons.addEditTodo', compact('todo'));
     }
-    public function addEditCoupon(Request $request, $id = null)
+    public function addEditCoupon(Request $request, $id=null)
     {
-        if($id==""){
+        if($id == "") {
+           // dd($id);
             // Add Coupon Code
             $coupon = new Coupon;
             $selCats = array();
@@ -63,13 +61,14 @@ class CouponController extends Controller
             $message = "Coupon has been saved successfully!";
         }else {
             // Update Coupon Code
-            $coupon = Coupon::find($id);
-            $selCats = explode(',',$coupon['categories']);
-            $selUsers = explode(',',$coupon['users']);
+            $coupon = Coupon::findOrFail($id);
+            $selCats = explode(',', $coupon['categories']);
+            $selUsers = explode(',', $coupon['users']);
             $title = "Edit Coupon";
             $buttonText = "Update";
             $message = "Coupon has been updated successfully!";
         }
+        //exit();
         if ($request->isMethod('POST')) {
             $data = $request->all();
             //echo '<pre>'; print_r($data); die;
@@ -85,7 +84,6 @@ class CouponController extends Controller
                 $coupon_code = Str::random(8);
             } else {
                 $coupon_code = $data['coupon_code'];
-                //dd($coupon_code);
             }
             $coupon->coupon_option = $data['coupon_option'];
             $coupon->coupon_code = $coupon_code;
@@ -109,8 +107,7 @@ class CouponController extends Controller
             'users',
             'buttonText',
             'selCats',
-            'selUsers',
-            'message'
+            'selUsers'
         ));
     }
     /**

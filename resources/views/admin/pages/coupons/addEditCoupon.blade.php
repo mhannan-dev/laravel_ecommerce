@@ -37,7 +37,7 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <form action="{{ url('sadmin/add-edit-coupon') }}" method="post">
+                                <form  method="POST" action="{{ url('sadmin/add-edit-coupon',$coupon['id']) }}">
                                     @csrf
                                     <div class="row">
                                         <div class="col-sm-3">
