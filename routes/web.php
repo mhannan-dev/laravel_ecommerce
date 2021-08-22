@@ -51,11 +51,13 @@ Route::namespace('Frontend')->group(function () {
     //Confirm user account
     Route::match(['GET', 'POST'], '/confirm/{code}', [UsersController::class, 'confirmAccount']);
     //Auth routes group
+    Route::match(['GET', 'POST'], '/forgot-password', [UsersController::class, 'forgotPassword']);
     Route::group(['middleware' => ['auth']], function () {
-        Route::match(['GET', 'POST'], '/forgot-password', [UsersController::class, 'forgotPassword']);
         Route::match(['GET', 'POST'], '/account', [UsersController::class, 'account'])->name('account');
         Route::post('/check-user-password', [UsersController::class, 'checkUserPassword']);
         Route::post('/update-user-password', [UsersController::class, 'updateUserPassword']);
+        //Apply Coupon
+        Route::post('apply-coupon', [ProductsController::class, 'applyCoupon'])->name('apply-coupon');
     });
 });
 //Auth::routes();
@@ -82,7 +84,7 @@ Route::prefix('/sadmin')->namespace('Admin')->group(function () {
         Route::resource('banner', '\App\Http\Controllers\Admin\BannerController')->except('index');
         Route::post('update-banner-status', [BannerController::class, 'update_banner_status']);
         //Product
-        Route::get('products', [ProductController::class, 'products']);
+        Route::get('products', [ProductController::class, 'products'])->name('sadmin.products');
         Route::resource('product', '\App\Http\Controllers\Admin\ProductController')->except('index');
         Route::post('update-product-status', [ProductController::class, 'update_product_status']);
         //Images
@@ -99,7 +101,7 @@ Route::prefix('/sadmin')->namespace('Admin')->group(function () {
         Route::match(['get', 'post'], 'add-edit-coupon/{id?}', [CouponController::class, 'addEditCoupon']);
         Route::post('update-coupon-status', [CouponController::class, 'updateCouponStatus']);
         Route::post('delete-coupon/{id}',[CouponController::class, 'deleteCoupon']);
-        
+
 
 
 

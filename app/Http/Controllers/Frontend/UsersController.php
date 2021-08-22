@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Frontend;
+
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Country;
@@ -10,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+
 class UsersController extends Controller
 {
     public function loginRegisterPage()
@@ -240,4 +243,5 @@ class UsersController extends Controller
             }
         }
     }
+    
 }

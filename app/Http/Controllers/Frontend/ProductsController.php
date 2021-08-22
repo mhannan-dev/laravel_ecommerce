@@ -1,8 +1,7 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
-
 use App\Models\Cart;
+use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -12,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-
 class ProductsController extends Controller
 {
     public function listing(Request $request)
@@ -147,13 +145,11 @@ class ProductsController extends Controller
                 Session::flash('product_exist_msg', 'This product is already exist in cart');
                 return redirect()->back();
             }
-
             if (Auth::check()) {
                 $user_id = Auth::user()->id;
             } else {
                 $user_id = 0;
             }
-
             //Save product to cart
             Cart::insert([
                 'session_id' => $session_id,
@@ -218,11 +214,28 @@ class ProductsController extends Controller
             Cart::where('id', $data['cart_id'])->delete();
             $userCartItems = Cart::userCartItems();
             $totalCartItems  = totalCartItems();
-
             return response()->json([
                 'totalCartItems'  => $totalCartItems,
                 'view' => (string)View::make('frontend.pages.products.cart_items', compact(['userCartItems']))
             ]);
+        }
+    }
+    public function applyCoupon(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            $userCartItems = Cart::userCartItems();
+            $couponCount = Coupon::where('coupon_code', $data['code'])->count();
+
+            if ($couponCount == 0) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'The coupon is not valid!',
+                    'view' => (string)View::make('frontend.pages.products.cart_items', compact(['userCartItems']))
+                ]);
+            } else {
+                # check other coupon condition
+            }
         }
     }
 }

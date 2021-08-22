@@ -2,8 +2,8 @@ $(function () {
     //X-CSRF-TOKEN
     $.ajaxSetup({
         headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-        }
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
     });
     $("#sort").on("change", function () {
         var sort = $(this).val();
@@ -13,11 +13,11 @@ $(function () {
             method: "post",
             data: {
                 sort: sort,
-                url: slug
+                url: slug,
             },
             success: function (data) {
                 $(".filter_products_ajax").html(data);
-            }
+            },
         });
     });
     //Fabric filter
@@ -39,11 +39,11 @@ $(function () {
                 occasion: occasion,
                 fit: fit,
                 sort: sort,
-                url: slug
+                url: slug,
             },
             success: function (data) {
                 $(".filter_products_ajax").html(data);
-            }
+            },
         });
     });
     //Fabric filter
@@ -66,11 +66,11 @@ $(function () {
                 occasion: occasion,
                 fit: fit,
                 sort: sort,
-                url: slug
+                url: slug,
             },
             success: function (data) {
                 $(".filter_products_ajax").html(data);
-            }
+            },
         });
     });
     //Pattern filter
@@ -93,11 +93,11 @@ $(function () {
                 occasion: occasion,
                 fit: fit,
                 sort: sort,
-                url: slug
+                url: slug,
             },
             success: function (data) {
                 $(".filter_products_ajax").html(data);
-            }
+            },
         });
     });
     //Occasions Filter
@@ -120,11 +120,11 @@ $(function () {
                 occasion: occasion,
                 fit: fit,
                 sort: sort,
-                url: slug
+                url: slug,
             },
             success: function (data) {
                 $(".filter_products_ajax").html(data);
-            }
+            },
         });
     });
     //Fit Filter
@@ -147,13 +147,14 @@ $(function () {
                 occasion: occasion,
                 fit: fit,
                 sort: sort,
-                url: slug
+                url: slug,
             },
             success: function (data) {
                 $(".filter_products_ajax").html(data);
-            }
+            },
         });
     });
+
     function get_filter(class_name) {
         var filter = [];
         $("." + class_name + ":checked").each(function () {
@@ -163,24 +164,22 @@ $(function () {
     }
     //getPrice
     $("#getPrice").on("change", function () {
-        var size = $(this)
-            .find(":selected")
-            .text();
+        var size = $(this).find(":selected").text();
         var product_id = $(this).attr("product_id");
         $.ajax({
             type: "POST",
             url: "/get-product-price",
             data: {
                 size: size,
-                product_id: product_id
+                product_id: product_id,
             },
             success: function (resp) {
                 if (resp["discount"] > 0) {
                     $(".getAttrPrice").html(
                         "<del>BDT." +
-                        resp["price"] +
-                        "</del> BDT." +
-                        resp["final_price"]
+                            resp["price"] +
+                            "</del> BDT." +
+                            resp["final_price"]
                     );
                 } else {
                     $(".getAttrPrice").html("BDT." + resp["price"]);
@@ -188,7 +187,7 @@ $(function () {
             },
             error: function () {
                 alert("Error");
-            }
+            },
         });
     });
     //Items update using ajax in carts page
@@ -216,7 +215,7 @@ $(function () {
             url: "/update-cart-item-qty",
             data: {
                 qty: new_qty,
-                cart_id: cartId
+                cart_id: cartId,
             },
             success: function (resp) {
                 //alert(resp.status);
@@ -229,7 +228,7 @@ $(function () {
             },
             error: function () {
                 alert("Error");
-            }
+            },
         });
     });
     //Items update using ajax in carts page
@@ -241,7 +240,7 @@ $(function () {
                 type: "POST",
                 url: "/delete-cart-item",
                 data: {
-                    cart_id: cartId
+                    cart_id: cartId,
                 },
                 success: function (resp) {
                     //alert(resp.status);
@@ -250,9 +249,40 @@ $(function () {
                 },
                 error: function () {
                     alert("Error");
-                }
+                },
             });
         }
     });
 
+    // Coupon apply
+
+    //hang on event of form with id=myform
+    $("#applyCoupon").submit(function (e) {
+        var user = $(this).attr("user");
+        if (user == 1) {
+            // Code
+        } else {
+            alert("Please login to apply coupon");
+            return false;
+        }
+        var code = $("#code").val();
+        //alert(code);
+        $.ajax({
+            type: "POST",
+            url: "/apply-coupon",
+            data: {
+                code: code,
+            },
+            success: function (resp) {
+                if (resp.message != "") {
+                    alert(resp.message);
+                }
+                $(".totalCartItems").html(resp.totalCartItems);
+                $("#AppendCartItems").html(resp.view);
+            },
+            error: function () {
+                alert("<h1>Error</h1>");
+            },
+        });
+    });
 });
