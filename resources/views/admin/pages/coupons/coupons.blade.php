@@ -127,29 +127,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">First <a href="{{ url('sadmin/add-edit-todo/') }}">Add New</a> </th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($todos as $item)
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>{{ $item['title'] }}</td>
-                                                <td>
-                                                    <a class="btn btn-warning btn-sm"
-                                                        href="{{ url('sadmin/add-edit-todo/'.$item['id']) }}">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                
                             </div>
                             <!-- /.card-body -->
                         </div>

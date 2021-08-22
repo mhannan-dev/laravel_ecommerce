@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
+
 use App\Models\User;
 use App\Models\Coupon;
 use App\Models\Section;
@@ -10,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Admin\CouponRequest;
 use App\Models\Admin\Todo as AdminTodo;
+
 class CouponController extends Controller
 {
     /**
@@ -19,39 +22,18 @@ class CouponController extends Controller
      */
     public function coupons()
     {
-        Session::forget('success_message');
-        Session::forget('error_message');
+
+        Session::forget('SUCCESS');
+        Session::forget('ERROR');
         Session::put('page', 'coupons');
         $data['title'] = "Coupon";
         $data['coupons'] = Coupon::get()->toArray();
-        $data['todos'] = Todo::get()->toArray();
         return view('admin.pages.coupons.coupons', $data);
     }
-    public function addEditTodo(Request $request, $id = null)
+    public function addEditCoupon(Request $request, $id = null)
     {
+
         if ($id == "") {
-            $todo   = new Todo();
-            $buttonText = "Save";
-            $message = "Todo has been saved successfully";
-        } else {
-            $todo = Todo::findOrFail($id);
-            //dd($todo);
-            $title = "Edit Todo";
-            $buttonText = "Update";
-            $message = "Todo has been updated successfully";
-        }
-        if ($request->isMethod('post')) {
-            $data = $request->all();
-            $todo->title = $data['title'];
-            $todo->save();
-            return redirect()->to('sadmin/coupons')->with('SUCCESS', $message);
-        }
-        return view('admin.pages.coupons.addEditTodo', compact('todo'));
-    }
-    public function addEditCoupon(Request $request, $id=null)
-    {
-        if($id == "") {
-           // dd($id);
             // Add Coupon Code
             $coupon = new Coupon;
             $selCats = array();
@@ -59,7 +41,7 @@ class CouponController extends Controller
             $title = "Add Coupon";
             $buttonText = "Save";
             $message = "Coupon has been saved successfully!";
-        }else {
+        } else {
             // Update Coupon Code
             $coupon = Coupon::findOrFail($id);
             $selCats = explode(',', $coupon['categories']);
@@ -95,7 +77,8 @@ class CouponController extends Controller
             $coupon->amount = $data['amount'];
             $coupon->status = 1;
             $coupon->save();
-            return redirect()->to('sadmin/coupons')->with('SUCCESS', $message);
+            Session::put('SUCCESS', $message);
+            return redirect()->to('sadmin/coupons');
         }
         $categories = Section::with('categories')->get();
         $categories = json_decode(json_encode($categories), true);
