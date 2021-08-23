@@ -576,7 +576,6 @@ class ComposerStaticInit092da1a35c7b8dbd314bc87be775dd27
         'App\\Http\\Requests\\Frontend\\UserRegRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Frontend/UserRegRequest.php',
         'App\\Http\\Requests\\SectionRequest' => __DIR__ . '/../..' . '/app/Http/Requests/SectionRequest.php',
         'App\\Models\\Admin' => __DIR__ . '/../..' . '/app/Models/Admin.php',
-        'App\\Models\\Admin\\Todo' => __DIR__ . '/../..' . '/app/Models/Admin/Todo.php',
         'App\\Models\\Banner' => __DIR__ . '/../..' . '/app/Models/Banner.php',
         'App\\Models\\Brand' => __DIR__ . '/../..' . '/app/Models/Brand.php',
         'App\\Models\\Cart' => __DIR__ . '/../..' . '/app/Models/Cart.php',

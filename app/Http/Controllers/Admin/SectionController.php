@@ -113,7 +113,7 @@ class SectionController extends Controller
             //return redirect()->url('sadmin/sections');
             return Redirect::to('sadmin/sections');
         } catch (\Throwable $th) {
-            dd($th);
+            //dd($th);
             toast('Section has not been updated!','success','top-right');
             return redirect()->back();
         }

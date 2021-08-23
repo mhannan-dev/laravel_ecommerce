@@ -44,7 +44,6 @@ return array(
     'App\\Http\\Requests\\Frontend\\UserRegRequest' => $baseDir . '/app/Http/Requests/Frontend/UserRegRequest.php',
     'App\\Http\\Requests\\SectionRequest' => $baseDir . '/app/Http/Requests/SectionRequest.php',
     'App\\Models\\Admin' => $baseDir . '/app/Models/Admin.php',
-    'App\\Models\\Admin\\Todo' => $baseDir . '/app/Models/Admin/Todo.php',
     'App\\Models\\Banner' => $baseDir . '/app/Models/Banner.php',
     'App\\Models\\Brand' => $baseDir . '/app/Models/Brand.php',
     'App\\Models\\Cart' => $baseDir . '/app/Models/Cart.php',

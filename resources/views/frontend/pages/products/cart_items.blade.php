@@ -21,7 +21,6 @@ use App\Models\Product;
         @foreach ($userCartItems as $item)
             <?php
             $attrPrice = Product::getDiscountedAttrPrice($item['product_id'], $item['size']);
-            //$attrPrice = Product::getDiscountedAttrPrice($item['product_id'], $item['size']);
             //dd($attrPrice);
             ?>
             <tr>
@@ -38,14 +37,17 @@ use App\Models\Product;
                     <div class="input-append">
                         <input class="span1" style="max-width:34px" value="{{ $item['quantity'] }}"
                             id="appendedInputButtons" size="16" type="text">
-                        <button class="btn btnItemUpdate qtyMinus" data-cart_id={{ $item['id'] }} type="button"><i class="icon-minus"></i></button>
-                        <button class="btn btnItemUpdate qtyPlus" data-cart_id={{ $item['id'] }} type="button"><i class="icon-plus"></i></button>
-                        <button class="btn btn-danger btnItemDelete" data-cart_id={{ $item['id'] }} type="button"><i class="icon-remove icon-white"></i></button>
+                        <button class="btn btnItemUpdate qtyMinus" data-cart_id={{ $item['id'] }} type="button"><i
+                                class="icon-minus"></i></button>
+                        <button class="btn btnItemUpdate qtyPlus" data-cart_id={{ $item['id'] }} type="button"><i
+                                class="icon-plus"></i></button>
+                        <button class="btn btn-danger btnItemDelete" data-cart_id={{ $item['id'] }} type="button"><i
+                                class="icon-remove icon-white"></i></button>
                     </div>
                 </td>
-                <td>BDT. {{ number_format($attrPrice['price'], 2)  }}</td>
-                <td>BDT. {{ number_format($attrPrice['discount'], 2)   }}</td>
-                <td>BDT. {{ number_format($attrPrice['final_price'] * $item['quantity'],2) }}</td>
+                <td>BDT. {{ number_format($attrPrice['price'], 2) }}</td>
+                <td>BDT. {{ number_format($attrPrice['discount'], 2) }}</td>
+                <td>BDT. {{ number_format($attrPrice['final_price'] * $item['quantity'], 2) }}</td>
             </tr>
             <?php
             $sub_total_price = $sub_total_price + $attrPrice['final_price'] * $item['quantity'];

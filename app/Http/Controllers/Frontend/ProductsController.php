@@ -113,7 +113,6 @@ class ProductsController extends Controller
     {
         if ($request->isMethod('post')) {
             $data = $request->all();
-            //dd($data);
             //Check product stock if product availiable in stock
             $getProductStock = ProductAttribute::where(['product_id' => $data['product_id'], 'size' => $data['size']])->first()->toArray();
             //echo $getProductStock['stock']; die;
@@ -147,19 +146,18 @@ class ProductsController extends Controller
             }
             if (Auth::check()) {
                 $user_id = Auth::user()->id;
+                //dd($user_id);
             } else {
                 $user_id = 0;
             }
-            //Save product to cart
-            Cart::insert([
-                'session_id' => $session_id,
-                'user_id' => $user_id,
-                'product_id' => $data['product_id'],
-                'size' => $data['size'],
-                'quantity' => $data['quantity'],
-            ]);
+            $cart = new Cart;
+            $cart->session_id = $session_id;
+            $cart->user_id = $user_id;
+            $cart->product_id = $data['product_id'];
+            $cart->size = $data['size'];
+            $cart->quantity = $data['quantity'];
+            $cart->save();
             Session::flash('product_added_to_cart_msg', 'Product added to cart');
-            //return redirect()->back();
             return redirect('cart');
         }
     }
@@ -226,7 +224,6 @@ class ProductsController extends Controller
             $data = $request->all();
             $userCartItems = Cart::userCartItems();
             $couponCount = Coupon::where('coupon_code', $data['code'])->count();
-
             if ($couponCount == 0) {
                 return response()->json([
                     'status' => false,

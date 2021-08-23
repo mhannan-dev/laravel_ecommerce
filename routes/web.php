@@ -38,7 +38,7 @@ Route::namespace('Frontend')->group(function () {
     Route::post('update-cart-item-qty', [ProductsController::class, 'updateCartItemQty']);
     Route::post('delete-cart-item', [ProductsController::class, 'deleteCartItem']);
     //Login Register Page
-    Route::get('login-register', [UsersController::class, 'loginRegisterPage'])->name('login');
+    Route::get('login-register', [UsersController::class, 'loginRegisterPage'])->name('login-register');
     //Login user
     Route::post('login-user', [UsersController::class, 'loginUser']);
     //Register user
@@ -60,7 +60,7 @@ Route::namespace('Frontend')->group(function () {
         Route::post('apply-coupon', [ProductsController::class, 'applyCoupon'])->name('apply-coupon');
     });
 });
-//Auth::routes();
+Auth::routes();
 Route::prefix('/sadmin')->namespace('Admin')->group(function () {
     Route::match(['get', 'post'], '/', [AdminController::class, 'login']);
     Route::group(['middleware' => ['admin']], function () {
