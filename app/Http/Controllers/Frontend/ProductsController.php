@@ -233,12 +233,43 @@ class ProductsController extends Controller
                 $totalCartItems  = totalCartItems();
                 return response()->json([
                     'status' => false,
-                    'message' => 'The coupon is not valid!',
+                    'message' => 'Please Enter Valid Coupon!',
                     'totalCartItems' => $totalCartItems,
                     'view' => (string)View::make('frontend.pages.products.cart_items', compact('userCartItems'))
                 ]);
             } else {
                 # check other coupon condition
+                $couponDetails = Coupon::where('coupon_code', $data['code'])->first();
+                //Check coupon is active or not
+                if ($couponDetails->status == 0) {
+                    $message = "Coupon is not active";
+                }
+                //Check coupon is expired
+                $expiry_date = $couponDetails->expiry_date;
+                $current_date = date('Y-m-d');
+                if ($expiry_date < $current_date) {
+                    $message = "Opps Coupon date is expired!";
+                }
+                //Check categories is under coupon
+                $catAttr = explode(",", $couponDetails->categories);
+                //Get the cart items
+                $userCartItems = Cart::userCartItems();
+                //dd($userCartItems);
+                //Check if any item belongs to coupon category
+                foreach ($userCartItems as $key => $items) {
+                    if (!in_array($items['product']['category_id'], $catAttr));
+                    $message = "This coupon code is not for one of the selected products!";
+                }
+                if (isset($message)) {
+                    $userCartItems = Cart::userCartItems();
+                    $totalCartItems  = totalCartItems();
+                    return response()->json([
+                        'status' => false,
+                        'message' => $message,
+                        'totalCartItems' => $totalCartItems,
+                        'view' => (string)View::make('frontend.pages.products.cart_items', compact('userCartItems'))
+                    ]);
+                }
             }
         }
     }
