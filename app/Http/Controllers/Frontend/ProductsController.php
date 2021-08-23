@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Frontend;
+
 use App\Models\Cart;
 use App\Models\Coupon;
 use App\Models\Product;
@@ -11,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+
 class ProductsController extends Controller
 {
     public function listing(Request $request)
@@ -222,13 +225,17 @@ class ProductsController extends Controller
     {
         if ($request->isMethod('post')) {
             $data = $request->all();
-            $userCartItems = Cart::userCartItems();
+            //$userCartItems = Cart::userCartItems();
+            //echo "<pre>"; print_r($userCartItems);die;
             $couponCount = Coupon::where('coupon_code', $data['code'])->count();
             if ($couponCount == 0) {
+                $userCartItems = Cart::userCartItems();
+                $totalCartItems  = totalCartItems();
                 return response()->json([
                     'status' => false,
                     'message' => 'The coupon is not valid!',
-                    'view' => (string)View::make('frontend.pages.products.cart_items', compact(['userCartItems']))
+                    'totalCartItems' => $totalCartItems,
+                    'view' => (string)View::make('frontend.pages.products.cart_items', compact('userCartItems'))
                 ]);
             } else {
                 # check other coupon condition

@@ -281,7 +281,7 @@ $(function () {
                 $("#AppendCartItems").html(resp.view);
             },
             error: function () {
-                alert("<h1>Error</h1>");
+                alert("Error");
             },
         });
     });
