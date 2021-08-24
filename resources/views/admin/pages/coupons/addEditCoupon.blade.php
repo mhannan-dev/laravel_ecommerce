@@ -46,7 +46,7 @@
                                                     <label for="coupon_option">Coupon option</label> <br>
                                                     <span>
                                                         <input value="automatic" type="radio" name="coupon_option"
-                                                            id="automaticCoupon" checked>&nbsp;Automatic&nbsp;&nbsp;
+                                                            id="automaticCoupon">&nbsp;Automatic&nbsp;&nbsp;
                                                     </span>
                                                     <span>
                                                         <input value="manual" type="radio" name="coupon_option"
@@ -82,7 +82,7 @@
                                                 </span>
                                                 <span>
                                                     <input value="singleTimes" type="radio" name="coupon_type"
-                                                        id="singleTimes" checked @if (isset($coupon['coupon_type']) && $coupon['coupon_type'] == 'singleTimes') checked @endif> &nbsp;Single Times&nbsp;
+                                                        id="singleTimes" @if (isset($coupon['coupon_type']) && $coupon['coupon_type'] == 'singleTimes') checked @endif> &nbsp;Single Times&nbsp;
                                                 </span>
                                             </div>
                                             @if ($errors->has('coupon_type'))
@@ -100,7 +100,7 @@
                                                     %)&nbsp;&nbsp;
                                                 </span>
                                                 <span>
-                                                    <input checked value="fixed" type="radio" name="amount_type" id="fixed" @if (isset($coupon['amount_type']) && $coupon['amount_type'] == 'fixed') checked @endif>
+                                                    <input value="fixed" type="radio" name="amount_type" id="fixed" @if (isset($coupon['amount_type']) && $coupon['amount_type'] == 'fixed') checked @endif>
                                                     &nbsp;Fixed (In BDT.)&nbsp;&nbsp;
                                                 </span>
                                             </div>

@@ -242,7 +242,7 @@ class ProductsController extends Controller
                 $couponDetails = Coupon::where('coupon_code', $data['code'])->first();
                 //Check coupon is active or not
                 if ($couponDetails->status == 0) {
-                    $message = "Coupon is not active";
+                    $message = "Coupon is not active!";
                 }
                 //Check coupon is expired
                 $expiry_date = $couponDetails->expiry_date;
@@ -250,15 +250,17 @@ class ProductsController extends Controller
                 if ($expiry_date < $current_date) {
                     $message = "Opps Coupon date is expired!";
                 }
-                //Check categories is under coupon
-                $catAttr = explode(",", $couponDetails->categories);
+                //Get all category under coupon
+                $categoryArray = explode(",", $couponDetails->categories);
+                //dd($categoryArray);
                 //Get the cart items
                 $userCartItems = Cart::userCartItems();
-                //dd($userCartItems);
                 //Check if any item belongs to coupon category
-                foreach ($userCartItems as $key => $items) {
-                    if (!in_array($items['product']['category_id'], $catAttr));
-                    $message = "This coupon code is not for one of the selected products!";
+                foreach ($userCartItems as $key => $item) {
+                    //dd($item);
+                    if (!in_array($item['product']['category_id'], $categoryArray)) {
+                        $message = "This coupon code is not for gitone of the selected products!";
+                    }
                 }
                 if (isset($message)) {
                     $userCartItems = Cart::userCartItems();
