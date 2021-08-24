@@ -1,8 +1,7 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
-
 use App\Models\Cart;
+use App\Models\User;
 use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\Category;
@@ -13,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-
 class ProductsController extends Controller
 {
     public function listing(Request $request)
@@ -255,11 +253,21 @@ class ProductsController extends Controller
                 //dd($categoryArray);
                 //Get the cart items
                 $userCartItems = Cart::userCartItems();
-                //Check if any item belongs to coupon category
+                //Get all users under coupon
+                $usersArray = explode(",", $couponDetails->users);
+                foreach ($usersArray  as $key => $user) {
+                    $getUserID = User::select('id')->where('email', $user)->first()->toArray();
+                    $userID[] = $getUserID['id'];
+                }
+                //Check coupon for users and category
                 foreach ($userCartItems as $key => $item) {
-                    //dd($item);
+                    //User check user coupon
+                    if (!in_array($item['user_id'], $userID)) {
+                        $message = "This coupon code is not for you";
+                    }
+                    //Check if any item belongs to coupon category
                     if (!in_array($item['product']['category_id'], $categoryArray)) {
-                        $message = "This coupon code is not for gitone of the selected products!";
+                        $message = "This coupon code is not for the selected products!";
                     }
                 }
                 if (isset($message)) {

@@ -14,12 +14,13 @@ class UsersController extends Controller
 {
     public function loginRegisterPage()
     {
+        Session::forget('error_message');
+        Session::forget('success_message');
         return view('frontend.pages.user.loginRegister');
     }
     public function registerUser(Request $request)
     {
-        Session::forget('error_message');
-        Session::forget('success_message');
+       
         if ($request->isMethod('post')) {
             $data = $request->all();
             $userCount = User::where('email', $data['email'])->count();
