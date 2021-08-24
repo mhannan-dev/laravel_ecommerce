@@ -279,6 +279,10 @@ $(function () {
                 }
                 $(".totalCartItems").html(resp.totalCartItems);
                 $("#AppendCartItems").html(resp.view);
+                //$(".couponAmount").html(resp.couponAmount);
+                $(".couponAmount").text("BDT."+resp.couponAmount);
+                $(".grand_total").text("BDT."+resp.grand_total);
+                //alert(resp.couponAmount);
             },
             error: function () {
                 alert("Error");

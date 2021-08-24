@@ -45,9 +45,9 @@ use App\Models\Product;
                                 class="icon-remove icon-white"></i></button>
                     </div>
                 </td>
-                <td>BDT. {{ number_format($attrPrice['price'], 2) }}</td>
-                <td>BDT. {{ number_format($attrPrice['discount'], 2) }}</td>
-                <td>BDT. {{ number_format($attrPrice['final_price'] * $item['quantity'], 2) }}</td>
+                <td style="text-align:right;">BDT. {{ number_format($attrPrice['price'], 2) }}</td>
+                <td style="text-align:right;">BDT. {{ number_format($attrPrice['discount'], 2) }}</td>
+                <td style="text-align:right;">BDT. {{ number_format($attrPrice['final_price'] * $item['quantity'], 2) }}</td>
             </tr>
             <?php
             $sub_total_price = $sub_total_price + $attrPrice['final_price'] * $item['quantity'];
@@ -57,17 +57,22 @@ use App\Models\Product;
         @endforeach
         <tr>
             <td colspan="5" style="text-align:right">Sub Total Price: </td>
-            <td> BDT. {{ number_format($sub_total_price, 2) }}</td>
+            <td style="text-align:right;"> BDT. {{ number_format($sub_total_price, 2) }}</td>
         </tr>
         <tr>
-            <td colspan="5" style="text-align:right">Voucher Discount: </td>
-            <td> BDT. {{ number_format($total_discount, 2) }}</td>
+            <td colspan="5" style="text-align:right">Coupon Discount: </td>
+            <td class="couponAmount" style="text-align:right;">
+                @if (Session::has('couponAmount'))
+                    -BDT. {{ Session::get('couponAmount') }}
+                @else
+                    BDT. 0
+                @endif
+            </td>
         </tr>
         <tr>
-            <td colspan="5" style="text-align:right"><strong>GRAND TOTAL (BDT. {{ $sub_total_price }} - BDT.
-                    {{ $total_discount }}) =</strong></td>
-            <td class="label label-important" style="display:block"> <strong> BDT.
-                    {{ number_format($total_price, 2) }} </strong>
+            <td colspan="5" style="text-align:right"><strong>GRAND TOTAL =</strong></td>
+            <td class="label label-important grand_total" style="display:block;text-align:right"> <strong> BDT.
+                    {{ number_format($total_price - Session::get('couponAmount'), 2) }}
             </td>
         </tr>
     </tbody>
