@@ -14,14 +14,15 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            AdminsTableSeeder::class,
-            SectionTableSeeder::class,
-            CategoryTableSeeder::class,
-            ProductSeeder::class,
-            BrandsSeeder::class,
-            BannerSeeder::class,
-            CouponSeeder::class,
-            
+            // AdminsTableSeeder::class,
+            // SectionTableSeeder::class,
+            // CategoryTableSeeder::class,
+            // ProductSeeder::class,
+            // BrandsSeeder::class,
+            // BannerSeeder::class,
+            // CouponSeeder::class,
+            AddressSeeder::class,
+
         ]);
     }
     // public function run()

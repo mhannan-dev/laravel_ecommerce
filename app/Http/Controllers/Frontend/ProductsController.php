@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Frontend;
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Coupon;
+use App\Models\Country;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\DeliveryAddress;
 use App\Models\ProductAttribute;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -283,7 +285,6 @@ class ProductsController extends Controller
                     //echo "<pre>"; print_r($attrPrice); die;
                     $total_amount = $total_amount + ($attrPrice['final_price'] * $item['quantity']);
                 }
-
                 if (isset($message)) {
                     $userCartItems = Cart::userCartItems();
                     $totalCartItems  = totalCartItems();
@@ -320,5 +321,38 @@ class ProductsController extends Controller
                 }
             }
         }
+    }
+    public function checkout(Request $request)
+    {
+        $userCartItems = Cart::userCartItems();
+        $deliveryAddress = DeliveryAddress::deliveryAddress();
+        return view('frontend.pages.products.checkout', compact('userCartItems', 'deliveryAddress'));
+    }
+    public function addEditDeliveryAddress(Request $request, $id = null)
+    {
+
+        if ($id == "") {
+            $address = new DeliveryAddress();
+            $title = "Add new address";
+            $message = "Delivery Address has been saved successfully!";
+        } else {
+            // Update DeliveryAddress Code
+            $address = DeliveryAddress::findOrFail($id);
+            $title = "Edit Address";
+            $buttonText = "Update";
+            $message = "Delivery Address has been updated successfully!";
+        }
+        //exit();
+        if ($request->isMethod('POST')) {
+            $data = $request->all();
+            //echo '<pre>'; print_r($data); die;
+            $address->address_option = $data['address_option'];
+            $address->address_code = $address_code;
+            $address->save();
+            Session::put('SUCCESS', $message);
+            return redirect()->back();
+        }
+        $countries = Country::get()->toArray();
+        return view('frontend.pages.user.addEditDeliveryAddress', compact('title','countries'));
     }
 }

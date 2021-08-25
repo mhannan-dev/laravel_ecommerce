@@ -58,6 +58,10 @@ Route::namespace('Frontend')->group(function () {
         Route::post('/update-user-password', [UsersController::class, 'updateUserPassword']);
         //Apply Coupon
         Route::post('apply-coupon', [ProductsController::class, 'applyCoupon'])->name('apply-coupon');
+        //Checkout
+        Route::match(['GET', 'POST'], '/checkout', [ProductsController::class, 'checkout'])->name('checkout');
+        // Add Edit Delivery Address
+        Route::match(['GET', 'POST'], '/add-edit-delivery-address/{id?}', [ProductsController::class, 'addEditDeliveryAddress'])->name('addEditDeliveryAddress');
     });
 });
 Auth::routes();
