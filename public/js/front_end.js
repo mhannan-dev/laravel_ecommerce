@@ -154,7 +154,6 @@ $(function () {
             },
         });
     });
-
     function get_filter(class_name) {
         var filter = [];
         $("." + class_name + ":checked").each(function () {
@@ -177,9 +176,9 @@ $(function () {
                 if (resp["discount"] > 0) {
                     $(".getAttrPrice").html(
                         "<del>BDT." +
-                            resp["price"] +
-                            "</del> BDT." +
-                            resp["final_price"]
+                        resp["price"] +
+                        "</del> BDT." +
+                        resp["final_price"]
                     );
                 } else {
                     $(".getAttrPrice").html("BDT." + resp["price"]);
@@ -253,9 +252,7 @@ $(function () {
             });
         }
     });
-
     // Coupon apply
-
     //hang on event of form with id=myform
     $("#applyCoupon").submit(function (e) {
         var user = $(this).attr("user");
@@ -280,8 +277,15 @@ $(function () {
                 $(".totalCartItems").html(resp.totalCartItems);
                 $("#AppendCartItems").html(resp.view);
                 //$(".couponAmount").html(resp.couponAmount);
-                $(".couponAmount").text("BDT."+resp.couponAmount);
-                $(".grand_total").text("BDT."+resp.grand_total);
+                if (resp.couponAmount >= 0) {
+                    $(".couponAmount").text("BDT." + resp.couponAmount);
+                } else {
+                    $(".couponAmount").text("BDT.0");
+                }
+                if (resp.grand_total >= 0) {
+                    $(".grand_total").text("BDT." + resp.grand_total);
+                }
+
                 //alert(resp.couponAmount);
             },
             error: function () {

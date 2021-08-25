@@ -256,20 +256,24 @@ class ProductsController extends Controller
                 //dd($categoryArray);
                 //Get the cart items
                 $userCartItems = Cart::userCartItems();
-                //Get all users under coupon
-                $usersArray = explode(",", $couponDetails->users);
-                foreach ($usersArray  as $key => $user) {
-                    $getUserID = User::select('id')->where('email', $user)->first()->toArray();
-                    $userID[] = $getUserID['id'];
+                if (!empty($couponDetails->users)) {
+                    //Get all users under coupon
+                    $usersArray = explode(",", $couponDetails->users);
+                    foreach ($usersArray  as $key => $user) {
+                        $getUserID = User::select('id')->where('email', $user)->first()->toArray();
+                        $userID[] = $getUserID['id'];
+                    }
                 }
                 //Get total amount
                 $total_amount = 0;
                 //Check coupon for users and category
                 foreach ($userCartItems as $key => $item) {
                     //echo "<pre>"; print_r($item); die;
-                    //User check user coupon
-                    if (!in_array($item['user_id'], $userID)) {
-                        $message = "This coupon code is not for you";
+                    if (!empty($couponDetails->users)) {
+                        //User check user coupon
+                        if (!in_array($item['user_id'], $userID)) {
+                            $message = "This coupon code is not for you";
+                        }
                     }
                     //Check if any item belongs to coupon category
                     if (!in_array($item['product']['category_id'], $categoryArray)) {
@@ -309,7 +313,7 @@ class ProductsController extends Controller
                         'status' => true,
                         'message' => $message,
                         'totalCartItems' => $totalCartItems,
-                        'couponAmount'=> $couponAmount,
+                        'couponAmount' => $couponAmount,
                         'grand_total' => $grand_total,
                         'view' => (string)View::make('frontend.pages.products.cart_items', compact('userCartItems'))
                     ]);

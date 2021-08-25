@@ -179,7 +179,7 @@
                                             <div class="form-group">
                                                 <label>Select Users Emails</label>
                                                 <select name="users[]" id="users" class="select2bs4" multiple="multiple"
-                                                    data-placeholder="Select Emails" style="width: 100%;" required>
+                                                    data-placeholder="Select Emails" style="width: 100%;">
                                                     <option value="">Select Emails</option>
                                                     @foreach ($users as $user)
                                                         <option value="{{ $user['email'] }}" @if (in_array($user['email'], $selUsers)) selected="" @endif>
