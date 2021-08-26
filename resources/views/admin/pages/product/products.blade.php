@@ -30,6 +30,7 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
+                @include('admin.partials.message')
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -170,7 +171,7 @@
                 success: function(resp) {
                     if (resp['status'] == 0) {
                         $("#product_" + product_id).html(
-                            "<a href='javascript:void(0)' class='product_status'>InActive</a>"
+                            "<a href='javascript:void(0)' class='product_status'>In Active</a>"
                         )
                     } else if (resp['status'] == 1) {
                         $("#product_" + product_id).html(

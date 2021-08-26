@@ -1,11 +1,7 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
-
-
 use App\Models\Section;
 use App\Models\Category;
-
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
@@ -13,12 +9,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\Admin\CategoryRequest;
-
 class CategoryController extends Controller
 {
-
-
-
     /**
      * Display a listing of the resource.
      *
@@ -93,12 +85,10 @@ class CategoryController extends Controller
             $categoryFillable           = $request->only($category->getFillable());
             $categoryFillable['image']  = $imageName;
             $category->fill($categoryFillable)->save();
-            toast("Category has been saved successfully", 'success', 'top-right');
-            return Redirect::to('sadmin/categories');
+            return Redirect::to('sadmin/categories')->with('success','Category has been saved successfully!!');
         } catch (\Throwable $th) {
             //dd($th);
-            toast("Category has been saved successfully", 'warning', 'top-right');
-            return redirect()->back();
+            return redirect()->back()->with('success','Category has been saved successfully!!');
         }
     }
     /**
@@ -159,12 +149,12 @@ class CategoryController extends Controller
             $categoryFillable           = $request->only($category->getFillable());
             $categoryFillable['image']  = $imageName;
             $category->fill($categoryFillable)->save();
-            toast("Category has been updated successfully", 'success', 'top-right');
-            return Redirect::to('sadmin/categories');
+            //return Redirect::to('sadmin/categories');
+            return redirect()->route('sadmin.categories')->with('success','Category has been updated successfully!!');
+            
         } catch (\Throwable $th) {
-            //dd($th);
-            toast("Category not updated successfully", 'warning', 'top-right');
-            return redirect()->back();
+            dd($th);
+            return redirect()->back()->with('error','Category not updated successfully!!');
         }
     }
     /**
@@ -181,13 +171,11 @@ class CategoryController extends Controller
             if (!is_null($category)) {
                 $category->delete();
                 unlink($image_path);
-                toast('Your category has been deleted.', 'success', 'top-right');
-                return Redirect::to('sadmin/categories');
+                return Redirect::to('sadmin/categories')->with('success','Your category has been deleted!!');
             }
         } catch (\Throwable $th) {
             //dd($th);
-            toast('Your category not deleted.', 'success', 'top-right');
-            return redirect()->back();
+            return redirect()->back()->with('success','Your category not deleted!!');
         }
     }
 }

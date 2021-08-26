@@ -31,8 +31,10 @@ Product Sections
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
+            @include('admin.partials.message')
             <div class="row">
                 <div class="col-12">
+
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">{{ $title }}</h3>

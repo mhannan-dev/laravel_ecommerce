@@ -28,12 +28,13 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                @include('admin.partials.message')
+
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
                     <!--/.col (left) -->
                     <!-- right column -->
                     <div class="col-md-8">
+                        @include('admin.partials.message')
                         <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title">Update profile</h3>

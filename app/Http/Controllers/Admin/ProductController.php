@@ -136,9 +136,7 @@ class ProductController extends Controller
             $productFillable['section_id'] = $categoryDetail['section_id'];
             $productFillable['image']  = $imageName;
             $product->fill($productFillable)->save();
-            toast("Product has been saved successfully", 'success', 'top-right');
-            //return redirect()->route('product.index');
-            return Redirect::to('sadmin/products');
+            return redirect()->route('sadmin.products')->with('success', 'Product has been saved successfully!!');
         } catch (\Throwable $th) {
             //dd($th);
             toast("Product not saved successfully", 'warning', 'top-right');
@@ -219,15 +217,12 @@ class ProductController extends Controller
             $productFillable['section_id'] = $categoryDetail['section_id'];
             $productFillable['image']  = $imageName;
             $product->fill($productFillable)->save();
-            toast("Product has been updated successfully", 'success', 'top-right');
-            return Redirect::to('sadmin/products');
+            return redirect()->route('sadmin.products')->with('success', 'Product has been updated successfully!!');
         } catch (\Throwable $th) {
             //dd($th);
-            toast("Product not updated successfully", 'warning', 'top-right');
-            return redirect()->back();
+            return redirect()->route('sadmin.products')->with('success', 'Product not updated successfully!!');
         }
     }
-
     /**
      * Remove the specified resource from storage.
      * @param  \App\Models\Product  $product
@@ -238,14 +233,11 @@ class ProductController extends Controller
     {
         try {
             ProductAttribute::where('id', $id)->firstorfail()->delete();
-            toast('Your product attribute has been deleted.', 'success', 'top-right');
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Your product attribute has been deleted!!');
         } catch (\Throwable $th) {
-            toast('Your product attribute not been deleted.', 'warning', 'top-right');
-            return redirect()->back();
+            return redirect()->back()->with('error', 'Your product attribute not been deleted');
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -264,44 +256,13 @@ class ProductController extends Controller
                 unlink($large_image_path);
                 unlink($medium_image_path);
                 unlink($small_image_path);
-                toast('Your product has been deleted.', 'success', 'top-right');
-                return Redirect::to('sadmin/products');
+                return redirect()->route('sadmin.products')->with('success', 'Your product has been deleted!');
             }
         } catch (\Throwable $th) {
-            toast('Your product not deleted.', 'success', 'top-right');
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Your product not deleted!');
         }
     }
 
-    public function deleteImage($id)
-    {
-        try {
-            $productImage = ProductsImage::select('images')->where('id', $id)->first();
-            //dd($productImag);
-            $large_image_path  = public_path() . '/uploads/product_img_large/';
-            $medium_image_path  = public_path() . '/uploads/product_img_medium/';
-            $small_image_path  = public_path() . '/uploads/product_img_small/';
-            //Delete large image if exist in large folder
-            if (file_exists($large_image_path . $productImage->images)) {
-                unlink($large_image_path . $productImage->images);
-            }
-            //Delete large image if exist in medium folder
-            if (file_exists($medium_image_path . $productImage->images)) {
-                unlink($medium_image_path . $productImage->images);
-            }
-            //Delete large image if exist in small folder
-            if (file_exists($small_image_path . $productImage->images)) {
-                unlink($small_image_path . $productImage->images);
-            }
-            ProductsImage::where('id', $id)->delete();
-            toast('Your product image has been deleted.', 'success', 'top-right');
-            return redirect()->back();
-        } catch (\Throwable $th) {
-            // dd($th);
-            toast('Your product not deleted.', 'success', 'top-right');
-            return redirect()->back();
-        }
-    }
     /**
      * Remove the specified resource from storage.
      *
@@ -310,7 +271,6 @@ class ProductController extends Controller
      */
     public function add_attributes(Request $request, $id)
     {
-
         if ($request->isMethod('post')) {
             $data = $request->all();
             // echo "<pre>"; print_r($data);die;
@@ -319,8 +279,8 @@ class ProductController extends Controller
                     //SKU exist check
                     $attrCountSku = ProductAttribute::where('sku', $value)->count();
                     if ($attrCountSku > 0) {
-                        toast('SKU already exist please try another SKU', 'error', 'top-right');
-                        return redirect()->back();
+                        //toast('SKU already exist please try another SKU', 'error', 'top-right');
+                        return redirect()->back()->with('error','SKU already exist please try another SKU');
                     }
                     //Size exist check
                     $attrCountSize = ProductAttribute::where(['product_id' => $id, 'size' => $request->size[$key]])->count();
@@ -338,11 +298,11 @@ class ProductController extends Controller
                     ProductAttribute::insert($data);
                 }
             };
-            toast('Product attribute has been saved', 'success', 'top-right');
-            return redirect()->back();
+            //toast('Product attribute has been saved', 'success', 'top-right');
+            return redirect()->back()->with('success','Product attribute has been saved');
         }
         $title = "Product Attributes";
-        $product =  Product::select('id', 'title', 'code', 'color', 'image','price')->with('attributes')->find($id);
+        $product =  Product::select('id', 'title', 'code', 'color', 'image', 'price')->with('attributes')->find($id);
         $product = json_decode(json_encode($product),  true);
         //echo "<pre>"; print_r($product); die;
         return view('admin.pages.product.attribute')->with(compact('product', 'title'));
@@ -368,8 +328,7 @@ class ProductController extends Controller
                     );
                 }
             }
-            toast('Attribute has been updated', 'success', 'top-right');
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Attribute has been updated!!');
         }
     }
     public function add_images(Request $request, $id)
@@ -395,10 +354,37 @@ class ProductController extends Controller
                     $product_image->product_id = $id;
                     $product_image->save();
                 }
-                toast("Product Images been saved successfully", 'success', 'top-right');
-                return redirect()->back();
+                return redirect()->back()->with('success','Product Images been saved successfully!!');
             }
         }
         return view('admin.pages.product.add_images', compact('product_data', 'title'));
+    }
+    public function deleteImage($id)
+    {
+        try {
+            $productImage = ProductsImage::select('images')->where('id', $id)->first();
+            //dd($productImag);
+            $large_image_path  = public_path() . '/uploads/product_img_large/';
+            $medium_image_path  = public_path() . '/uploads/product_img_medium/';
+            $small_image_path  = public_path() . '/uploads/product_img_small/';
+            //Delete large image if exist in large folder
+            if (file_exists($large_image_path . $productImage->images)) {
+                unlink($large_image_path . $productImage->images);
+            }
+            //Delete large image if exist in medium folder
+            if (file_exists($medium_image_path . $productImage->images)) {
+                unlink($medium_image_path . $productImage->images);
+            }
+            //Delete large image if exist in small folder
+            if (file_exists($small_image_path . $productImage->images)) {
+                unlink($small_image_path . $productImage->images);
+            }
+            ProductsImage::where('id', $id)->delete();
+            //toast('Your product image has been deleted.', 'success', 'top-right');
+            return redirect()->back()->with('success','Your product image has been deleted!!');
+        } catch (\Throwable $th) {
+            // dd($th);
+            return redirect()->back()->with('success','Your product not deleted!!');
+        }
     }
 }

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SectionRequest;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
-
 class SectionController extends Controller
 {
     /**
@@ -48,7 +47,6 @@ class SectionController extends Controller
      */
     public function create()
     {
-
         $data['title']      = "Section";
         $data['section']   = new Section();
         return view("admin.pages.section.add", $data);
@@ -64,11 +62,9 @@ class SectionController extends Controller
         try {
             $sectionFillable        = $request->only($section->getFillable());
             $section->fill($sectionFillable)->save();
-            toast('Section has been saved!','success','top-right');
-            return Redirect::to('sadmin/sections');
+            return Redirect::to('sadmin/sections')->with('success','Section has been saved!');
         } catch (\Throwable $th) {
-            toast('Section has not been saved!','success','top-right');
-            return redirect()->route('section.index');
+            return redirect()->route('section.index')->with('success','Section has not been saved!');
         }
     }
     /**
@@ -94,7 +90,7 @@ class SectionController extends Controller
         if (!is_null($data['section'])) {
             return view('admin.pages.section.edit', $data);
         } else {
-            return redirect()->route('admin.pages.section.index');
+            return redirect()->route('section.index');
         }
     }
     /**
@@ -109,13 +105,11 @@ class SectionController extends Controller
         try {
             $sectionFillable = $request->only($section->getFillable());
             $section->fill($sectionFillable)->update();
-            toast('Your section has been updated!','success','top-right');
-            //return redirect()->url('sadmin/sections');
-            return Redirect::to('sadmin/sections');
+            return redirect()->route('sections.index')->with('success','Your section has been updated!');
         } catch (\Throwable $th) {
             //dd($th);
-            toast('Section has not been updated!','success','top-right');
-            return redirect()->back();
+            return redirect()->route('sections.index')->with('success','Section has not been updated!');
+
         }
     }
     /**
@@ -128,8 +122,7 @@ class SectionController extends Controller
     {
         try {
             $section->delete();
-            toast('Your section has been deleted.','success','top-right');
-            return redirect()->back();
+            return redirect()->back()->with('success','Your section has been deleted');
         } catch (\Throwable $th) {
             return redirect()->back();
         }

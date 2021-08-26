@@ -152,8 +152,7 @@ class AdminController extends Controller
                 'mobile' => $data['mobile'],
                 'image' => $imageName
             ]);
-            toast('Profile updated successfully!!', 'success');
-            return redirect()->back();
+            return redirect()->back()->with('success','Profile updated successfully!!');
         }
         return view('admin.pages.settings.profile_update', compact('title'));
     }
