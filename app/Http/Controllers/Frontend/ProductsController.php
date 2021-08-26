@@ -330,7 +330,6 @@ class ProductsController extends Controller
     }
     public function addEditDeliveryAddress(Request $request, $id = null)
     {
-
         if ($id == "") {
             $address = new DeliveryAddress();
             $title = "Add new address";
@@ -345,14 +344,10 @@ class ProductsController extends Controller
         //exit();
         if ($request->isMethod('POST')) {
             $data = $request->all();
-            //echo '<pre>'; print_r($data); die;
-            $address->address_option = $data['address_option'];
-            $address->address_code = $address_code;
-            $address->save();
-            Session::put('SUCCESS', $message);
-            return redirect()->back();
+            echo '<pre>'; print_r($data); die;
+
         }
         $countries = Country::get()->toArray();
-        return view('frontend.pages.user.addEditDeliveryAddress', compact('title','countries'));
+        return view('frontend.pages.user.addEditDeliveryAddress', compact('title','countries','address'));
     }
 }

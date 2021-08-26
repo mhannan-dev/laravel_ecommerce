@@ -243,8 +243,6 @@
             })
         })
     </script>
-    {{-- Sweet alert --}}
-    @include('sweetalert::alert')
     @yield('scripts')
 </body>
 

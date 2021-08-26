@@ -13,60 +13,28 @@
     </ul>
 	<h3> Registration</h3>
 	<div class="well">
-	<!--
-	<div class="alert alert-info fade in">
-		<button type="button" class="close" data-dismiss="alert">×</button>
-		<strong>Lorem Ipsum is simply dummy</strong> text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
-	 </div>
-	<div class="alert fade in">
-		<button type="button" class="close" data-dismiss="alert">×</button>
-		<strong>Lorem Ipsum is simply dummy</strong> text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
-	 </div>
-	 <div class="alert alert-block alert-error fade in">
-		<button type="button" class="close" data-dismiss="alert">×</button>
-		<strong>Lorem Ipsum is simply</strong> dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
-	 </div> -->
+
 	<form class="form-horizontal">
 
 
-		<h4>Your address</h4>
+		<h4>Your Address</h4>
 		<div class="control-group">
-			<label class="control-label" for="inputFname">First name <sup>*</sup></label>
+			<label class="control-label" for="inputFname">Name <sup>*</sup></label>
 			<div class="controls">
-			  <input type="text" id="inputFname" placeholder="First Name">
+			  <input type="text" id="name" name="name" placeholder="First Name">
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="inputLname">Last name <sup>*</sup></label>
+			<label class="control-label" for="company">Address</label>
 			<div class="controls">
-			  <input type="text" id="inputLname" placeholder="Last Name">
-			</div>
-		</div>
-
-		<div class="control-group">
-			<label class="control-label" for="company">Company</label>
-			<div class="controls">
-			  <input type="text" id="company" placeholder="company">
+			  <input type="text" id="address" name="address" placeholder="Address">
 			</div>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label" for="address">Address<sup>*</sup></label>
-			<div class="controls">
-			  <input type="text" id="address" placeholder="Adress"> <span>Street address, P.O. box, company name, c/o</span>
-			</div>
-		</div>
-
-		<div class="control-group">
-			<label class="control-label" for="address2">Address (Line 2)<sup>*</sup></label>
-			<div class="controls">
-			  <input type="text" id="address2" placeholder="Adress line 2"> <span>Apartment, suite, unit, building, floor, etc.</span>
-			</div>
-		</div>
 		<div class="control-group">
 			<label class="control-label" for="city">City<sup>*</sup></label>
 			<div class="controls">
-			  <input type="text" id="city" placeholder="city">
+			  <input type="text" id="city" name="city" placeholder="city">
 			</div>
 		</div>
 		<div class="control-group">
@@ -113,7 +81,7 @@
 			</div>
 		</div>
 
-	
+
 
 	<div class="control-group">
 			<div class="controls">

@@ -105,10 +105,6 @@ Route::prefix('/sadmin')->namespace('Admin')->group(function () {
         Route::match(['get', 'post'], 'add-edit-coupon/{id?}', [CouponController::class, 'addEditCoupon']);
         Route::post('update-coupon-status', [CouponController::class, 'updateCouponStatus']);
         Route::post('delete-coupon/{id}',[CouponController::class, 'deleteCoupon']);
-
-
-
-
     });
 });
 //To clear all cache

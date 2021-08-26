@@ -14,6 +14,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Str;
+use Illuminate\Support\ValidatedInput;
+use InvalidArgumentException;
 use RuntimeException;
 use stdClass;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -201,6 +203,7 @@ class Validator implements ValidatorContract
      */
     protected $implicitRules = [
         'Accepted',
+        'AcceptedIf',
         'Filled',
         'Present',
         'Required',
@@ -231,6 +234,7 @@ class Validator implements ValidatorContract
         'Gte',
         'Lt',
         'Lte',
+        'AcceptedIf',
         'RequiredIf',
         'RequiredUnless',
         'RequiredWith',
@@ -271,6 +275,13 @@ class Validator implements ValidatorContract
      * @var string
      */
     protected $dotPlaceholder;
+
+    /**
+     * The exception to throw upon failure.
+     *
+     * @var string
+     */
+    protected $exception = ValidationException::class;
 
     /**
      * Create a new Validator instance.
@@ -472,9 +483,7 @@ class Validator implements ValidatorContract
      */
     public function validate()
     {
-        if ($this->fails()) {
-            throw new ValidationException($this);
-        }
+        throw_if($this->fails(), $this->exception, $this);
 
         return $this->validated();
     }
@@ -499,6 +508,19 @@ class Validator implements ValidatorContract
     }
 
     /**
+     * Get a validated input container for the validated input.
+     *
+     * @param  array|null  $keys
+     * @return \Illuminate\Support\ValidatedInput|array
+     */
+    public function safe(array $keys = null)
+    {
+        return is_array($keys)
+                ? (new ValidatedInput($this->validated()))->only($keys)
+                : new ValidatedInput($this->validated());
+    }
+
+    /**
      * Get the attributes and values that were validated.
      *
      * @return array
@@ -507,9 +529,7 @@ class Validator implements ValidatorContract
      */
     public function validated()
     {
-        if ($this->invalid()) {
-            throw new ValidationException($this);
-        }
+        throw_if($this->invalid(), $this->exception, $this);
 
         $results = [];
 
@@ -1080,7 +1100,7 @@ class Validator implements ValidatorContract
         // of the explicit rules needed for the given data. For example the rule
         // names.* would get expanded to names.0, names.1, etc. for this data.
         $response = (new ValidationRuleParser($this->data))
-                            ->explode($rules);
+                            ->explode(ValidationRuleParser::filterConditionalRules($rules, $this->data));
 
         $this->rules = array_merge_recursive(
             $this->rules, $response->rules
@@ -1360,6 +1380,27 @@ class Validator implements ValidatorContract
     public function setPresenceVerifier(PresenceVerifierInterface $presenceVerifier)
     {
         $this->presenceVerifier = $presenceVerifier;
+    }
+
+    /**
+     * Set the exception to throw upon failed validation.
+     *
+     * @param  string  $exception
+     * @return $this
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function setException($exception)
+    {
+        if (! is_a($exception, ValidationException::class, true)) {
+            throw new InvalidArgumentException(
+                sprintf('Exception [%s] is invalid. It must extend [%s].', $exception, ValidationException::class)
+            );
+        }
+
+        $this->exception = $exception;
+
+        return $this;
     }
 
     /**

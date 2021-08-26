@@ -28,6 +28,7 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
+                @include('admin.partials.message')
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
                     <!--/.col (left) -->

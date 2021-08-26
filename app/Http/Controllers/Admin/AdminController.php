@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\ProfileUpdateRequest;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class AdminController extends Controller
@@ -114,13 +113,12 @@ class AdminController extends Controller
                     $admin = Admin::find(Auth::guard('admin')->user()->id);
                     $admin->password = bcrypt($request->new_password);
                     $admin->save();
-                    toast('Password Changed successfully!!', 'success');
+                    return redirect()->back()->with('success','Password Changed successfully!');
                 } else {
-                    toast('New password & confirm password is not same', 'error');
-                    return redirect()->back();
+                    return redirect()->back()->with('error','New password & confirm password is not same!');
                 }
             } else {
-                toast('Password not updated!!', 'error');
+                return redirect()->back()->with('error','Password not updated!');
             }
             return redirect()->back();
         }
