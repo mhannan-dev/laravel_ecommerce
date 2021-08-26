@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Admin\CouponRequest;
 use App\Models\Admin\Todo as AdminTodo;
+use PhpParser\Node\Stmt\TryCatch;
 
 class CouponController extends Controller
 {
@@ -22,9 +23,8 @@ class CouponController extends Controller
      */
     public function coupons()
     {
-
-        Session::forget('SUCCESS');
-        Session::forget('ERROR');
+        Session::forget('success');
+        Session::forget('error');
         Session::put('page', 'coupons');
         $data['title'] = "Coupon";
         $data['coupons'] = Coupon::get()->toArray();
@@ -32,7 +32,6 @@ class CouponController extends Controller
     }
     public function addEditCoupon(Request $request, $id = null)
     {
-
         if ($id == "") {
             // Add Coupon Code
             $coupon = new Coupon;
@@ -67,22 +66,31 @@ class CouponController extends Controller
             } else {
                 $coupon_code = $data['coupon_code'];
             }
-            $coupon->coupon_option = $data['coupon_option'];
-            $coupon->coupon_code = $coupon_code;
-            $coupon->categories = $categories;
-            $coupon->users = $users;
-            $coupon->coupon_type = $data['coupon_type'];
-            $coupon->amount_type = $data['amount_type'];
-            $coupon->expiry_date = date('Y-m-d', strtotime($data['expiry_date']));
-            $coupon->amount = $data['amount'];
-            $coupon->status = 1;
-            $coupon->save();
-            Session::put('SUCCESS', $message);
-            return redirect()->to('sadmin/coupons');
+            //trigger exception in a "try" block
+            try {
+                $coupon->coupon_option = $data['coupon_option'];
+                $coupon->coupon_code = $coupon_code;
+                $coupon->categories = $categories;
+                $coupon->users = $users;
+                $coupon->coupon_type = $data['coupon_type'];
+                $coupon->amount_type = $data['amount_type'];
+                $coupon->expiry_date = date('Y-m-d', strtotime($data['expiry_date']));
+                $coupon->amount = $data['amount'];
+                $coupon->status = 1;
+                $coupon->save();
+                Session::put('success', $message);
+                return redirect()->to('sadmin/coupons');
+            }
+            //catch exception
+            catch (\Throwable $th) {
+                //dd($th);
+                return redirect()->back()->with('error', 'Coupon not created!!');
+            }
         }
         $categories = Section::with('categories')->get();
         $categories = json_decode(json_encode($categories), true);
         $users = User::select('email')->where('status', 1)->get()->toArray();
+
         return view('admin.pages.coupons.addEditCoupon', compact(
             'title',
             'coupon',
@@ -105,11 +113,11 @@ class CouponController extends Controller
             $coupon = Coupon::findOrFail($id);
             if (!is_null($coupon)) {
                 $coupon->delete();
-                return redirect()->back()->with('WARNING', 'Your coupon has been deleted.');
+                return redirect()->back()->with('success', 'Your coupon has been deleted.');
             }
         } catch (\Throwable $th) {
             //dd($th);
-            return redirect()->back()->with('ERROR', 'Opps Your Coupon not deleted');;
+            return redirect()->back()->with('error', 'Opps Your Coupon not deleted');;
         }
     }
     public function updateCouponStatus(Request $request)

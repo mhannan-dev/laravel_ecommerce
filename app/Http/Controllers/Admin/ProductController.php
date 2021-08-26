@@ -380,7 +380,7 @@ class ProductController extends Controller
                 unlink($small_image_path . $productImage->images);
             }
             ProductsImage::where('id', $id)->delete();
-            //toast('Your product image has been deleted.', 'success', 'top-right');
+
             return redirect()->back()->with('success','Your product image has been deleted!!');
         } catch (\Throwable $th) {
             // dd($th);
