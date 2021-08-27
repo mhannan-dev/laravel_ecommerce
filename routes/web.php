@@ -101,7 +101,7 @@ Route::prefix('/sadmin')->namespace('Admin')->group(function () {
         Route::post('update-attribute-status', [ProductController::class, 'update_attribute_status']);
         Route::post('update-attribute', [ProductController::class, 'update_attributes'])->name('update-attribute');
         //Coupon
-        Route::get('coupons', [CouponController::class, 'coupons']);
+        Route::get('coupons', [CouponController::class, 'coupons'])->name('sadmin.coupons');
         Route::match(['get', 'post'], 'add-edit-coupon/{id?}', [CouponController::class, 'addEditCoupon']);
         Route::post('update-coupon-status', [CouponController::class, 'updateCouponStatus']);
         Route::post('delete-coupon/{id}',[CouponController::class, 'deleteCoupon']);

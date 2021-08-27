@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Todo;
 use App\Models\User;
 use App\Models\Coupon;
 use App\Models\Section;
-use App\Models\Todo;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Session;
-use App\Http\Requests\Admin\CouponRequest;
-use App\Models\Admin\Todo as AdminTodo;
 use PhpParser\Node\Stmt\TryCatch;
+use App\Http\Controllers\Controller;
+use App\Models\Admin\Todo as AdminTodo;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\Admin\CouponRequest;
 
 class CouponController extends Controller
 {
@@ -23,8 +24,6 @@ class CouponController extends Controller
      */
     public function coupons()
     {
-        Session::forget('success');
-        Session::forget('error');
         Session::put('page', 'coupons');
         $data['title'] = "Coupon";
         $data['coupons'] = Coupon::get()->toArray();
@@ -78,8 +77,8 @@ class CouponController extends Controller
                 $coupon->amount = $data['amount'];
                 $coupon->status = 1;
                 $coupon->save();
-                Session::put('success', $message);
-                return redirect()->to('sadmin/coupons');
+                //Session::put('success', $message);
+                return redirect()->route('sadmin.coupons')->with('success', $message);
             }
             //catch exception
             catch (\Throwable $th) {
@@ -90,7 +89,6 @@ class CouponController extends Controller
         $categories = Section::with('categories')->get();
         $categories = json_decode(json_encode($categories), true);
         $users = User::select('email')->where('status', 1)->get()->toArray();
-
         return view('admin.pages.coupons.addEditCoupon', compact(
             'title',
             'coupon',
@@ -112,11 +110,12 @@ class CouponController extends Controller
         try {
             $coupon = Coupon::findOrFail($id);
             if (!is_null($coupon)) {
+                //dd($coupon);
                 $coupon->delete();
-                return redirect()->back()->with('success', 'Your coupon has been deleted.');
+                return redirect()->route('sadmin.coupons')->with('success', 'Your coupon has been deleted!!');
             }
         } catch (\Throwable $th) {
-            //dd($th);
+            dd($th);
             return redirect()->back()->with('error', 'Opps Your Coupon not deleted');;
         }
     }

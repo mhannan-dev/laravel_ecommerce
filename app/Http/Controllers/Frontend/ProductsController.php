@@ -299,10 +299,11 @@ class ProductsController extends Controller
                     if ($couponDetails->amount_type == "fixed") {
                         $couponAmount = $couponDetails->amount;
                     } else {
-                        //$couponAmount = $total_amount * ($couponDetails->amount / 100);
-                        $couponAmount = number_format($total_amount * ($couponDetails->amount / 100), 2);
+                        $couponAmount = $total_amount * ($couponDetails->amount / 100);
                     }
+
                     $grand_total = $total_amount - $couponAmount;
+                    //dd($grand_total);
                     //echo $couponAmount; die;
                     //Add Coupon code and amount in session variables
                     Session::put('couponAmount', $couponAmount);
