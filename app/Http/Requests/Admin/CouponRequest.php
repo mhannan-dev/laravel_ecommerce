@@ -20,12 +20,13 @@ class CouponRequest extends FormRequest
     public function rules()
     {
         return [
+            'categories' => 'required',
             'coupon_option' => 'required',
-            'coupon_type' => 'required',
+            'coupon_type'=> 'required',
+            'users'=> 'required',
             'amount_type'=> 'required',
             'amount'=> 'required|numeric',
-            'expiry_date'=> 'required',
-            'categories'=> 'required'
+            'expiry_date'=> 'required'
         ];
     }
     /**
@@ -38,6 +39,7 @@ class CouponRequest extends FormRequest
         return [
             'coupon_option.required' => 'The coupon_option field can not be blank value',
             'categories.required' => 'The category field can not be blank value',
+            'users.required' => 'The users field can not be blank value',
             'coupon_type.required' => 'The coupon type field can not be blank value',
             'amount_type.required' => 'The amount type field can not be blank value',
             'amount.required' => 'The amount field can not be blank value',

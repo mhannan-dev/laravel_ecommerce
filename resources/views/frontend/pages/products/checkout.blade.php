@@ -39,8 +39,6 @@
                             </label>
                         </div>
                     </td>
-
-                    <td><a href="{{ url('/add-edit-delivery-address',$address_item['id']) }}">Edit</a></td>
                 </tr>
             @endforeach
         </table>

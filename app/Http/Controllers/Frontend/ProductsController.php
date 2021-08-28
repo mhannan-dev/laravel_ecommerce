@@ -299,11 +299,10 @@ class ProductsController extends Controller
                     if ($couponDetails->amount_type == "fixed") {
                         $couponAmount = $couponDetails->amount;
                     } else {
-                        $couponAmount = $total_amount * ($couponDetails->amount / 100);
+                        //$couponAmount = $total_amount * ($couponDetails->amount / 100);
+                        $couponAmount = number_format($total_amount * ($couponDetails->amount / 100), 2);
                     }
-
                     $grand_total = $total_amount - $couponAmount;
-                    //dd($grand_total);
                     //echo $couponAmount; die;
                     //Add Coupon code and amount in session variables
                     Session::put('couponAmount', $couponAmount);
@@ -331,6 +330,7 @@ class ProductsController extends Controller
     }
     public function addEditDeliveryAddress(Request $request, $id = null)
     {
+
         if ($id == "") {
             $address = new DeliveryAddress();
             $title = "Add new address";
@@ -345,10 +345,14 @@ class ProductsController extends Controller
         //exit();
         if ($request->isMethod('POST')) {
             $data = $request->all();
-            echo '<pre>'; print_r($data); die;
-
+            //echo '<pre>'; print_r($data); die;
+            $address->address_option = $data['address_option'];
+            $address->address_code = $address_code;
+            $address->save();
+            Session::put('SUCCESS', $message);
+            return redirect()->back();
         }
         $countries = Country::get()->toArray();
-        return view('frontend.pages.user.addEditDeliveryAddress', compact('title','countries','address'));
+        return view('frontend.pages.user.addEditDeliveryAddress', compact('title','countries'));
     }
 }

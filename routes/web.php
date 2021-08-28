@@ -79,12 +79,12 @@ Route::prefix('/sadmin')->namespace('Admin')->group(function () {
         Route::resource('section', '\App\Http\Controllers\Admin\SectionController')->except('index');
         Route::post('update-section-status', [SectionController::class, 'update_section_status']);
         //Category
-        Route::get('categories', [CategoryController::class, 'categories'])->name('sadmin.categories');
+        Route::get('categories', [CategoryController::class, 'categories']);
         Route::resource('category', '\App\Http\Controllers\Admin\CategoryController')->except('index');
         Route::post('update-category-status', [CategoryController::class, 'update_category_status']);
         Route::post('append-category-level', [CategoryController::class, 'append_category_level']);
         //Banner
-        Route::get('banners', [BannerController::class, 'banners']);
+        Route::get('banners', [BannerController::class, 'banners'])->name('sadmin.banners');
         Route::resource('banner', '\App\Http\Controllers\Admin\BannerController')->except('index');
         Route::post('update-banner-status', [BannerController::class, 'update_banner_status']);
         //Product
@@ -105,6 +105,10 @@ Route::prefix('/sadmin')->namespace('Admin')->group(function () {
         Route::match(['get', 'post'], 'add-edit-coupon/{id?}', [CouponController::class, 'addEditCoupon']);
         Route::post('update-coupon-status', [CouponController::class, 'updateCouponStatus']);
         Route::post('delete-coupon/{id}',[CouponController::class, 'deleteCoupon']);
+
+
+
+
     });
 });
 //To clear all cache

@@ -5,7 +5,6 @@ use App\Models\Banner;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 class BannerController extends Controller
@@ -19,6 +18,7 @@ class BannerController extends Controller
     {
         $data['title'] = "Banner";
         $data['banners'] = Banner::get();
+        //dd($data['banners']);
         return view('admin.pages.banner.index', $data);
     }
     /**
@@ -55,10 +55,10 @@ class BannerController extends Controller
             $bannerFillable           = $request->only($banner->getFillable());
             $bannerFillable['banner_image']  = $imageName;
             $banner->fill($bannerFillable)->save();
-            return redirect()->to('sadmin/banners')->with('success','Banner has been saved successfully!');
+            return redirect()->route('sadmin.banners')->with('success', 'Banner has been saved successfully!');
         } catch (\Throwable $th) {
             //dd($th);
-            return redirect()->back()->with('success','Banner has been saved successfully!');
+            return redirect()->back()->with('success', 'Banner has been saved successfully!');
         }
     }
     /**
@@ -114,10 +114,10 @@ class BannerController extends Controller
             $bannerFillable           = $request->only($banner->getFillable());
             $bannerFillable['banner_image']  = $imageName;
             $banner->fill($bannerFillable)->save();
-            return redirect()->to('sadmin/banners')->with('success','Banner has been updated successfully!');
+            return redirect()->route('sadmin.banners')->with('success', 'Banner has been updated successfully!');
         } catch (\Throwable $th) {
             //dd($th);
-            return redirect()->back()->with('warning','Banner not updated successfully!');
+            return redirect()->route('sadmin.banners')->with('success', 'Banner not updated successfully!');
         }
     }
     public function update_banner_status(Request $request)
@@ -147,11 +147,12 @@ class BannerController extends Controller
             if (!is_null($banner)) {
                 $banner->delete();
                 unlink($image_path);
-                return redirect()->to('sadmin/banners')->with('warning','Your banner has been deleted!');
+                return redirect()->back()->with('success', 'Your banner has been deleted!');
             }
         } catch (\Throwable $th) {
            // dd($th);
-            return redirect()->back()->with('success','Your banner not deleted!');
+            return redirect()->back()->with('success', 'Your banner not deleted!');
+
         }
     }
 }

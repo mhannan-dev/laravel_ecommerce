@@ -16,7 +16,8 @@
         "laravel/tinker": "^2.5",
         "intervention/image": "^2.6",
         "laravel/ui": "^3.3",
-        "laravelcollective/html": "^6.2"
+        "laravelcollective/html": "^6.2",
+        "realrashid/sweet-alert": "^4.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
