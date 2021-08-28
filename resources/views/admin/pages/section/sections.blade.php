@@ -6,7 +6,6 @@ Product Sections
 <style>
     a {
         color: #5da1eb;
-
     }
 </style>
 @endsection
@@ -31,6 +30,7 @@ Product Sections
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
+            @include('admin.partials.message')
             <div class="row">
                 <div class="col-12">
                     <div class="card">

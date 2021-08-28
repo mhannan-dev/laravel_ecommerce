@@ -276,17 +276,17 @@ $(function () {
                 }
                 $(".totalCartItems").html(resp.totalCartItems);
                 $("#AppendCartItems").html(resp.view);
-                //$(".couponAmount").html(resp.couponAmount);
                 if (resp.couponAmount >= 0) {
+                    //alert(resp.couponAmount);
                     $(".couponAmount").text("BDT." + resp.couponAmount);
                 } else {
                     $(".couponAmount").text("BDT.0");
                 }
                 if (resp.grand_total >= 0) {
+                    //alert(resp.grand_total);
                     $(".grand_total").text("BDT." + resp.grand_total);
                 }
 
-                //alert(resp.couponAmount);
             },
             error: function () {
                 alert("Error");

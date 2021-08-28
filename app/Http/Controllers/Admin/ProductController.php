@@ -136,13 +136,11 @@ class ProductController extends Controller
             $productFillable['section_id'] = $categoryDetail['section_id'];
             $productFillable['image']  = $imageName;
             $product->fill($productFillable)->save();
-            toast("Product has been saved successfully", 'success', 'top-right');
-            //return redirect()->route('product.index');
-            return Redirect::to('sadmin/products');
+            return redirect()->route('sadmin.products')->with('success','Product has been saved successfully!!');
         } catch (\Throwable $th) {
             //dd($th);
-            toast("Product not saved successfully", 'warning', 'top-right');
-            return redirect()->back();
+            return redirect()->back()->with('error','Product not saved successfully!!');
+
         }
     }
     /**
@@ -219,12 +217,11 @@ class ProductController extends Controller
             $productFillable['section_id'] = $categoryDetail['section_id'];
             $productFillable['image']  = $imageName;
             $product->fill($productFillable)->save();
-            toast("Product has been updated successfully", 'success', 'top-right');
-            return Redirect::to('sadmin/products');
+            return redirect()->route('sadmin.products')->with('success','Product has been updated successfully!!');
         } catch (\Throwable $th) {
             //dd($th);
-            toast("Product not updated successfully", 'warning', 'top-right');
-            return redirect()->back();
+            return redirect()->back()->with('error','Product not updated successfully!!');
+
         }
     }
 
@@ -238,11 +235,9 @@ class ProductController extends Controller
     {
         try {
             ProductAttribute::where('id', $id)->firstorfail()->delete();
-            toast('Your product attribute has been deleted.', 'success', 'top-right');
-            return redirect()->back();
+            return redirect()->back()->with('success','Your product attribute has been deleted!!');
         } catch (\Throwable $th) {
-            toast('Your product attribute not been deleted.', 'warning', 'top-right');
-            return redirect()->back();
+            return redirect()->back()->with('error','Your product attribute not been deleted!!');
         }
     }
 
@@ -264,12 +259,11 @@ class ProductController extends Controller
                 unlink($large_image_path);
                 unlink($medium_image_path);
                 unlink($small_image_path);
-                toast('Your product has been deleted.', 'success', 'top-right');
-                return Redirect::to('sadmin/products');
+                return redirect()->route('sadmin.products')->with('Your product has been deleted!!');
             }
         } catch (\Throwable $th) {
-            toast('Your product not deleted.', 'success', 'top-right');
-            return redirect()->back();
+            //dd($th);
+            return redirect()->back('sadmin.products')->with('success','Your product not deleted!!');
         }
     }
 
@@ -294,12 +288,10 @@ class ProductController extends Controller
                 unlink($small_image_path . $productImage->images);
             }
             ProductsImage::where('id', $id)->delete();
-            toast('Your product image has been deleted.', 'success', 'top-right');
-            return redirect()->back();
+            return redirect()->back('sadmin.categories')->with('Your product image has been deleted!!');
         } catch (\Throwable $th) {
             // dd($th);
-            toast('Your product not deleted.', 'success', 'top-right');
-            return redirect()->back();
+            return redirect()->back('sadmin.categories')->with('Your product not deleted!!');
         }
     }
     /**

@@ -266,7 +266,7 @@ class ProductsController extends Controller
                         $userID[] = $getUserID['id'];
                     }
                 }
-                //Get total amount
+                //Get cart total amount
                 $total_amount = 0;
                 //Check coupon for users and category
                 foreach ($userCartItems as $key => $item) {
@@ -282,12 +282,13 @@ class ProductsController extends Controller
                         $message = "This coupon code is not for the selected products!";
                     }
                     $attrPrice = Product::getDiscountedAttrPrice($item['product_id'], $item['size']);
-                    //echo "<pre>"; print_r($attrPrice); die;
                     $total_amount = $total_amount + ($attrPrice['final_price'] * $item['quantity']);
+                    //echo "<pre>"; print_r($total_amount); die;
                 }
                 if (isset($message)) {
                     $userCartItems = Cart::userCartItems();
                     $totalCartItems  = totalCartItems();
+
                     return response()->json([
                         'status' => false,
                         'message' => $message,
@@ -299,14 +300,13 @@ class ProductsController extends Controller
                     if ($couponDetails->amount_type == "fixed") {
                         $couponAmount = $couponDetails->amount;
                     } else {
-                        //$couponAmount = $total_amount * ($couponDetails->amount / 100);
-                        $couponAmount = number_format($total_amount * ($couponDetails->amount / 100), 2);
+                        $couponAmount = $total_amount * ($couponDetails->amount/100);
                     }
                     $grand_total = $total_amount - $couponAmount;
                     //echo $couponAmount; die;
                     //Add Coupon code and amount in session variables
-                    Session::put('couponAmount', $couponAmount);
-                    Session::put('couponCode', $data['code']);
+                    Session::put('CouponAmount', $couponAmount);
+                    Session::put('CouponCode', $data['code']);
                     $message = "Coupon code successfully applied. You are availing discount!";
                     $totalCartItems  = totalCartItems();
                     $userCartItems = Cart::userCartItems();
@@ -314,7 +314,7 @@ class ProductsController extends Controller
                         'status' => true,
                         'message' => $message,
                         'totalCartItems' => $totalCartItems,
-                        'couponAmount' => $couponAmount,
+                        'CouponAmount' => $couponAmount,
                         'grand_total' => $grand_total,
                         'view' => (string)View::make('frontend.pages.products.cart_items', compact('userCartItems'))
                     ]);

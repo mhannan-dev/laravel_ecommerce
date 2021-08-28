@@ -30,6 +30,7 @@ Product Category
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
+            @include('admin.partials.message')
             <div class="row">
                 <div class="col-12">
                     <div class="card">
