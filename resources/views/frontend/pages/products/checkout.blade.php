@@ -1,3 +1,6 @@
+<?php
+    use App\Models\Product;
+?>
 @extends('frontend.layouts.front_app')
 @section('title')
     Product Cart
@@ -18,12 +21,11 @@
             <tr>
                 <th>
                     <strong>Delivery Address</strong> &nbsp;
-                    <a href="{{ url('add-edit-delivery-address/') }}" class="btn" style="float:right;">Add Address</a>
+                    <a href="{{ url('add-edit-delivery-address/') }}" class="btn" style="float:right;">Add
+                        Address</a>
                 </th>
             </tr>
             @foreach ($deliveryAddress as $address_item)
-
-
                 <tr>
                     <td>
                         <div class="control-group" style="float: left; margin-top: -2px; margin-right: 5px;">
@@ -40,11 +42,10 @@
                                 {{ $address_item['country'] }}
                             </label>
                         </div>
-
                     </td>
                     <td>
-                        <a class="btn" href="{{ url('add-edit-delivery-address/' . $address_item['id']) }}">Edit</a>
-
+                        <a class="btn"
+                            href="{{ url('add-edit-delivery-address/' . $address_item['id']) }}">Edit</a>
                         <a href="#deleteModal{{ $address_item['id'] }}" data-toggle="modal" class="btn btn-danger">
                             Delete
                         </a>
@@ -56,12 +57,13 @@
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">Are sure
                                             to delete?</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{{ url('delete-delivery-address/'.$address_item['id']) }}"
+                                        <form action="{{ url('delete-delivery-address/' . $address_item['id']) }}"
                                             method="post">
                                             @csrf
                                             <button type="submit" class="btn btn-danger">Permanent Delete</button>
@@ -74,21 +76,15 @@
                             </div>
                         </div>
                         <!-- Delete Modal -->
-
                     </td>
                 </tr>
             @endforeach
         </table>
-        <?php
-        use App\Models\Product;
-        ?>
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Product</th>
                     <th>Description</th>
-                    <th>Quantity</th>
-
                     <th>Price</th>
                     <th>Discount</th>
                     <th>Total</th>
@@ -96,7 +92,7 @@
             </thead>
             <tbody>
                 <?php
-                $sub_total_price = 0;
+
                 $total_discount = 0;
                 $total_price = 0;
                 ?>
@@ -115,40 +111,36 @@
                             Color : {{ $item['product']['color'] }} <br />
                             Size : {{ $item['size'] }}
                         </td>
-                        <td>
-                            {{ $item['quantity'] }}
-                        </td>
                         <td style="text-align:right;">BDT. {{ $attrPrice['price'] }}</td>
                         <td style="text-align:right;">BDT. {{ $attrPrice['discount'] }}</td>
-                        <td style="text-align:right;">BDT.
-                            {{ $attrPrice['final_price'] * $item['quantity'] }}</td>
+                        <td style="text-align:right;">BDT. {{ $attrPrice['final_price'] * $item['quantity'] }}</td>
                     </tr>
                     <?php
-                    $sub_total_price = $sub_total_price + $attrPrice['final_price'] * $item['quantity'];
-                    $total_discount = $total_discount + $attrPrice['discount'];
-                    //$total_price = $sub_total_price - $total_discount;
-                    $total_price = $sub_total_price;
+                    $total_price = $total_price + $attrPrice['final_price'] * $item['quantity'];
                     ?>
                 @endforeach
                 <tr>
-                    <td colspan="5" style="text-align:right">Sub Total Price: </td>
-                    <td style="text-align:right;"> BDT. {{ $sub_total_price }}</td>
+                    <td colspan="4" style="text-align:right">Sub Total: </td>
+                    <td style="text-align:right;"> BDT. {{ $total_price }}</td>
                 </tr>
                 <tr>
-                    <td colspan="5" style="text-align:right">Coupon Discount: </td>
+                    <td colspan="4" style="text-align:right">Coupon Discount: </td>
                     <td class="couponAmount" style="text-align:right;">
-                        @if (Session::has('CouponAmount'))
-                            -BDT. {{ Session::get('CouponAmount') }}
+                        @if (Session::has('CouponAmout'))
+                            - BDT. {{ Session::get('CouponAmout') }}
                         @else
                             BDT. 0
                         @endif
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="5" style="text-align:right"><strong>GRAND TOTAL =</strong></td>
-                    <td class="label label-important" style="display:block;text-align:right"> <strong class="grand_total">
-                            BDT.
-                            {{ $total_price - Session::get('CouponAmount') }}
+                    <td colspan="4" style="text-align:right">
+                        {{-- <strong>GRAND TOTAL =(BDT. {{ $total_price }} - <span class="couponAmount">BDT. 0</span>)</strong> --}}
+                        <strong>GRAND TOTAL =
+                    </td>
+                    <td class="label label-important" style="display:block;text-align:right">
+                        <strong class="grand_total">
+                            BDT. {{ $total_price - Session::get('CouponAmount') }}
                         </strong>
                     </td>
                 </tr>

@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
-
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Coupon;
@@ -17,7 +15,6 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Frontend\DeliveryRequest;
-
 class ProductsController extends Controller
 {
     public function listing(Request $request)
@@ -203,6 +200,9 @@ class ProductsController extends Controller
                 ]);
             }
             Cart::where("id", $data['cart_id'])->update(["quantity" => $data['qty']]);
+            //Forget coupon session after update cart
+            Session::forget('couponCode');
+            Session::forget('couponAmount');
             $userCartItems = Cart::userCartItems();
             $totalCartItems  = totalCartItems();
             return response()->json([
@@ -229,8 +229,6 @@ class ProductsController extends Controller
     {
         if ($request->isMethod('post')) {
             $data = $request->all();
-            //$userCartItems = Cart::userCartItems();
-            //echo "<pre>"; print_r($userCartItems);die;
             $couponCount = Coupon::where('coupon_code', $data['code'])->count();
             if ($couponCount == 0) {
                 $userCartItems = Cart::userCartItems();
@@ -242,7 +240,7 @@ class ProductsController extends Controller
                     'view' => (string)View::make('frontend.pages.products.cart_items', compact('userCartItems'))
                 ]);
             } else {
-                # check other coupon condition
+                #Check other coupon condition
                 $couponDetails = Coupon::where('coupon_code', $data['code'])->first();
                 //Check coupon is active or not
                 if ($couponDetails->status == 0) {
@@ -304,8 +302,8 @@ class ProductsController extends Controller
                     $grand_total = $total_amount - $couponAmount;
                     //echo $couponAmount; die;
                     //Add Coupon code and amount in session variables
-                    Session::put('CouponAmount', $couponAmount);
-                    Session::put('CouponCode', $data['code']);
+                    Session::put('couponAmount', $couponAmount);
+                    Session::put('couponCode', $data['code']);
                     $message = "Coupon code successfully applied. You are availing discount!";
                     $totalCartItems  = totalCartItems();
                     $userCartItems = Cart::userCartItems();
@@ -313,7 +311,7 @@ class ProductsController extends Controller
                         'status' => true,
                         'message' => $message,
                         'totalCartItems' => $totalCartItems,
-                        'CouponAmount' => $couponAmount,
+                        'couponAmount' => $couponAmount,
                         'grand_total' => $grand_total,
                         'view' => (string)View::make('frontend.pages.products.cart_items', compact('userCartItems'))
                     ]);
@@ -353,21 +351,23 @@ class ProductsController extends Controller
                     'division' => 'required|regex:/^[\pL\s\-]+$/u',
                     'district' => 'required|regex:/^[\pL\s\-]+$/u',
                     'police_station' => 'required|regex:/^[\pL\s\-]+$/u',
-                    'mobile' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:12',
+                    'mobile' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|digits:11',
                     'area' => 'required|regex:/^[\pL\s\-]+$/u',
                     'address' => 'required',
                     'zip_code' => 'required|numeric'
                 ];
                 $validationMessages = [
-                    'name.required' => 'The name field can not be blank',
+                    'name.regex' => 'The name field can not be blank',
                     'country.required' => 'The country field can not be blank',
-                    'division.required' => 'The division field can not be blank',
-                    'district.required' => 'The district field can not be blank',
-                    'police_station.required' => 'The police station field can not be blank',
-                    'mobile.required' => 'The mobile no field can not be blank',
+                    'division.regex' => 'The division field can not be blank',
+                    'district.regex' => 'The district field can not be blank',
+                    'police_station.regex' => 'The police station field can not be blank',
+                    'mobile.digits' => 'The mobile no field must be 11 digits',
+                    'mobile.numeric' => 'The mobile no must be numeric',
+                    'mobile.required' => 'The mobile no is required',
                     'area.required' => 'The area field can not be blank',
                     'address.required' => 'The address field can not be blank',
-                    'zip_code.required' => 'The zip code field can not be blank'
+                    'zip_code.digits' => 'The zip code field can not be blank'
                 ];
                 $this->validate($request, $rules, $validationMessages);
                 $address->user_id = Auth::user()->id;
@@ -389,7 +389,6 @@ class ProductsController extends Controller
         $countries = Country::get()->toArray();
         return view('frontend.pages.user.addEditDeliveryAddress', compact('title', 'countries', 'address', 'buttonText'));
     }
-
     /**
      * Remove the specified resource from storage.
      *
