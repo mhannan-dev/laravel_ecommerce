@@ -12,12 +12,13 @@
         <h3> CHECK OUT [ <small> <span class="totalCartItems">{{ totalCartItems() }} </span> Item(s) </small>]<a
                 href="{{ url('/cart') }}" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Back To
                 Cart</a></h3>
+                @include('frontend.partials.flash_msg')
         <hr class="soft" />
         <table class="table table-bordered">
             <tr>
-                <th> <strong>Delivery Address</strong> &nbsp; <a href="{{ url('/add-edit-delivery-address') }}"
-                        class="btn" style="float:right;">Add Address</a>
-
+                <th>
+                    <strong>Delivery Address</strong> &nbsp;
+                    <a href="{{ url('/add-edit-delivery-address') }}" class="btn" style="float:right;">Add Address</a>
                 </th>
             </tr>
             @foreach ($deliveryAddress as $address_item)
@@ -33,12 +34,15 @@
                             <label for="" class="control-label">
                                 {{ $address_item['name'] }},
                                 {{ $address_item['address'] }},
-                                {{ $address_item['city'] }},
-                                {{ $address_item['state'] }},
+                                {{ $address_item['police_station'] }},
+                                {{ $address_item['district'] }},
+                                {{ $address_item['division'] }},
                                 {{ $address_item['country'] }}
                             </label>
                         </div>
+
                     </td>
+                    <td>asdfd</td>
                 </tr>
             @endforeach
         </table>

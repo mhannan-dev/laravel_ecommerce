@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use App\Http\Requests\Frontend\DeliveryRequest;
 
 class ProductsController extends Controller
 {
@@ -97,8 +98,8 @@ class ProductsController extends Controller
     }
     public function detail($id)
     {
-        Session::forget('error_message');
-        Session::forget('success_message');
+        Session::forget('error');
+        Session::forget('success');
         $product_details = Product::with(['brand', 'category', 'attributes' => function ($query) {
             $query->where('status', 1);
         }, 'images'])->find($id)->toArray();
@@ -255,7 +256,6 @@ class ProductsController extends Controller
                 }
                 //Get all category under coupon
                 $categoryArray = explode(",", $couponDetails->categories);
-                //dd($categoryArray);
                 //Get the cart items
                 $userCartItems = Cart::userCartItems();
                 if (!empty($couponDetails->users)) {
@@ -288,7 +288,6 @@ class ProductsController extends Controller
                 if (isset($message)) {
                     $userCartItems = Cart::userCartItems();
                     $totalCartItems  = totalCartItems();
-
                     return response()->json([
                         'status' => false,
                         'message' => $message,
@@ -300,7 +299,7 @@ class ProductsController extends Controller
                     if ($couponDetails->amount_type == "fixed") {
                         $couponAmount = $couponDetails->amount;
                     } else {
-                        $couponAmount = $total_amount * ($couponDetails->amount/100);
+                        $couponAmount = $total_amount * ($couponDetails->amount / 100);
                     }
                     $grand_total = $total_amount - $couponAmount;
                     //echo $couponAmount; die;
@@ -330,9 +329,8 @@ class ProductsController extends Controller
     }
     public function addEditDeliveryAddress(Request $request, $id = null)
     {
-
         if ($id == "") {
-            $address = new DeliveryAddress();
+            $address = new DeliveryAddress;
             $title = "Add new address";
             $message = "Delivery Address has been saved successfully!";
         } else {
@@ -342,17 +340,52 @@ class ProductsController extends Controller
             $buttonText = "Update";
             $message = "Delivery Address has been updated successfully!";
         }
-        //exit();
-        if ($request->isMethod('POST')) {
-            $data = $request->all();
-            //echo '<pre>'; print_r($data); die;
-            $address->address_option = $data['address_option'];
-            $address->address_code = $address_code;
-            $address->save();
-            Session::put('SUCCESS', $message);
-            return redirect()->back();
+        //exit;
+        try {
+            if ($request->isMethod('POST')) {
+                $data = $request->all();
+                //echo '<pre>';print_r($data);die;
+                //Form validation
+                $rules = [
+                    'name' => 'required',
+                    'country' => 'required',
+                    'division' => 'required',
+                    'district' => 'required',
+                    'police_station' => 'required',
+                    'mobile' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+                    'area' => 'required',
+                    'address' => 'required',
+                    'zip_code' => 'required|numeric'
+                ];
+                $validationMessages = [
+                    'name.required' => 'The name field can not be blank',
+                    'country.required' => 'The country field can not be blank',
+                    'division.required' => 'The division field can not be blank',
+                    'district.required' => 'The district field can not be blank',
+                    'police_station.required' => 'The police station field can not be blank',
+                    'mobile.required' => 'The mobile no field can not be blank',
+                    'area.required' => 'The area field can not be blank',
+                    'address.required' => 'The address field can not be blank',
+                    'zip_code.required' => 'The zip code field can not be blank'
+                ];
+                $this->validate($request, $rules, $validationMessages);
+                $address->user_id = Auth::user()->id;
+                $address->name = $data['name'];
+                $address->country = $data['country'];
+                $address->division = $data['division'];
+                $address->district = $data['district'];
+                $address->police_station = $data['police_station'];
+                $address->mobile = $data['mobile'];
+                $address->area = $data['area'];
+                $address->address = $data['address'];
+                $address->zip_code = $data['zip_code'];
+                $address->save();
+                return redirect()->route('checkout')->with('success', $message);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
         }
         $countries = Country::get()->toArray();
-        return view('frontend.pages.user.addEditDeliveryAddress', compact('title','countries'));
+        return view('frontend.pages.user.addEditDeliveryAddress', compact('title', 'countries', 'address'));
     }
 }

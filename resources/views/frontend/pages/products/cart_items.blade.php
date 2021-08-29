@@ -71,7 +71,10 @@ use App\Models\Product;
             </td>
         </tr>
         <tr>
-            <td colspan="5" style="text-align:right"><strong>GRAND TOTAL =(BDT. {{ $total_price }}-<span class="couponAmount">BDT. 0</span>)</strong></td>
+            <td colspan="5" style="text-align:right">
+                {{-- <strong>GRAND TOTAL =(BDT. {{ $total_price }} - <span class="couponAmount">BDT. 0</span>)</strong> --}}
+                <strong>GRAND TOTAL = 
+            </td>
             <td class="label label-important" style="display:block;text-align:right">
                 <strong class="grand_total">
                     BDT. {{ $total_price - Session::get('CouponAmount') }}

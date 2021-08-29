@@ -17,13 +17,14 @@ class CreateDeliveryAddressesTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('name');
-            $table->text('address');
-            $table->string('city');
-            $table->string('state');
             $table->string('country');
-            $table->string('zip_code');
+            $table->string('division');
+            $table->string('district');
+            $table->string('police_station');
+            $table->text('address');
             $table->string('mobile');
-            $table->tinyInteger('status');
+            $table->string('zip_code');
+            $table->string('area');
             $table->timestamps();
         });
     }

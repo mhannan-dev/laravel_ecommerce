@@ -14,18 +14,18 @@ class UsersController extends Controller
 {
     public function loginRegisterPage()
     {
-        Session::forget('error_message');
-        Session::forget('success_message');
+        Session::forget('error');
+        Session::forget('success');
         return view('frontend.pages.user.loginRegister');
     }
     public function registerUser(Request $request)
     {
-       
+
         if ($request->isMethod('post')) {
             $data = $request->all();
             $userCount = User::where('email', $data['email'])->count();
             if ($userCount > 0) {
-                Session::flash('user_exist_msg', 'User already exist!');
+                Session::flash('error', 'User already exist!');
                 return redirect()->back();
             } else {
                 //Register User
@@ -52,7 +52,7 @@ class UsersController extends Controller
                     }
                 );
                 $message = "Please confirm your email to active your email";
-                Session::put('success_message', $message);
+                Session::put('success', $message);
                 return redirect()->back();
             }
         }
@@ -66,7 +66,7 @@ class UsersController extends Controller
 
                 if ($userStatus->status == 0) {
                     Auth::logout();
-                    return redirect()->back()->with('error_message', 'Please confirm your email first');
+                    return redirect()->back()->with('error', 'Please confirm your email first');
                 }
                 //Update user cart with user id
                 if (!empty(Session::get('session_id'))) {
@@ -77,7 +77,7 @@ class UsersController extends Controller
                 }
                 return redirect('/cart');
             } else {
-                return redirect()->back()->with('error_message', 'Invalid password or user name');
+                return redirect()->back()->with('error', 'Invalid password or user name');
             }
         }
     }
@@ -103,8 +103,8 @@ class UsersController extends Controller
     }
     public function confirmAccount($email)
     {
-        Session::forget('error_message');
-        Session::forget('success_message');
+        Session::forget('error');
+        Session::forget('success');
         //Decode user email
         $email = base64_decode($email);
         //Check user email exist
@@ -114,7 +114,7 @@ class UsersController extends Controller
             $userDetails = User::where('email', $email)->first();
             if ($userDetails->status == 1) {
                 $message = "Your email account is already activated! Please login";
-                Session::put('error_message', $message);
+                Session::put('error', $message);
                 return redirect('login-register');
             } else {
                 //Update user status to 1
@@ -126,7 +126,7 @@ class UsersController extends Controller
                     $message->subject('Welcome to eCommerce website');
                 });
                 $message = "Your email account is activated! You can login now";
-                Session::put('success_message', $message);
+                Session::put('success', $message);
                 return redirect('login-register');
             }
         } else {
@@ -135,14 +135,14 @@ class UsersController extends Controller
     }
     public function forgotPassword(Request $request)
     {
-        Session::forget('error_message');
-        Session::forget('success_message');
+        Session::forget('error');
+        Session::forget('success');
         if ($request->isMethod('post')) {
             $data = $request->all();
             $emailCount = User::where('email', $data['email'])->count();
             if ($emailCount == 0) {
                 $message = "This email does not exist";
-                Session::put('error_message', $message);
+                Session::put('error', $message);
                 return redirect()->back();
             }
             $random_password = Str::random(8);
@@ -170,8 +170,8 @@ class UsersController extends Controller
             );
             //Return back to login page
             $message = "Please check your inbox for new passsord";
-            Session::put('success_message', $message);
-            Session::forget('error_message');
+            Session::put('success', $message);
+            Session::forget('error');
             return redirect('login-register');
         }
         return view('frontend.pages.user.forgotPass');
@@ -199,9 +199,9 @@ class UsersController extends Controller
             $user->mobile = $data['mobile'];
             $user->save();
             $message = "Your information is updated";
-            Session::put('success_message', $message);
-            Session::forget('error_message');
-            return redirect()->route('account')->with('success_message', $message);
+            Session::put('success', $message);
+            Session::forget('error');
+            return redirect()->route('account')->with('success', $message);
         }
         return view('frontend.pages.user.account', compact('title', 'userDetails', 'countries'));
     }
@@ -229,13 +229,13 @@ class UsersController extends Controller
                 $new_password = Hash::make($data['new_password']);
                 User::where('id', $user_id)->update(['password' => $new_password]);
                 $message = "Your password is updated";
-                Session::put('success_message', $message);
-                Session::forget('error_message');
+                Session::put('success', $message);
+                Session::forget('error');
                 return redirect()->back();
             } else {
                 $message = "Your password is incorrect";
-                Session::put('error_message', $message);
-                Session::forget('success_message');
+                Session::put('error', $message);
+                Session::forget('success');
                 return redirect()->back();
             }
         }

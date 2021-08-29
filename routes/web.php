@@ -34,7 +34,7 @@ Route::namespace('Frontend')->group(function () {
     //Add to cart
     Route::post('add-to-cart', [ProductsController::class, 'addToCart']);
     //Cart
-    Route::get('cart', [ProductsController::class, 'cart']);
+    Route::get('cart', [ProductsController::class, 'cart'])->name('cart');
     Route::post('update-cart-item-qty', [ProductsController::class, 'updateCartItemQty']);
     Route::post('delete-cart-item', [ProductsController::class, 'deleteCartItem']);
     //Login Register Page
