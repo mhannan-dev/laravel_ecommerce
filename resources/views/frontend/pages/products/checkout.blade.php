@@ -12,13 +12,13 @@
         <h3> CHECK OUT [ <small> <span class="totalCartItems">{{ totalCartItems() }} </span> Item(s) </small>]<a
                 href="{{ url('/cart') }}" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Back To
                 Cart</a></h3>
-                @include('frontend.partials.flash_msg')
+        @include('frontend.partials.flash_msg')
         <hr class="soft" />
         <table class="table table-bordered">
             <tr>
                 <th>
                     <strong>Delivery Address</strong> &nbsp;
-                    <a href="{{ url('/add-edit-delivery-address') }}" class="btn" style="float:right;">Add Address</a>
+                    <a href="{{ url('add-edit-delivery-address/') }}" class="btn" style="float:right;">Add Address</a>
                 </th>
             </tr>
             @foreach ($deliveryAddress as $address_item)
@@ -42,7 +42,40 @@
                         </div>
 
                     </td>
-                    <td>asdfd</td>
+                    <td>
+                        <a class="btn" href="{{ url('add-edit-delivery-address/' . $address_item['id']) }}">Edit</a>
+
+                        <a href="#deleteModal{{ $address_item['id'] }}" data-toggle="modal" class="btn btn-danger">
+                            Delete
+                        </a>
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="deleteModal{{ $address_item['id'] }}" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Are sure
+                                            to delete?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ url('delete-delivery-address/'.$address_item['id']) }}"
+                                            method="post">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger">Permanent Delete</button>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Delete Modal -->
+
+                    </td>
                 </tr>
             @endforeach
         </table>

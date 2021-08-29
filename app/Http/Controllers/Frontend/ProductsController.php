@@ -333,6 +333,7 @@ class ProductsController extends Controller
             $address = new DeliveryAddress;
             $title = "Add new address";
             $message = "Delivery Address has been saved successfully!";
+            $buttonText = "Save";
         } else {
             // Update DeliveryAddress Code
             $address = DeliveryAddress::findOrFail($id);
@@ -386,6 +387,26 @@ class ProductsController extends Controller
             throw $th;
         }
         $countries = Country::get()->toArray();
-        return view('frontend.pages.user.addEditDeliveryAddress', compact('title', 'countries', 'address'));
+        return view('frontend.pages.user.addEditDeliveryAddress', compact('title', 'countries', 'address', 'buttonText'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\DeliveryAddress  $deliveryAddress
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteDeliveryAddress($id)
+    {
+        try {
+            $delivery_address = DeliveryAddress::findOrFail($id);
+            if (!is_null($delivery_address)) {
+                $delivery_address->delete();
+                return redirect()->back()->with('success', 'Your address has been deleted!!');
+            }
+        } catch (\Throwable $th) {
+            //dd($th);
+            return redirect()->back()->with('error', 'Your product not deleted!!');
+        }
     }
 }

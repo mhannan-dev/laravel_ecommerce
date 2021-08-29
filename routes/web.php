@@ -23,7 +23,7 @@ Route::namespace('Frontend')->group(function () {
     // Home route
     Route::get('/', [HomeController::class, 'index']);
     // Product Detail
-    Route::get('/product/{id}', [ProductsController::class, 'detail'])->name('detail');
+    Route::get('product/{id}', [ProductsController::class, 'detail'])->name('detail');
     $catSlugs = Category::select('slug')->where('status', 1)->get()->pluck('slug')->toArray();
     foreach ($catSlugs as $slug) {
         //Route::get('/' . $slug, [ProductsController::class, 'listing'])->name('slug');
@@ -49,23 +49,24 @@ Route::namespace('Frontend')->group(function () {
     Route::match(['get', 'post'], 'check-email', [UsersController::class, 'checkEmail']);
     Route::match(['get', 'post'], 'check-mobile', [UsersController::class, 'checkMobileNo']);
     //Confirm user account
-    Route::match(['GET', 'POST'], '/confirm/{code}', [UsersController::class, 'confirmAccount']);
+    Route::match(['GET', 'POST'], 'confirm/{code}', [UsersController::class, 'confirmAccount']);
     //Auth routes group
-    Route::match(['GET', 'POST'], '/forgot-password', [UsersController::class, 'forgotPassword']);
+    Route::match(['GET', 'POST'], 'forgot-password', [UsersController::class, 'forgotPassword']);
     Route::group(['middleware' => ['auth']], function () {
         Route::match(['GET', 'POST'], '/account', [UsersController::class, 'account'])->name('account');
-        Route::post('/check-user-password', [UsersController::class, 'checkUserPassword']);
-        Route::post('/update-user-password', [UsersController::class, 'updateUserPassword']);
+        Route::post('check-user-password', [UsersController::class, 'checkUserPassword']);
+        Route::post('update-user-password', [UsersController::class, 'updateUserPassword']);
         //Apply Coupon
         Route::post('apply-coupon', [ProductsController::class, 'applyCoupon'])->name('apply-coupon');
         //Checkout
-        Route::match(['GET', 'POST'], '/checkout', [ProductsController::class, 'checkout'])->name('checkout');
+        Route::match(['GET', 'POST'], 'checkout', [ProductsController::class, 'checkout'])->name('checkout');
         // Add Edit Delivery Address
-        Route::match(['GET', 'POST'], '/add-edit-delivery-address/{id?}', [ProductsController::class, 'addEditDeliveryAddress'])->name('addEditDeliveryAddress');
+        Route::match(['GET', 'POST'], 'add-edit-delivery-address/{id?}', [ProductsController::class, 'addEditDeliveryAddress'])->name('addEditDeliveryAddress');
+        Route::post('delete-delivery-address/{id}',[ProductsController::class, 'deleteDeliveryAddress'])->name('deleteDeliveryAddress');
     });
 });
 Auth::routes();
-Route::prefix('/sadmin')->namespace('Admin')->group(function () {
+Route::prefix('sadmin')->namespace('Admin')->group(function () {
     Route::match(['get', 'post'], '/', [AdminController::class, 'login']);
     Route::group(['middleware' => ['admin']], function () {
         Route::get('dashboard', [AdminController::class, 'dashboard']);
@@ -112,7 +113,7 @@ Route::prefix('/sadmin')->namespace('Admin')->group(function () {
     });
 });
 //To clear all cache
-Route::get('/clear', function () {
+Route::get('clear', function () {
     Artisan::call('cache:clear');
     Artisan::call('config:clear');
     Artisan::call('config:cache');
