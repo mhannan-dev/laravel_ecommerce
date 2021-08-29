@@ -348,13 +348,13 @@ class ProductsController extends Controller
                 //echo '<pre>';print_r($data);die;
                 //Form validation
                 $rules = [
-                    'name' => 'required',
+                    'name' => 'required|regex:/^[\pL\s\-]+$/u',
                     'country' => 'required',
-                    'division' => 'required',
-                    'district' => 'required',
-                    'police_station' => 'required',
-                    'mobile' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-                    'area' => 'required',
+                    'division' => 'required|regex:/^[\pL\s\-]+$/u',
+                    'district' => 'required|regex:/^[\pL\s\-]+$/u',
+                    'police_station' => 'required|regex:/^[\pL\s\-]+$/u',
+                    'mobile' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:12',
+                    'area' => 'required|regex:/^[\pL\s\-]+$/u',
                     'address' => 'required',
                     'zip_code' => 'required|numeric'
                 ];
