@@ -19,3 +19,9 @@
         </div>
     </div>
 @endsection
+
+<?php
+    Session::forget('grand_total');
+    Session::forget('order_id');
+
+?>

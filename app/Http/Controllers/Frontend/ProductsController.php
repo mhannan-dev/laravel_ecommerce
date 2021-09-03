@@ -340,7 +340,8 @@ class ProductsController extends Controller
             if ($data['payment_gateway'] == "cashOnDelivery") {
                 $payment_method = "cashOnDelivery";
             } else {
-                echo "Coming soon"; die;
+                echo "Coming soon";
+                die;
                 $payment_method = "Prepaid";
             }
             //Get Delivary Address
@@ -385,14 +386,13 @@ class ProductsController extends Controller
                 $cartItem->product_qty = $item['quantity'];
                 $cartItem->save();
             }
-
             Session::put('order_id', $order_id);
             DB::commit();
             if ($data['payment_gateway']) {
                 return redirect()->route('thanks');
-
             } else {
-                echo "Prepaid method is comming soon"; die;
+                echo "Prepaid method is comming soon";
+                die;
             }
             echo "Order Placed";
             die;
@@ -404,9 +404,13 @@ class ProductsController extends Controller
     public function thanks()
     {
         $data['title'] = "Thanks";
-        //Delete Logged in user cart
-        Cart::where('user_id', Auth::user()->id)->delete();
-        return view('frontend.pages.products.thanks',$data);
+        if (Session::has('order_id')) {
+            //Delete Logged in user cart
+            Cart::where('user_id', Auth::user()->id)->delete();
+            return view('frontend.pages.products.thanks', $data);
+        } else {
+            return redirect()->route('cart');
+        }
     }
     public function addEditDeliveryAddress(Request $request, $id = null)
     {
