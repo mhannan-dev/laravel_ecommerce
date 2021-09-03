@@ -1,7 +1,10 @@
 <?php
+
 namespace App\Http\Controllers\Frontend;
+
 use App\Models\Cart;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Coupon;
 use App\Models\Country;
 use App\Models\Product;
@@ -9,12 +12,14 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\DeliveryAddress;
 use App\Models\ProductAttribute;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\OrderProduct;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-use App\Http\Requests\Frontend\DeliveryRequest;
+
 class ProductsController extends Controller
 {
     public function listing(Request $request)
@@ -321,6 +326,65 @@ class ProductsController extends Controller
     }
     public function checkout(Request $request)
     {
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            //dd($data);
+            if (empty($data['address_id'])) {
+                $message = "Please select delivery address";
+                return redirect()->back()->with('error', $message);
+            }
+            if (empty($data['payment_gateway'])) {
+                $message = "Please select payment gateway";
+                return redirect()->back()->with('success', $message);
+            }
+            if ($data['payment_gateway'] == "cashOnDelivery") {
+                $payment_method = "cashOnDelivery";
+            } else {
+                $payment_method = "Prepaid";
+            }
+            //Get Delivary Address
+            $delivery_address = DeliveryAddress::where('id', $data['address_id'])->first()->toArray();
+            //Insert Into Order Details
+            $order = new Order;
+            $order->user_id = Auth::user()->id;
+            $order->name = $delivery_address['name'];
+            $order->address = $delivery_address['address'];
+            $order->city = $delivery_address['division'];
+            $order->state = $delivery_address['district'];
+            $order->country = $delivery_address['country'];
+            $order->zip_code = $delivery_address['zip_code'];
+            $order->mobile = $delivery_address['mobile'];
+            $order->email = Auth::user()->email;
+            $order->shipping_charges = 0;
+            $order->coupon_code = Session::get('couponCode');
+            $order->coupon_amount = Session::get('couponAmount');
+            $order->order_status = "New";
+            $order->payment_method = $payment_method;
+            $order->payment_gateway = $data['payment_gateway'];
+            $order->grand_total = Session::get('grand_total');
+            $order->save();
+            //Get last Order ID
+            $order_id = DB::getPdo()->lastInsertId();
+            //Get cart items of logged in user that will be order products
+            $cartItems = Cart::where('user_id', Auth::user()->id)->get()->toArray();
+            foreach ($cartItems as $key => $item) {
+                $cartItem = new OrderProduct();
+                $cartItem->user_id = Auth::user()->id;
+                $cartItem->order_id = $order_id;
+                //Get product details of products with added to carts table
+                $getProductDetails = Product::select('title', 'code', 'color')->where('id', $item['id'])->first()->toArray();
+                $cartItem->product_id = $item['product_id'];
+                $cartItem->product_name = $getProductDetails['title'];
+                $cartItem->product_code = $getProductDetails['code'];
+                $cartItem->product_color = $getProductDetails['color'];
+                $cartItem->product_size = $item['size'];
+                $getDiscountedAttrPrice = Product::getDiscountedAttrPrice($item['product_id'], $item['size']);
+                $cartItem->product_price = $getDiscountedAttrPrice['final_price'];
+                $cartItem->product_qty = $item['quantity'];
+                $cartItem->save();
+            }
+            echo "Order Placed"; die;
+        }
         $userCartItems = Cart::userCartItems();
         $deliveryAddress = DeliveryAddress::deliveryAddress();
         return view('frontend.pages.products.checkout', compact('userCartItems', 'deliveryAddress'));
