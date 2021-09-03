@@ -340,10 +340,12 @@ class ProductsController extends Controller
             if ($data['payment_gateway'] == "cashOnDelivery") {
                 $payment_method = "cashOnDelivery";
             } else {
+                echo "Coming soon"; die;
                 $payment_method = "Prepaid";
             }
             //Get Delivary Address
             $delivery_address = DeliveryAddress::where('id', $data['address_id'])->first()->toArray();
+            DB::beginTransaction();
             //Insert Into Order Details
             $order = new Order;
             $order->user_id = Auth::user()->id;
@@ -372,7 +374,7 @@ class ProductsController extends Controller
                 $cartItem->user_id = Auth::user()->id;
                 $cartItem->order_id = $order_id;
                 //Get product details of products with added to carts table
-                $getProductDetails = Product::select('title', 'code', 'color')->where('id', $item['id'])->first()->toArray();
+                $getProductDetails = Product::select('title', 'code', 'color')->where('id', $item['product_id'])->first()->toArray();
                 $cartItem->product_id = $item['product_id'];
                 $cartItem->product_name = $getProductDetails['title'];
                 $cartItem->product_code = $getProductDetails['code'];
@@ -383,11 +385,28 @@ class ProductsController extends Controller
                 $cartItem->product_qty = $item['quantity'];
                 $cartItem->save();
             }
-            echo "Order Placed"; die;
+
+            Session::put('order_id', $order_id);
+            DB::commit();
+            if ($data['payment_gateway']) {
+                return redirect()->route('thanks');
+
+            } else {
+                echo "Prepaid method is comming soon"; die;
+            }
+            echo "Order Placed";
+            die;
         }
         $userCartItems = Cart::userCartItems();
         $deliveryAddress = DeliveryAddress::deliveryAddress();
         return view('frontend.pages.products.checkout', compact('userCartItems', 'deliveryAddress'));
+    }
+    public function thanks()
+    {
+        $data['title'] = "Thanks";
+        //Delete Logged in user cart
+        Cart::where('user_id', Auth::user()->id)->delete();
+        return view('frontend.pages.products.thanks',$data);
     }
     public function addEditDeliveryAddress(Request $request, $id = null)
     {

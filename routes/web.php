@@ -63,6 +63,7 @@ Route::namespace('Frontend')->group(function () {
         // Add Edit Delivery Address
         Route::match(['GET', 'POST'], 'add-edit-delivery-address/{id?}', [ProductsController::class, 'addEditDeliveryAddress'])->name('addEditDeliveryAddress');
         Route::post('delete-delivery-address/{id}',[ProductsController::class, 'deleteDeliveryAddress'])->name('deleteDeliveryAddress');
+        Route::get('thanks',[ProductsController::class, 'thanks'])->name('thanks');
     });
 });
 Auth::routes();
