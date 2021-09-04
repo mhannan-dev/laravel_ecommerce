@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ProductController;
@@ -14,7 +15,6 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Frontend\UsersController;
 use App\Http\Controllers\Frontend\OrdersController;
 use App\Http\Controllers\Frontend\ProductsController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -112,10 +112,8 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
         Route::match(['get', 'post'], 'add-edit-coupon/{id?}', [CouponController::class, 'addEditCoupon']);
         Route::post('update-coupon-status', [CouponController::class, 'updateCouponStatus']);
         Route::post('delete-coupon/{id}',[CouponController::class, 'deleteCoupon']);
-
-
-
-
+        //Orders
+        Route::get('orders', [OrderController::class, 'orders'])->name('sadmin.orders');
     });
 });
 //To clear all cache
