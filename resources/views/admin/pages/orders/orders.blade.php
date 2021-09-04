@@ -43,46 +43,39 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Serial No.</th>
-                                            <th>Coupon code</th>
-                                            <th>Coupon type</th>
-                                            <th>Expiry Date</th>
+                                            <th>SL</th>
+                                            <th>ID</th>
+                                            <th>Date</th>
+                                            <th>Customer Name</th>
+                                            <th>Customer Email</th>
+                                            <th>Product</th>
                                             <th>Amount</th>
                                             <th>Status</th>
+                                            <th>Payment</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
-
-
-                                        <tr role="row" class="odd">
-                                                <td class="dtr-control sorting_1" tabindex="0">Trident</td>
-                                                <td>Internet
-                                                    Explorer 4.0
-                                                </td>
-                                                <td>Win 95+</td>
-                                                <td> 4</td>
-                                                <td>X</td>
-                                            </tr><tr role="row" class="even">
-                                                <td class="dtr-control sorting_1" tabindex="0">Trident</td>
-                                                <td>Internet
-                                                    Explorer 5.0
-                                                </td>
-                                                <td>Win 95+</td>
-                                                <td>5</td>
-                                                <td>C</td>
-                                            </tr><tr role="row" class="odd">
-                                                <td class="dtr-control sorting_1" tabindex="0">Trident</td>
-                                                <td>Internet
-                                                    Explorer 5.5
-                                                </td>
-                                                <td>Win 95+</td>
-                                                <td>5.5</td>
-                                                <td>A</td>
-                                            </tr></tbody>
+                                        @foreach ($orders as $key => $order)
+                                        <tr>
+                                            <td>1</td>
+                                            <td>{{ $order['id'] }}</td>
+                                            <td>{{ date('Y-m-d', strtotime($order['created_at'])) }}</td>
+                                            <td>{{ $order['name'] }}</td>
+                                            <td>{{ $order['email'] }}</td>
+                                            <td>
+                                                @foreach ($order['order_products'] as $pro)
+                                                    {{ $pro['product_code'] }} <span class="badge badge-warning">({{ $pro['product_qty'] }})</span><br>
+                                                @endforeach
+                                            </td>
+                                            <td>{{ $order['grand_total'] }}</td>
+                                            <td><span class="badge badge-success">{{ $order['order_status'] }}</span></td>
+                                            <td title="Cash On Delivery">{{ $order['payment_method'] }}</td>
+                                            <td><a href="{{ route('sadmin.orderDetails',$order['id']) }}"><i class="fa fa-eye"></i></a></td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
-
                             </div>
                             <!-- /.card-body -->
                         </div>

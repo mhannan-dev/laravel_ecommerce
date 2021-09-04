@@ -160,7 +160,7 @@ use App\Models\Product;
                                 <div class="controls">
                                     <input type="radio" name="payment_gateway" value="paypal" required> <strong
                                         class="btn disables">Paypal</strong>
-                                    <input type="radio" name="payment_gateway" value="cashOnDelivery" required> <strong
+                                    <input type="radio" name="payment_gateway" value="COD" required> <strong
                                         class="btn">Cash On Delivery</strong>
                                 </div>
                             </div>

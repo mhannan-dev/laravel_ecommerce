@@ -334,8 +334,8 @@ class ProductsController extends Controller
                 $message = "Please select payment gateway";
                 return redirect()->back()->with('success', $message);
             }
-            if ($data['payment_gateway'] == "cashOnDelivery") {
-                $payment_method = "cashOnDelivery";
+            if ($data['payment_gateway'] == "COD") {
+                $payment_method = "COD";
             } else {
                 echo "Coming soon";
                 die;

@@ -114,6 +114,7 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
         Route::post('delete-coupon/{id}',[CouponController::class, 'deleteCoupon']);
         //Orders
         Route::get('orders', [OrderController::class, 'orders'])->name('sadmin.orders');
+        Route::get('orderDetail/{id}',[OrderController::class, 'orderDetails'])->name('sadmin.orderDetails');
     });
 });
 //To clear all cache
