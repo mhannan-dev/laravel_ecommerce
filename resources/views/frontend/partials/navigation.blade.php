@@ -64,6 +64,9 @@ $sections = Section::sections();
                             <ul class="nav pull-right">
                                 <li><a href="#">Contact</a></li>
                                 @if (Auth::check())
+                                <li class="divider-vertical"></li>
+                                    <li><a href="{{ url('orders') }}">Orders</a></li>
+                                    <li class="divider-vertical"></li>
                                     <li><a href="{{ url('account') }}">Account</a></li>
                                     <li class="divider-vertical"></li>
                                     <li><a href="{{ url('logout') }}">Logout</a></li>

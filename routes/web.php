@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Frontend\UsersController;
+use App\Http\Controllers\Frontend\OrdersController;
 use App\Http\Controllers\Frontend\ProductsController;
 
 /*
@@ -63,7 +64,10 @@ Route::namespace('Frontend')->group(function () {
         // Add Edit Delivery Address
         Route::match(['GET', 'POST'], 'add-edit-delivery-address/{id?}', [ProductsController::class, 'addEditDeliveryAddress'])->name('addEditDeliveryAddress');
         Route::post('delete-delivery-address/{id}',[ProductsController::class, 'deleteDeliveryAddress'])->name('deleteDeliveryAddress');
+        //Thanks
         Route::get('thanks',[ProductsController::class, 'thanks'])->name('thanks');
+        //Orders
+        Route::get('orders',[OrdersController::class, 'orders'])->name('orders');
     });
 });
 Auth::routes();

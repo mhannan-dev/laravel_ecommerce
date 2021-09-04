@@ -25,8 +25,8 @@ class CreateOrdersTable extends Migration
             $table->integer('mobile');
             $table->string('email')->nullable();
             $table->string('shipping_charges');
-            $table->string('coupon_code');
-            $table->decimal('coupon_amount', 10, 2);
+            $table->string('coupon_code')->nullable();
+            $table->decimal('coupon_amount', 10, 2)->nullable();
             $table->string('order_status');
             $table->string('payment_gateway');
             $table->string('payment_method');
