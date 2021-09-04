@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Frontend;
 use App\Models\Cart;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Coupon;
 use App\Models\Country;
 use App\Models\Product;
@@ -9,12 +10,13 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\DeliveryAddress;
 use App\Models\ProductAttribute;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\OrderProduct;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-use App\Http\Requests\Frontend\DeliveryRequest;
 class ProductsController extends Controller
 {
     public function listing(Request $request)
@@ -200,6 +202,9 @@ class ProductsController extends Controller
                 ]);
             }
             Cart::where("id", $data['cart_id'])->update(["quantity" => $data['qty']]);
+            //Forget coupon session after update cart
+            Session::forget('couponCode');
+            Session::forget('couponAmount');
             $userCartItems = Cart::userCartItems();
             $totalCartItems  = totalCartItems();
             return response()->json([
@@ -226,8 +231,6 @@ class ProductsController extends Controller
     {
         if ($request->isMethod('post')) {
             $data = $request->all();
-            //$userCartItems = Cart::userCartItems();
-            //echo "<pre>"; print_r($userCartItems);die;
             $couponCount = Coupon::where('coupon_code', $data['code'])->count();
             if ($couponCount == 0) {
                 $userCartItems = Cart::userCartItems();
@@ -239,7 +242,7 @@ class ProductsController extends Controller
                     'view' => (string)View::make('frontend.pages.products.cart_items', compact('userCartItems'))
                 ]);
             } else {
-                # check other coupon condition
+                #Check other coupon condition
                 $couponDetails = Coupon::where('coupon_code', $data['code'])->first();
                 //Check coupon is active or not
                 if ($couponDetails->status == 0) {
@@ -301,8 +304,8 @@ class ProductsController extends Controller
                     $grand_total = $total_amount - $couponAmount;
                     //echo $couponAmount; die;
                     //Add Coupon code and amount in session variables
-                    Session::put('CouponAmount', $couponAmount);
-                    Session::put('CouponCode', $data['code']);
+                    Session::put('couponAmount', $couponAmount);
+                    Session::put('couponCode', $data['code']);
                     $message = "Coupon code successfully applied. You are availing discount!";
                     $totalCartItems  = totalCartItems();
                     $userCartItems = Cart::userCartItems();
@@ -310,7 +313,7 @@ class ProductsController extends Controller
                         'status' => true,
                         'message' => $message,
                         'totalCartItems' => $totalCartItems,
-                        'CouponAmount' => $couponAmount,
+                        'couponAmount' => $couponAmount,
                         'grand_total' => $grand_total,
                         'view' => (string)View::make('frontend.pages.products.cart_items', compact('userCartItems'))
                     ]);
@@ -320,9 +323,91 @@ class ProductsController extends Controller
     }
     public function checkout(Request $request)
     {
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            //dd($data);
+            if (empty($data['address_id'])) {
+                $message = "Please select delivery address";
+                return redirect()->back()->with('error', $message);
+            }
+            if (empty($data['payment_gateway'])) {
+                $message = "Please select payment gateway";
+                return redirect()->back()->with('success', $message);
+            }
+            if ($data['payment_gateway'] == "cashOnDelivery") {
+                $payment_method = "cashOnDelivery";
+            } else {
+                echo "Coming soon";
+                die;
+                $payment_method = "Prepaid";
+            }
+            //Get Delivary Address
+            $delivery_address = DeliveryAddress::where('id', $data['address_id'])->first()->toArray();
+            DB::beginTransaction();
+            //Insert Into Order Details
+            $order = new Order;
+            $order->user_id = Auth::user()->id;
+            $order->name = $delivery_address['name'];
+            $order->address = $delivery_address['address'];
+            $order->city = $delivery_address['division'];
+            $order->state = $delivery_address['district'];
+            $order->country = $delivery_address['country'];
+            $order->zip_code = $delivery_address['zip_code'];
+            $order->mobile = $delivery_address['mobile'];
+            $order->email = Auth::user()->email;
+            $order->shipping_charges = 0;
+            $order->coupon_code = Session::get('couponCode');
+            $order->coupon_amount = Session::get('couponAmount');
+            $order->order_status = "New";
+            $order->payment_method = $payment_method;
+            $order->payment_gateway = $data['payment_gateway'];
+            $order->grand_total = Session::get('grand_total');
+            $order->save();
+            //Get last Order ID
+            $order_id = DB::getPdo()->lastInsertId();
+            //Get cart items of logged in user that will be order products
+            $cartItems = Cart::where('user_id', Auth::user()->id)->get()->toArray();
+            foreach ($cartItems as $key => $item) {
+                $cartItem = new OrderProduct();
+                $cartItem->user_id = Auth::user()->id;
+                $cartItem->order_id = $order_id;
+                //Get product details of products with added to carts table
+                $getProductDetails = Product::select('title', 'code', 'color')->where('id', $item['product_id'])->first()->toArray();
+                $cartItem->product_id = $item['product_id'];
+                $cartItem->product_name = $getProductDetails['title'];
+                $cartItem->product_code = $getProductDetails['code'];
+                $cartItem->product_color = $getProductDetails['color'];
+                $cartItem->product_size = $item['size'];
+                $getDiscountedAttrPrice = Product::getDiscountedAttrPrice($item['product_id'], $item['size']);
+                $cartItem->product_price = $getDiscountedAttrPrice['final_price'];
+                $cartItem->product_qty = $item['quantity'];
+                $cartItem->save();
+            }
+            Session::put('order_id', $order_id);
+            DB::commit();
+            if ($data['payment_gateway']) {
+                return redirect()->route('thanks');
+            } else {
+                echo "Prepaid method is comming soon";
+                die;
+            }
+            echo "Order Placed";
+            die;
+        }
         $userCartItems = Cart::userCartItems();
         $deliveryAddress = DeliveryAddress::deliveryAddress();
         return view('frontend.pages.products.checkout', compact('userCartItems', 'deliveryAddress'));
+    }
+    public function thanks()
+    {
+        $data['title'] = "Thanks";
+        if (Session::has('order_id')) {
+            //Delete Logged in user cart
+            Cart::where('user_id', Auth::user()->id)->delete();
+            return view('frontend.pages.products.thanks', $data);
+        } else {
+            return redirect()->route('cart');
+        }
     }
     public function addEditDeliveryAddress(Request $request, $id = null)
     {
@@ -350,21 +435,23 @@ class ProductsController extends Controller
                     'division' => 'required|regex:/^[\pL\s\-]+$/u',
                     'district' => 'required|regex:/^[\pL\s\-]+$/u',
                     'police_station' => 'required|regex:/^[\pL\s\-]+$/u',
-                    'mobile' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:12',
+                    'mobile' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|digits:11',
                     'area' => 'required|regex:/^[\pL\s\-]+$/u',
                     'address' => 'required',
                     'zip_code' => 'required|numeric'
                 ];
                 $validationMessages = [
-                    'name.required' => 'The name field can not be blank',
+                    'name.regex' => 'The name field can not be blank',
                     'country.required' => 'The country field can not be blank',
-                    'division.required' => 'The division field can not be blank',
-                    'district.required' => 'The district field can not be blank',
-                    'police_station.required' => 'The police station field can not be blank',
-                    'mobile.required' => 'The mobile no field can not be blank',
+                    'division.regex' => 'The division field can not be blank',
+                    'district.regex' => 'The district field can not be blank',
+                    'police_station.regex' => 'The police station field can not be blank',
+                    'mobile.digits' => 'The mobile no field must be 11 digits',
+                    'mobile.numeric' => 'The mobile no must be numeric',
+                    'mobile.required' => 'The mobile no is required',
                     'area.required' => 'The area field can not be blank',
                     'address.required' => 'The address field can not be blank',
-                    'zip_code.required' => 'The zip code field can not be blank'
+                    'zip_code.digits' => 'The zip code field can not be blank'
                 ];
                 $this->validate($request, $rules, $validationMessages);
                 $address->user_id = Auth::user()->id;
