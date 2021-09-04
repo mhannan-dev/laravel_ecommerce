@@ -17,4 +17,11 @@ class OrdersController extends Controller
         //dd($data['orders']);
         return view('frontend.pages.user.orders',$data);
     }
+    public function orderDetails($id)
+    {
+        $data['title'] = "Order Details";
+        $data['orderDetails'] = Order::with('order_products')->where('id', $id)->first()->toArray();
+        //dd($data['orderDetails']);
+        return view('frontend.pages.user.order_details',$data);
+    }
 }

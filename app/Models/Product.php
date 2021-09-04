@@ -111,4 +111,11 @@ class Product extends Model
         }
         return array('price' => $proAttrPrice['price'], 'final_price' => $final_price, 'discount'=> $discount);
     }
+
+
+    public static function getProductImage($product_id)
+    {
+        $getProductImage = Product::select('image')->where('id', $product_id)->first()->toArray();
+        return $getProductImage;
+    }
 }

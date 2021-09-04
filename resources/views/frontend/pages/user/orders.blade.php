@@ -18,18 +18,17 @@
             <table class="table">
                 <thead>
                     <tr>
-
                         <th scope="col">Order ID</th>
                         <th scope="col">Order products</th>
                         <th scope="col">Payment Method</th>
                         <th scope="col">Grand Total</th>
                         <th scope="col">Created On</th>
+                        <th scope="col">Details</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($orders as $key => $order)
                     <tr>
-
                         <td>{{ $order['id'] }}</td>
                         <td>
                             @foreach ($order['order_products'] as $prod)
@@ -39,6 +38,7 @@
                         <td>{{ $order['payment_method'] }}</td>
                         <td>{{ $order['grand_total'] }}</td>
                         <td>{{ date('Y-m-d', strtotime($order['created_at'])) }}</td>
+                        <td><a href="{{ url('orders',$order['id']) }}" title="View Details">Details</a></td>
                     </tr>
                     @endforeach
                 </tbody>

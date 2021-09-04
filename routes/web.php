@@ -68,6 +68,7 @@ Route::namespace('Frontend')->group(function () {
         Route::get('thanks',[ProductsController::class, 'thanks'])->name('thanks');
         //Orders
         Route::get('orders',[OrdersController::class, 'orders'])->name('orders');
+        Route::get('orders/{id}',[OrdersController::class, 'orderDetails'])->name('orderDetails');
     });
 });
 Auth::routes();
