@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
-
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Coupon;
@@ -17,7 +15,6 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Frontend\DeliveryRequest;
-
 class ProductsController extends Controller
 {
     public function listing(Request $request)
@@ -389,7 +386,6 @@ class ProductsController extends Controller
         $countries = Country::get()->toArray();
         return view('frontend.pages.user.addEditDeliveryAddress', compact('title', 'countries', 'address', 'buttonText'));
     }
-
     /**
      * Remove the specified resource from storage.
      *
