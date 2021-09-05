@@ -3,14 +3,10 @@
 ?>
 @extends('admin.layouts.master')
 @section('title')
-Product Sections
+    Order Details of Product
 @endsection
 @section('styles')
-<style>
-    a {
-        color: #5da1eb;
-    }
-</style>
+
 @endsection
 @section('content')
 <div class="content-wrapper">
@@ -79,7 +75,7 @@ Product Sections
                                     </tr>
                                 </tbody>
                             </table>
-                            <table class="table table-bordered">
+                            <table class="table table-bordered mt-2">
                                 <tr>
                                     <td colspan="2">Delivery Address</td>
                                 </tr>
