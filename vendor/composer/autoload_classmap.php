@@ -55,6 +55,7 @@ return array(
     'App\\Models\\Coupon' => $baseDir . '/app/Models/Coupon.php',
     'App\\Models\\DeliveryAddress' => $baseDir . '/app/Models/DeliveryAddress.php',
     'App\\Models\\Order' => $baseDir . '/app/Models/Order.php',
+    'App\\Models\\OrderLog' => $baseDir . '/app/Models/OrderLog.php',
     'App\\Models\\OrderProduct' => $baseDir . '/app/Models/OrderProduct.php',
     'App\\Models\\OrderStatus' => $baseDir . '/app/Models/OrderStatus.php',
     'App\\Models\\Product' => $baseDir . '/app/Models/Product.php',
