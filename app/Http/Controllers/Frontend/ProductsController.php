@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Frontend;
+
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Order;
@@ -7,16 +9,18 @@ use App\Models\Coupon;
 use App\Models\Country;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\OrderProduct;
 use Illuminate\Http\Request;
 use App\Models\DeliveryAddress;
 use App\Models\ProductAttribute;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\OrderProduct;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+
 class ProductsController extends Controller
 {
     public function listing(Request $request)
@@ -385,7 +389,27 @@ class ProductsController extends Controller
             }
             Session::put('order_id', $order_id);
             DB::commit();
-            if ($data['payment_gateway']) {
+            if ($data['payment_gateway'] == "COD") {
+                $orderDetails = Order::with('order_products')->where('id', $order_id)->first()->toArray();
+                //dd($orderDetails);
+                //Send order confirmation email to customer
+                $email = Auth::user()->email;
+                $messageData = [
+                    'name' => Auth::user()->name,
+                    'email' => $email,
+                    'order_id' => $order_id,
+                    'orderDetails' => $orderDetails,
+
+
+                ];
+                Mail::send(
+                    'emails.order',
+                    $messageData,
+                    function ($message) use ($email) {
+                        $message->to($email);
+                        $message->subject('Order Placed Successfully - eCommerce');
+                    }
+                );
                 return redirect()->route('thanks');
             } else {
                 echo "Prepaid method is comming soon";

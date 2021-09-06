@@ -6,12 +6,13 @@ use App\Models\Product;
     Order Details of Products
 @endsection
 @section('styles')
-<style>
-    select.form-control {
+    <style>
+        select.form-control {
 
-        background: rgb(153, 238, 25);
-    }
-</style>
+            background: rgb(153, 238, 25);
+        }
+
+    </style>
 @endsection
 @section('content')
     <div class="content-wrapper">
@@ -58,7 +59,8 @@ use App\Models\Product;
                                     <tbody>
                                         <tr>
                                             <td>{{ date('Y-m-d', strtotime($orderDetails['created_at'])) }}</td>
-                                            <td style="background: rgb(156 236 35)">{{ $orderDetails['order_status'] }}</td>
+                                            <td style="background: rgb(156 236 35)">{{ $orderDetails['order_status'] }}
+                                            </td>
                                             <td>{{ $orderDetails['grand_total'] }}</td>
                                             <td>{{ $orderDetails['shipping_charges'] }}</td>
                                             <td>
@@ -122,7 +124,9 @@ use App\Models\Product;
                             <!-- /.card-body -->
                         </div>
                         <!-- /.card -->
-                        @include('admin.partials.message')
+                        <div class="messageDiv">
+                            @include('admin.partials.message')
+                        </div>
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Update Order Status</h3>
@@ -217,5 +221,12 @@ use App\Models\Product;
     </div>
 @stop
 <!-- External javascript -->
-@section('scripts')
-@endsection
+{{-- @section('scripts')
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('.messageDiv').fadeOut('fast');
+            }, 3000); // <-- time in milliseconds
+        });
+    </script>
+@endsection --}}

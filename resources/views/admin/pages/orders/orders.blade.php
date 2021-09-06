@@ -91,35 +91,5 @@
     </div>
 @endsection
 @section('scripts')
-    <script type="text/javascript">
-        //Jquery ready function
-        $(document).ready(function() {
-            $(".coupon_status").click(function() {
-                var status = $(this).text();
-                var coupon_id = $(this).attr("coupon_id");
-                $.ajax({
-                    type: 'post',
-                    url: '/sadmin/update-coupon-status',
-                    data: {
-                        status: status,
-                        coupon_id: coupon_id
-                    },
-                    success: function(resp) {
-                        if (resp['status'] == 0) {
-                            $("#coupon_" + coupon_id).html(
-                                "<a href='javascript:void(0)' class='coupon_status'>In Active</a>"
-                            )
-                        } else if (resp['status'] == 1) {
-                            $("#coupon_" + coupon_id).html(
-                                "<a href='javascript:void(0)' class='coupon_status'>Active</a>"
-                            )
-                        }
-                    },
-                    error: function() {
-                        alert("Error");
-                    }
-                });
-            });
-        });
-    </script>
+
 @endsection

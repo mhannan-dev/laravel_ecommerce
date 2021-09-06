@@ -11,17 +11,14 @@
         <h3> {{ $title }}</h3>
         <hr class="soft">
         <div id="legalNotice">
-            <h5>Your order has been placed successfully</h5><br>
-
+            <h5>Your order has been placed successfully! Please check your associated email inbox/spam</h5><br>
             <p>
                 Your order number is <strong>{{ Session::get('order_id') }}</strong> and payable grand total is <strong>{{ Session::get('grand_total') }}</strong>
             </p>
         </div>
     </div>
 @endsection
-
 <?php
     Session::forget('grand_total');
     Session::forget('order_id');
-
 ?>

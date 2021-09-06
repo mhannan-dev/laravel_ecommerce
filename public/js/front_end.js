@@ -1,4 +1,5 @@
 $(function () {
+
     //X-CSRF-TOKEN
     $.ajaxSetup({
         headers: {
@@ -291,4 +292,5 @@ $(function () {
             },
         });
     });
+
 });

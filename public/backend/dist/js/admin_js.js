@@ -13,4 +13,7 @@ $(document).ready(function () {
         $('#couponField').hide();
     });
 
+    //Hiding flash message
+    $('#msgDiv').delay(1500).hide(500);
+
 });
