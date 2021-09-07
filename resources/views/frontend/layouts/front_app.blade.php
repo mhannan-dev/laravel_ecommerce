@@ -8,10 +8,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Front style -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="//fonts.googleapis.com" />
+    <link rel="preconnect" href="//fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+        href="//fonts.googleapis.com/css2?family=Roboto&display=swap"
         rel="stylesheet"
     />
     <link id="callCss" rel="stylesheet" href="{{ URL::asset('backend') }}/themes/css/front.min.css" media="screen" />
@@ -54,8 +54,8 @@
     <!-- Placed at the end of the document so the pages load faster ============================================= -->
     <script src="{{ URL::asset('backend') }}/themes/js/jquery.js" type="text/javascript"></script>
     <!-- jquery-validation -->
-    <script src="http://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.js" type="text/javascript"></script>
+    <script src="//code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.js" type="text/javascript"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/front.min.js" type="text/javascript"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/google-code-prettify/prettify.js"></script>
     <script src="{{ URL::asset('backend') }}/themes/js/front.js"></script>
