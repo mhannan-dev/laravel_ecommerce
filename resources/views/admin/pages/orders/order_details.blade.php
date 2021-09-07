@@ -8,7 +8,6 @@ use App\Models\Product;
 @section('styles')
     <style>
         select.form-control {
-
             background: rgb(153, 238, 25);
         }
 
@@ -36,7 +35,7 @@ use App\Models\Product;
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-9">
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Order Details - <span
@@ -85,9 +84,58 @@ use App\Models\Product;
                             <!-- /.card-body -->
                         </div>
                         <!-- /.card -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Product Information</h3>
+                                <div class="card-tools">
+                                    <div class="input-group input-group-sm" style="width: 150px;">
+                                        <input type="text" name="table_search" class="form-control float-right"
+                                            placeholder="Search">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-default">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Code</th>
+                                            <th scope="col">Color</th>
+                                            <th scope="col">Size</th>
+                                            <th scope="col">Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($orderDetails['order_products'] as $product)
+                                            <tr>
+                                                <td>
+                                                    <?php
+                                                    $getProductImage = Product::getProductImage($product['product_id']);
+                                                    ?>
+                                                    <img style="width: 100px;"
+                                                        src="{{ asset('uploads/product_img_small/' . $getProductImage['image']) }}"
+                                                        alt="{{ $product['product_name'] }}">
+                                                </td>
+                                                <td>{{ $product['product_name'] }}</td>
+                                                <td>{{ $product['product_code'] }}</td>
+                                                <td>{{ $product['product_color'] }}</td>
+                                                <td>{{ $product['product_size'] }}</td>
+                                                <td>{{ $product['product_qty'] }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Delivery Address and Custoemr Information</h3>
@@ -124,6 +172,9 @@ use App\Models\Product;
                             <!-- /.card-body -->
                         </div>
                         <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-3">
                         <div class="messageDiv">
                             @include('admin.partials.message')
                         </div>
@@ -133,91 +184,65 @@ use App\Models\Product;
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body p-0">
-                                <form class="form-inline" action="{{ url('sadmin/update-order-status') }}"
-                                    method="post">
-                                    @csrf
-                                    <input type="hidden" name="order_id" value="{{ $orderDetails['id'] }}">
-                                    <div class="form-group mx-sm-3 mb-2 mt-2">
-                                        <select class="form-control" name="order_status" required>
-                                            <option>Select new</option>
-                                            @foreach ($orderStatuses as $status)
-                                                <option value="{{ $status['name'] }}" @if (isset($orderDetails['order_status']) && $orderDetails['order_status'] == $status['name'])
-                                                    selected
-
-                                            @endif>{{ $status['name'] }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-info">Update</button>
-                                </form>
+                                @if ($orderDetails['order_status'] != 'Delivered')
+                                    <form class="form-inline" action="{{ url('sadmin/update-order-status') }}"
+                                        method="post">
+                                        @csrf
+                                        <input type="hidden" name="order_id" value="{{ $orderDetails['id'] }}">
+                                        <div class="form-group mx-sm-3 mb-2 mt-2">
+                                            <select class="form-control" name="order_status" required>
+                                                <option>Select new</option>
+                                                @foreach ($orderStatuses as $status)
+                                                    <option value="{{ $status['name'] }}" @if (isset($orderDetails['order_status']) && $orderDetails['order_status'] == $status['name'])
+                                                        selected
+                                                @endif>{{ $status['name'] }}
+                                                </option>
+                                @endforeach
+                                </select>
                             </div>
-                            <!-- /.card-body -->
+                            <button type="submit" class="btn btn-info">Update</button>
+                            </form>
+                            @endif
                         </div>
-                        <!-- /.card -->
-                    </div>
-                    <!-- /.col -->
-                </div>
-                <!-- /.row -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Product Information</h3>
-                                <div class="card-tools">
-                                    <div class="input-group input-group-sm" style="width: 150px;">
-                                        <input type="text" name="table_search" class="form-control float-right"
-                                            placeholder="Search">
-                                        <div class="input-group-append">
-                                            <button type="submit" class="btn btn-default">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body table-responsive p-0">
-                                <table class="table table-hover text-nowrap">
+                        @if (count($orderLog))
+
+                        <div class="card-body p-0">
+                            <div class="form-group mx-sm-3 mb-2 mt-2">
+                                <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Image</th>
-                                            <th scope="col">Product Name</th>
-                                            <th scope="col">Product Code</th>
-                                            <th scope="col">Product Color</th>
-                                            <th scope="col">Product Size</th>
-                                            <th scope="col">Product Quantity</th>
+
+                                            <th>Order Status</th>
+                                            <th>Date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($orderDetails['order_products'] as $product)
+                                        @foreach ($orderLog as $log)
                                             <tr>
+
+                                                <td>{{ $log['order_status'] }}</td>
                                                 <td>
-                                                    <?php
-                                                    $getProductImage = Product::getProductImage($product['product_id']);
-                                                    ?>
-                                                    <img style="width: 100px;"
-                                                        src="{{ asset('uploads/product_img_small/' . $getProductImage['image']) }}"
-                                                        alt="{{ $product['product_name'] }}">
+                                                    {{ date('F j, Y g:i a', strtotime($log['created_at'])) }}
                                                 </td>
-                                                <td>{{ $product['product_name'] }}</td>
-                                                <td>{{ $product['product_code'] }}</td>
-                                                <td>{{ $product['product_color'] }}</td>
-                                                <td>{{ $product['product_size'] }}</td>
-                                                <td>{{ $product['product_qty'] }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- /.card-body -->
                         </div>
-                        <!-- /.card -->
+
+                        @endif
+
+                        <!-- /.card-body -->
                     </div>
+                    <!-- /.card -->
                 </div>
-            </div><!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+    </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
     </div>
 @stop
 <!-- External javascript -->

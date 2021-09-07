@@ -30,8 +30,9 @@ class OrderController extends Controller
         $orderDetails = Order::with('order_products')->where('id', $id)->first()->toArray();
         $userDetails = User::where('id', $orderDetails['user_id'])->first()->toArray();
         $orderStatuses = OrderStatus::where('status', 1)->get()->toArray();
+        $orderLog = OrderLog::where('order_id',$id)->get()->toArray();
         //dd($data['orderDetails']);
-        return view('admin.pages.orders.order_details', compact('orderDetails', 'userDetails', 'title', 'orderStatuses'));
+        return view('admin.pages.orders.order_details', compact('orderDetails', 'userDetails', 'title', 'orderStatuses','orderLog'));
     }
     public function updateOrderStatus(Request $request)
     {
@@ -60,7 +61,7 @@ class OrderController extends Controller
             );
             //Update order logs
             $order_log = new OrderLog();
-            $$order_log->order_id = $data['order_id'];
+            $order_log->order_id = $data['order_id'];
             $order_log->order_status = $data['order_status'];
             $order_log->save();
             return redirect()->back()->with('success', 'Order status has been updated successfully!!');
