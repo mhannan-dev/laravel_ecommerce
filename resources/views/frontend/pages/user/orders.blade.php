@@ -38,7 +38,9 @@
                         <td>{{ $order['payment_method'] }}</td>
                         <td>{{ $order['grand_total'] }}</td>
                         <td>{{ date('Y-m-d', strtotime($order['created_at'])) }}</td>
-                        <td><a href="{{ url('orders',$order['id']) }}" title="View Details">Details</a></td>
+                        <td>
+                            <a href="{{ url('orders',$order['id']) }}" title="View Details">Details</a>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

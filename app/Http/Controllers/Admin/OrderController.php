@@ -34,11 +34,23 @@ class OrderController extends Controller
         //dd($data['orderDetails']);
         return view('admin.pages.orders.order_details', compact('orderDetails', 'userDetails', 'title', 'orderStatuses','orderLog'));
     }
+    public function orderInvoice($id)
+    {
+        $title = "Invoice";
+        $orderDetails = Order::with('order_products')->where('id', $id)->first()->toArray();
+        $userDetails = User::where('id', $orderDetails['user_id'])->first()->toArray();
+        return view('admin.pages.orders.order_invoice', compact('title','orderDetails','userDetails'));
+    }
     public function updateOrderStatus(Request $request)
     {
         if ($request->isMethod('post')) {
             $data = $request->all();
             Order::where('id', $data['order_id'])->update(['order_status' => $data['order_status']]);
+            //Update Order tracking number and courier name
+            if (!empty($data['courier_name']) && !empty($data['tracking_number'])) {
+                Order::where('id',$data['order_id'])->update(['courier_name'=>$data['courier_name'], 'tracking_number'=>$data['tracking_number']]);
+            }
+            //Ddelivery Details
             $deliveryDetails = Order::select('mobile', 'email', 'name')->where('id', $data['order_id'])->first()->toArray();
             $orderDetails = Order::with('order_products')->where('id', $data['order_id'])->first()->toArray();
             //dd($orderDetails);
@@ -49,6 +61,8 @@ class OrderController extends Controller
                 'email' => $email,
                 'order_id' => $data['order_id'],
                 'order_status' => $data['order_status'],
+                'courier_name' => $data['courier_name'],
+                'tracking_number' => $data['tracking_number'],
                 'orderDetails' => $orderDetails,
             ];
             Mail::send(

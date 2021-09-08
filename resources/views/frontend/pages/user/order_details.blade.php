@@ -27,6 +27,8 @@
                     <th scope="col">Coupon Code</th>
                     <th scope="col">Coupon Amount</th>
                     <th scope="col">Payment Method</th>
+                    <th scope="col">Courier</th>
+                    <th scope="col">Tracking number</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,6 +52,8 @@
                         @endif
                     </td>
                     <td>{{ $orderDetails['payment_method'] }}</td>
+                    <td>{{ $orderDetails['courier_name'] }}</td>
+                    <td>{{ $orderDetails['tracking_number'] }}</td>
                 </tr>
             </tbody>
         </table>

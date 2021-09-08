@@ -71,7 +71,12 @@
                                             <td>{{ $order['grand_total'] }}</td>
                                             <td><span class="badge badge-success">{{ $order['order_status'] }}</span></td>
                                             <td title="Cash On Delivery">{{ $order['payment_method'] }}</td>
-                                            <td><a href="{{ route('sadmin.orderDetails',$order['id']) }}"><i class="fa fa-eye"></i></a></td>
+                                            <td>
+                                                <a href="{{ route('sadmin.orderDetails',$order['id']) }}"><i class="fa fa-eye"></i></a> &nbsp;&nbsp;
+                                                @if ($order['order_status'] == "Shipped" || $order['order_status'] == "Delivered")
+                                                <a target="_blank" href="{{ route('sadmin.orderInvoice',$order['id']) }}"><i class="fa fa-print"></i></a>
+                                                @endif
+                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>

@@ -10,7 +10,6 @@ use App\Models\Product;
         select.form-control {
             background: rgb(153, 238, 25);
         }
-
     </style>
 @endsection
 @section('content')
@@ -35,7 +34,7 @@ use App\Models\Product;
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-9">
+                    <div class="col-md-7">
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Order Details - <span
@@ -174,7 +173,7 @@ use App\Models\Product;
                         <!-- /.card -->
                     </div>
                     <!-- /.col -->
-                    <div class="col-md-3">
+                    <div class="col-md-5">
                         <div class="messageDiv">
                             @include('admin.partials.message')
                         </div>
@@ -185,64 +184,62 @@ use App\Models\Product;
                             <!-- /.card-header -->
                             <div class="card-body p-0">
                                 @if ($orderDetails['order_status'] != 'Delivered')
-                                    <form class="form-inline" action="{{ url('sadmin/update-order-status') }}"
-                                        method="post">
-                                        @csrf
+                                    <form id="order_status" class="form-inline" action="{{ url('sadmin/update-order-status') }}"
+                                        method="post">@csrf
                                         <input type="hidden" name="order_id" value="{{ $orderDetails['id'] }}">
                                         <div class="form-group mx-sm-3 mb-2 mt-2">
                                             <select class="form-control" name="order_status" required>
                                                 <option>Select new</option>
                                                 @foreach ($orderStatuses as $status)
-                                                    <option value="{{ $status['name'] }}" @if (isset($orderDetails['order_status']) && $orderDetails['order_status'] == $status['name'])
-                                                        selected
-                                                @endif>{{ $status['name'] }}
+                                                <option value="{{ $status['name'] }}"
+                                                    @if (isset($orderDetails['order_status']) && $orderDetails['order_status'] == $status['name'])
+                                                    selected
+                                                    @endif>
+                                                    {{ $status['name'] }}
                                                 </option>
-                                @endforeach
-                                </select>
+                                                @endforeach
+                                            </select> &nbsp;
+                                            <input type="text" style="width: 120px;" @if (empty($orderDetails['courier_name'])) id="courier_name" @endif name="courier_name" value="{{ $orderDetails['courier_name'] }}" class="form-control" placeholder="Courier name"> &nbsp;
+                                            <input type="text" style="width: 150px;" @if (empty($orderDetails['tracking_number'])) id="tracking_number" @endif name="tracking_number" value="{{ $orderDetails['tracking_number'] }}" class="form-control" placeholder="Tracking number">
+                                        </div>
+                                        <button type="submit" class="btn btn-info">Update</button>
+                                    </form>
+                                @endif
                             </div>
-                            <button type="submit" class="btn btn-info">Update</button>
-                            </form>
+                            @if (count($orderLog))
+                                <div class="card-body p-0">
+                                    <div class="form-group mx-sm-3 mb-2 mt-2">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order Status</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($orderLog as $log)
+                                                    <tr>
+                                                        <td>{{ $log['order_status'] }}</td>
+                                                        <td>
+                                                            {{ date('F j, Y g:i a', strtotime($log['created_at'])) }}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             @endif
+                            <!-- /.card-body -->
                         </div>
-                        @if (count($orderLog))
-
-                        <div class="card-body p-0">
-                            <div class="form-group mx-sm-3 mb-2 mt-2">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-
-                                            <th>Order Status</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($orderLog as $log)
-                                            <tr>
-
-                                                <td>{{ $log['order_status'] }}</td>
-                                                <td>
-                                                    {{ date('F j, Y g:i a', strtotime($log['created_at'])) }}
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        @endif
-
-                        <!-- /.card-body -->
+                        <!-- /.card -->
                     </div>
-                    <!-- /.card -->
+                    <!-- /.col -->
                 </div>
-                <!-- /.col -->
-            </div>
-            <!-- /.row -->
-    </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
     </div>
 @stop
 <!-- External javascript -->
