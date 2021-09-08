@@ -9,14 +9,16 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "barryvdh/laravel-dompdf": "^0.9.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "intervention/image": "^2.6",
         "laravel/framework": "^8.40",
         "laravel/tinker": "^2.5",
-        "intervention/image": "^2.6",
         "laravel/ui": "^3.3",
         "laravelcollective/html": "^6.2",
+        "milon/barcode": "^8.0",
         "realrashid/sweet-alert": "^4.0"
     },
     "require-dev": {
