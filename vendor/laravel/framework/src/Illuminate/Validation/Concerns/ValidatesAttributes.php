@@ -257,7 +257,7 @@ trait ValidatesAttributes
     protected function getDateTime($value)
     {
         try {
-            return Date::parse($value);
+            return @Date::parse($value) ?: null;
         } catch (Exception $e) {
             //
         }
@@ -1532,6 +1532,19 @@ trait ValidatesAttributes
         }
 
         return true;
+    }
+
+    /**
+     * Validate that other attributes do not exist when this attribute exists.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  mixed  $parameters
+     * @return bool
+     */
+    public function validateProhibits($attribute, $value, $parameters)
+    {
+        return ! Arr::hasAny($this->data, $parameters);
     }
 
     /**
