@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
-
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Order;
@@ -20,7 +18,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-
 class ProductsController extends Controller
 {
     public function listing(Request $request)
@@ -256,7 +253,14 @@ class ProductsController extends Controller
                 $expiry_date = $couponDetails->expiry_date;
                 $current_date = date('Y-m-d');
                 if ($expiry_date < $current_date) {
-                    $message = "Opps Coupon date is expired!";
+                    $message = "Opps Coupon is expired!";
+                }
+                //Check coupon is single or multiple time
+                if ($couponDetails['coupon_type'] == "singleTimes") {
+                    $couponCopunt = Order::where(['coupon_code'=>$data['code'],'user_id'=>Auth::user()->id])->count();
+                    if($couponCopunt >= 1){
+                        $message = "Opps Coupon availed by you!";
+                    }
                 }
                 //Get all category under coupon
                 $categoryArray = explode(",", $couponDetails->categories);
@@ -399,8 +403,6 @@ class ProductsController extends Controller
                     'email' => $email,
                     'order_id' => $order_id,
                     'orderDetails' => $orderDetails,
-
-
                 ];
                 Mail::send(
                     'emails.order',
@@ -422,7 +424,6 @@ class ProductsController extends Controller
         if (count($userCartItems)==0){
             return redirect()->route('cart')->with('error','Shopping cart is empty! Please add products to checkout');
         }
-
         $deliveryAddress = DeliveryAddress::deliveryAddress();
         return view('frontend.pages.products.checkout', compact('userCartItems', 'deliveryAddress'));
     }
