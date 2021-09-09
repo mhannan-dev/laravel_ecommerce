@@ -44,8 +44,8 @@ use App\Models\Product;
                                 class="icon-remove icon-white"></i></button>
                     </div>
                 </td>
-                <td style="text-align:right;">BDT. {{ $attrPrice['price'] }}</td>
-                <td style="text-align:right;">BDT. {{ $attrPrice['discount'] }}</td>
+                <td style="text-align:right;">BDT. {{ $attrPrice['price'] * $item['quantity'] }}</td>
+                <td style="text-align:right;">BDT. {{ $attrPrice['discount'] * $item['quantity'] }}</td>
                 <td style="text-align:right;">BDT. {{ $attrPrice['final_price'] * $item['quantity'] }}</td>
             </tr>
             <?php

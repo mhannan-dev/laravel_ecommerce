@@ -419,6 +419,10 @@ class ProductsController extends Controller
             die;
         }
         $userCartItems = Cart::userCartItems();
+        if (count($userCartItems)==0){
+            return redirect()->route('cart')->with('error','Shopping cart is empty! Please add products to checkout');
+        }
+
         $deliveryAddress = DeliveryAddress::deliveryAddress();
         return view('frontend.pages.products.checkout', compact('userCartItems', 'deliveryAddress'));
     }

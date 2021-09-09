@@ -117,6 +117,7 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
         Route::get('orderDetail/{id}',[OrderController::class, 'orderDetails'])->name('sadmin.orderDetails');
         Route::post('update-order-status',[OrderController::class, 'updateOrderStatus']);
         Route::get('orderInvoice/{id}',[OrderController::class, 'orderInvoice'])->name('sadmin.orderInvoice');
+        Route::get('order-pdf-invoice/{id}',[OrderController::class, 'orderPdfInvoice'])->name('sadmin.orderPdfInvoice');
     });
 });
 //To clear all cache

@@ -114,8 +114,8 @@ use App\Models\Product;
                                 Color : {{ $item['product']['color'] }} <br />
                                 Size : {{ $item['size'] }}
                             </td>
-                            <td style="text-align:right;">BDT. {{ $attrPrice['price'] }}</td>
-                            <td style="text-align:right;">BDT. {{ $attrPrice['discount'] }}</td>
+                            <td style="text-align:right;">BDT. {{ $attrPrice['price'] * $item['quantity'] }}</td>
+                            <td style="text-align:right;">BDT. {{ $attrPrice['discount']  * $item['quantity']}}</td>
                             <td style="text-align:right;">BDT. {{ $attrPrice['final_price'] * $item['quantity'] }}</td>
                         </tr>
                         <?php

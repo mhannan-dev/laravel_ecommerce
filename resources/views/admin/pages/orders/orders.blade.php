@@ -43,7 +43,7 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>SL</th>
+
                                             <th>ID</th>
                                             <th>Date</th>
                                             <th>Customer Name</th>
@@ -58,7 +58,7 @@
                                     <tbody>
                                         @foreach ($orders as $key => $order)
                                         <tr>
-                                            <td>1</td>
+
                                             <td>{{ $order['id'] }}</td>
                                             <td>{{ date('Y-m-d', strtotime($order['created_at'])) }}</td>
                                             <td>{{ $order['name'] }}</td>
@@ -74,7 +74,8 @@
                                             <td>
                                                 <a href="{{ route('sadmin.orderDetails',$order['id']) }}"><i class="fa fa-eye"></i></a> &nbsp;&nbsp;
                                                 @if ($order['order_status'] == "Shipped" || $order['order_status'] == "Delivered")
-                                                <a target="_blank" href="{{ route('sadmin.orderInvoice',$order['id']) }}"><i class="fa fa-print"></i></a>
+                                                <a title="Print html Invoice" target="_blank" href="{{ route('sadmin.orderInvoice',$order['id']) }}"><i class="fa fa-print"></i></a> &nbsp;&nbsp;
+                                                <a title="PDF Invoice" target="_blank" href="{{ route('sadmin.orderPdfInvoice',$order['id']) }}"><i class="fa fa-file-pdf"></i></a>
                                                 @endif
                                             </td>
                                         </tr>
