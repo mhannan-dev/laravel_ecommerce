@@ -48,10 +48,14 @@ class OrderController extends Controller
     {
         $title = "Invoice";
         $orderDetails = Order::with('order_products')->where('id', $id)->first()->toArray();
+        //dd($orderDetails);
         $userDetails = User::where('id', $orderDetails['user_id'])->first()->toArray();
         $pdf = PDF::loadView('admin.pages.orders.pdf_invoice',compact('title', 'orderDetails', 'userDetails'));
         //Invoice will be download as
-        return $pdf->download(date('d-m-Y').'-'.$orderDetails['id'].'-invoice.pdf');
+        //return $pdf->download(date('d-m-Y').'-'.$orderDetails['id'].'-invoice.pdf');
+        //Invoice will be stream as
+        return $pdf->stream(date('d-m-Y').'-'.$orderDetails['id'].'-invoice.pdf');
+
 
     }
     public function updateOrderStatus(Request $request)

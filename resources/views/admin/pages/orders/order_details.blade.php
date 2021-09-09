@@ -201,8 +201,8 @@ use App\Models\Product;
                                             </select> &nbsp;
                                             <input type="text" style="width: 120px;" @if (empty($orderDetails['courier_name'])) id="courier_name" @endif name="courier_name" value="{{ $orderDetails['courier_name'] }}" class="form-control" placeholder="Courier name"> &nbsp;
                                             <input type="text" style="width: 150px;" @if (empty($orderDetails['tracking_number'])) id="tracking_number" @endif name="tracking_number" value="{{ $orderDetails['tracking_number'] }}" class="form-control" placeholder="Tracking number">
+                                            &nbsp;<button type="submit" class="btn btn-info">Update</button>
                                         </div>
-                                        <button type="submit" class="btn btn-info">Update</button>
                                     </form>
                                 @endif
                             </div>
