@@ -80,3 +80,101 @@
         <!-- /.content -->
     </div>
 @endsection
+
+
+@section('scripts')
+    <script>
+        $(function() {
+            // Registration form validation
+            $('#chargeForm').validate({
+                rules: {
+                    countries: {
+                        required: true,
+                        countries: true,
+                        minlength: 3,
+                        remote:"check-shipping-country" // check-shipping-country is laravel  route
+                    },
+                    mobile: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 11,
+                        digits: true,
+                        //remote:"check-mobile" // check-mobile is laravel  route
+                    },
+
+                },
+                messages: {
+                    name: {
+                        required: "Please enter full name",
+                        name: "Please enter full name"
+                    },
+                    email: {
+                        required: "Please enter a email address",
+                        email: "Please enter a email address",
+                        remote:"Email is already exist use email or login"
+                    },
+                    mobile: {
+                        required: "Please enter a mobile no",
+                        mobile: "Please enter a mobile no",
+                        minlength: "Your mobile must consist of 10 digits",
+                        maxlength: "Your mobile max consist of 10 digits",
+                        digits: "Please enter your valid mobile",
+                        //remote: "This is mobile no is already exist"
+
+                    },
+                    password: {
+                        required: "Please provide a password",
+                        minlength: "Your password must be at least 8 characters long"
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+            $('#loginForm').validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true,
+                    },
+                    password: {
+                        required: true,
+                        minlength: 8
+                    },
+                },
+                messages: {
+
+                    email: {
+                        required: "Please enter your email address",
+                        email: "Please enter your email address"
+                    },
+
+                    password: {
+                        required: "Please enter your password",
+                        minlength: "Your password must be at least 8 characters long"
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        });
+    </script>
+@endsection
+

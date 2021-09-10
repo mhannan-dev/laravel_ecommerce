@@ -38,7 +38,7 @@ class ShippingController extends Controller
             $data = $request->all();
             //Form validation
             $rules = [
-                'countries' => 'required',
+                'countries' => 'required|max:255|regex:/^[a-zA-ZÑñ\s]+$/',
                 'shipping_charges' => 'required|numeric'
             ];
             $validationMessages = [
