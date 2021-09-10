@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Frontend\UsersController;
 use App\Http\Controllers\Frontend\OrdersController;
 use App\Http\Controllers\Frontend\ProductsController;
@@ -118,6 +119,11 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
         Route::post('update-order-status',[OrderController::class, 'updateOrderStatus']);
         Route::get('orderInvoice/{id}',[OrderController::class, 'orderInvoice'])->name('sadmin.orderInvoice');
         Route::get('order-pdf-invoice/{id}',[OrderController::class, 'orderPdfInvoice'])->name('sadmin.orderPdfInvoice');
+        //Shipping charge
+        Route::get('shipping-charges', [ShippingController::class, 'shippingCharges'])->name('sadmin.shipping-charges');
+        Route::match(['get', 'post'], 'add-edit-shipping-charge/{id?}', [ShippingController::class, 'addEditShippingCharge']);
+        Route::post('update-shipping-charge-status', [ShippingController::class, 'updateShippingCharge']);
+        Route::post('delete-shipping-charge/{id}',[ShippingController::class, 'deleteShippingCharge']);
     });
 });
 //To clear all cache
