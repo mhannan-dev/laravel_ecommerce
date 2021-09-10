@@ -184,6 +184,7 @@
     <!-- ./wrapper -->
     <!-- jQuery -->
     <script src="{{ URL::asset('backend') }}/plugins/jquery/jquery.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.js" type="text/javascript"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ URL::asset('backend') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- DataTables  & Plugins -->

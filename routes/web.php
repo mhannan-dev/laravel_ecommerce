@@ -124,6 +124,7 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
         Route::match(['get', 'post'], 'add-edit-shipping-charge/{id?}', [ShippingController::class, 'addEditShippingCharge']);
         Route::post('update-shipping-charge-status', [ShippingController::class, 'updateShippingCharge']);
         Route::post('delete-shipping-charge/{id}',[ShippingController::class, 'deleteShippingCharge']);
+        Route::match(['get', 'post'], 'check-shipping-area', [ShippingController::class, 'checkShippingChargeArea']);
     });
 });
 //To clear all cache

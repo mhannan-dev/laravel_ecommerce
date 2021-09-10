@@ -53,18 +53,20 @@ class ShippingController extends Controller
             return redirect()->route('sadmin.shipping-charges')->with('success', $message);
         }
         return view('admin.pages.shipping.addEditCharge', compact(
-            'title','buttonText','charge'
+            'title',
+            'buttonText',
+            'charge'
         ));
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function checkShippingChargeArea(Request $request)
     {
-        //
+            $data = $request->all();
+            $sChargeCount = ShippingCharge::where('countries', $data['countries'])->count();
+            if ($sChargeCount > 0) {
+                return "false";
+            } else {
+                return "true";
+            }
     }
     /**
      * Display the specified resource.

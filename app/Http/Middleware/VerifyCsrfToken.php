@@ -13,6 +13,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         "/sadmin/check-current-pwd",
+        "/sadmin/check-shipping-area",
         "/sadmin/update-section-status",
         "/sadmin/update-category-status",
         "/sadmin/append-category-level",

@@ -85,6 +85,7 @@ class UsersController extends Controller
     {
         $data = $request->all();
         $emailCount = User::where('email', $data['email'])->count();
+        dd($emailCount);
         if ($emailCount > 0) {
             return "false";
         } else {
