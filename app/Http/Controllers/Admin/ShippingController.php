@@ -15,7 +15,7 @@ class ShippingController extends Controller
     {
         Session::put('page', 'shippingCharges');
         $data['title'] = "Shipping Charges";
-        $data['shippingCharges'] = ShippingCharge::get()->toArray();
+        $data['shippingCharges'] = ShippingCharge::latest()->get()->toArray();
         return view('admin.pages.shipping.charges', $data);
     }
     public function addEditShippingCharge(Request $request, $id = null)
