@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             BrandsSeeder::class,
             BannerSeeder::class,
             CouponSeeder::class,
-            AddressSeeder::class,
+            //AddressSeeder::class,
             OrderStatusSeeder::class
 
         ]);

@@ -122,7 +122,8 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
         //Shipping charge
         Route::get('shipping-charges', [ShippingController::class, 'shippingCharges'])->name('sadmin.shipping-charges');
         Route::match(['get', 'post'], 'add-edit-shipping-charge/{id?}', [ShippingController::class, 'addEditShippingCharge']);
-        Route::post('update-shipping-charge-status', [ShippingController::class, 'updateShippingCharge']);
+        Route::match(['get', 'post'], 'edit-shipping-charge/{id}', [ShippingController::class, 'editShippingCharge']);
+        Route::post('update-shipping-charge-status', [ShippingController::class, 'updateShippingChargeStatus']);
         Route::post('delete-shipping-charge/{id}',[ShippingController::class, 'deleteShippingCharge']);
         Route::match(['get', 'post'], 'check-shipping-area', [ShippingController::class, 'checkShippingChargeArea']);
     });

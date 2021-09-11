@@ -10,7 +10,7 @@
             <li><a href="index.html">Home</a> <span class="divider">/</span></li>
             <li class="active">Add Delivery Address</li>
         </ul>
-        <h3> Add Delivery Address</h3>
+        <h3>Add Delivery Address</h3>
         @include('frontend.partials.flash_msg')
         <div class="well">
             <form class="form-horizontal" action="{{ url('add-edit-delivery-address', $address['id']) }}" method="POST">
@@ -35,11 +35,7 @@
                         <select id="country" name="country">
                             <option value="" disabled>-</option>
                             @foreach ($countries as $country)
-                                <option value="{{ $country['country_name'] }}" @if ($country['country_name'] == 'Bangladesh')
-                                    selected
-                                @else
-                                    disabled
-                            @endif>{{ $country['country_name'] }}</option>
+                                <option value="{{ $country['country_name'] }}">{{ $country['country_name'] }}</option>
                             @endforeach
                         </select>
                         @if ($errors->has('country'))
@@ -51,59 +47,31 @@
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label" for="state">Division<sup>*</sup></label>
+                    <label class="control-label" for="state">State<sup>*</sup></label>
                     <div class="controls">
-                        <select name="division" id="divisions" onchange="divisionsList();">
-                            <option disabled selected>Select Division</option>
-                            <option value="Barishal" @if ($address['division'] == 'Barishal')
-                                selected
-                            @else
-                                ' '
-                                @endif>Barishal</option>
-                            <option value="Chattogram" @if ($address['division'] == 'Chattogram')
-                            selected
-                        @else
-                            ' '
-                            @endif>Chattogram</option>
-                            <option value="Dhaka" @if ($address['division'] == 'Dhaka')
-                            selected
-                        @else
-                            ' '
-                            @endif>Dhaka</option>
-                        </select>
-                        @if ($errors->has('division'))
+                        <input type="text" name="state" placeholder="State">
+                        @if ($errors->has('state'))
                             <span class="alert alert-danger">
-                                <strong>{{ $errors->first('division') }}</strong>
+                                <strong>{{ $errors->first('state') }}</strong>
                             </span>
                         @endif
                     </div>
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label" for="state">District<sup>*</sup></label>
+                    <label class="control-label" for="city">City<sup>*</sup></label>
                     <div class="controls">
-                        <input type="text" name="district" id="district" value="{{ old('district', $address['district']) }}">
+                        <input type="text" name="city" id="city" value="{{ old('city', $address['city']) }}">
                         <!--/ Districts Section-->
-                        @if ($errors->has('district'))
+                        @if ($errors->has('city'))
                             <span class="alert alert-danger">
-                                <strong>{{ $errors->first('district') }}</strong>
+                                <strong>{{ $errors->first('city') }}</strong>
                             </span>
                         @endif
                     </div>
                 </div>
 
-                <div class="control-group">
-                    <label class="control-label" for="state">Police Station<sup>*</sup></label>
-                    <div class="controls">
 
-                        <input type="text" name="police_station" id="police_station" value="{{ old('police_station', $address['police_station']) }}">
-                        @if ($errors->has('police_station'))
-                            <span class="alert alert-danger">
-                                <strong>{{ $errors->first('police_station') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                </div>
 
                 <div class="control-group">
                     <label class="control-label" for="phone">Mobile<sup>*</sup></label>
@@ -112,18 +80,6 @@
                         @if ($errors->has('mobile'))
                             <span class="alert alert-danger">
                                 <strong>{{ $errors->first('mobile') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label" for="area">Area/Village<sup>*</sup></label>
-                    <div class="controls">
-                        <input type="text" name="area" id="area" placeholder="Area/Village" value="{{ old('area', $address['area']) }}">
-                        @if ($errors->has('area'))
-                            <span class="alert alert-danger">
-                                <strong>{{ $errors->first('area') }}</strong>
                             </span>
                         @endif
                     </div>

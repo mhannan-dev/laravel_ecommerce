@@ -85,7 +85,7 @@ class UsersController extends Controller
     {
         $data = $request->all();
         $emailCount = User::where('email', $data['email'])->count();
-        dd($emailCount);
+        //dd($emailCount);
         if ($emailCount > 0) {
             return "false";
         } else {
@@ -196,7 +196,7 @@ class UsersController extends Controller
             $user->country = $data['country'];
             $user->state = $data['state'];
             $user->city = $data['city'];
-            $user->pin_code = $data['pin_code'];
+            $user->zip_code = $data['zip_code'];
             $user->mobile = $data['mobile'];
             $user->save();
             $message = "Your information is updated";

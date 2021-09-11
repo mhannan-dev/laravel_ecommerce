@@ -1,9 +1,7 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
 class CreateDeliveryAddressesTable extends Migration
 {
     /**
@@ -18,17 +16,15 @@ class CreateDeliveryAddressesTable extends Migration
             $table->integer('user_id');
             $table->string('name');
             $table->string('country');
-            $table->string('division');
-            $table->string('district');
+            $table->string('state');
+            $table->string('city');
             $table->string('police_station');
             $table->text('address');
-            $table->string('mobile');
+            $table->string('mobile')->unique();
             $table->string('zip_code');
-            $table->string('area');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *

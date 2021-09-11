@@ -44,10 +44,9 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <form id="chargeForm" action="{{ url('sadmin/add-edit-shipping-charge', $charge['id']) }}"
+                                <form id="shipping_form" action="{{ url('sadmin/edit-shipping-charge', $charge['id']) }}"
                                     method="POST">
                                     @csrf
-                                    <input type="text" name="shipping_country_id" value="{{ $charge['id'] ?? 0 }}">
                                     <div class="row">
                                         <div class="col-sm-4">
                                             <div class="form-group">
@@ -55,7 +54,7 @@
                                                 <input type="text" name="country"
                                                     class="form-control {{ $errors->has('country') ? 'is-invalid' : '' }}"
                                                     placeholder="Shipping place"
-                                                    value="{{ old('country', $charge->country) }}">
+                                                    value="{{ old('country', $charge['country']) }}" readonly>
                                                 @if ($errors->has('country'))
                                                     <div class="invalid-feedback">
                                                         <strong>{{ $errors->first('country') }}</strong>
@@ -67,7 +66,7 @@
                                             <div class="form-group">
                                                 <label for="shipping_charges">Shipping Charge</label> <br>
                                                 <input type="number" placeholder="Shipping charges" name="shipping_charges"
-                                                    value="{{ old('shipping_charges', $charge->shipping_charges) }}"
+                                                    value="{{ old('shipping_charges', $charge['shipping_charges']) }}"
                                                     class="form-control {{ $errors->has('shipping_charges') ? 'is-invalid' : '' }}">
                                                 @if ($errors->has('shipping_charges'))
                                                     <div class="invalid-feedback">

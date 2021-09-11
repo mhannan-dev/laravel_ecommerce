@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Frontend;
+
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Order;
@@ -13,11 +15,13 @@ use App\Models\DeliveryAddress;
 use App\Models\ProductAttribute;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\ShippingCharge;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+
 class ProductsController extends Controller
 {
     public function listing(Request $request)
@@ -257,8 +261,8 @@ class ProductsController extends Controller
                 }
                 //Check coupon is single or multiple time
                 if ($couponDetails['coupon_type'] == "singleTimes") {
-                    $couponCopunt = Order::where(['coupon_code'=>$data['code'],'user_id'=>Auth::user()->id])->count();
-                    if($couponCopunt >= 1){
+                    $couponCopunt = Order::where(['coupon_code' => $data['code'], 'user_id' => Auth::user()->id])->count();
+                    if ($couponCopunt >= 1) {
                         $message = "Opps Coupon availed by you!";
                     }
                 }
@@ -350,7 +354,13 @@ class ProductsController extends Controller
                 $payment_method = "Prepaid";
             }
             //Get Delivary Address
-            $delivery_address = DeliveryAddress::where('id', $data['address_id'])->first()->toArray();
+            //$delivery_address = DeliveryAddress::where('id', $data['address_id'])->first()->toArray();
+            $delivery_address = DeliveryAddress::deliveryAddress();
+            foreach ($delivery_address as $key => $value) {
+                $shippingCharges = ShippingCharge::getShippingCharges($value['country']);
+                $delivery_address[$key]['shipping_charges'] = $shippingCharges;
+            }
+            //dd($delivery_address);
             DB::beginTransaction();
             //Insert Into Order Details
             $order = new Order;
@@ -421,8 +431,8 @@ class ProductsController extends Controller
             die;
         }
         $userCartItems = Cart::userCartItems();
-        if (count($userCartItems)==0){
-            return redirect()->route('cart')->with('error','Shopping cart is empty! Please add products to checkout');
+        if (count($userCartItems) == 0) {
+            return redirect()->route('cart')->with('error', 'Shopping cart is empty! Please add products to checkout');
         }
         $deliveryAddress = DeliveryAddress::deliveryAddress();
         return view('frontend.pages.products.checkout', compact('userCartItems', 'deliveryAddress'));
@@ -460,25 +470,21 @@ class ProductsController extends Controller
                 //Form validation
                 $rules = [
                     'name' => 'required|regex:/^[\pL\s\-]+$/u',
+                    'address' => 'required|regex:/^[\pL\s\-]+$/u',
                     'country' => 'required',
-                    'division' => 'required|regex:/^[\pL\s\-]+$/u',
-                    'district' => 'required|regex:/^[\pL\s\-]+$/u',
-                    'police_station' => 'required|regex:/^[\pL\s\-]+$/u',
+                    'state' => 'required|regex:/^[\pL\s\-]+$/u',
+                    'city' => 'required|regex:/^[\pL\s\-]+$/u',
                     'mobile' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|digits:11',
-                    'area' => 'required|regex:/^[\pL\s\-]+$/u',
-                    'address' => 'required',
                     'zip_code' => 'required|numeric'
                 ];
                 $validationMessages = [
                     'name.regex' => 'The name field can not be blank',
                     'country.required' => 'The country field can not be blank',
-                    'division.regex' => 'The division field can not be blank',
-                    'district.regex' => 'The district field can not be blank',
-                    'police_station.regex' => 'The police station field can not be blank',
+                    'state.regex' => 'The division field can not be blank',
+                    'city.regex' => 'The district field can not be blank',
                     'mobile.digits' => 'The mobile no field must be 11 digits',
                     'mobile.numeric' => 'The mobile no must be numeric',
                     'mobile.required' => 'The mobile no is required',
-                    'area.required' => 'The area field can not be blank',
                     'address.required' => 'The address field can not be blank',
                     'zip_code.digits' => 'The zip code field can not be blank'
                 ];
@@ -486,11 +492,9 @@ class ProductsController extends Controller
                 $address->user_id = Auth::user()->id;
                 $address->name = $data['name'];
                 $address->country = $data['country'];
-                $address->division = $data['division'];
-                $address->district = $data['district'];
-                $address->police_station = $data['police_station'];
+                $address->state = $data['state'];
+                $address->city = $data['city'];
                 $address->mobile = $data['mobile'];
-                $address->area = $data['area'];
                 $address->address = $data['address'];
                 $address->zip_code = $data['zip_code'];
                 $address->save();

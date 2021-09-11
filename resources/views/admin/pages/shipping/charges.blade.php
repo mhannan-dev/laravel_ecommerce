@@ -54,28 +54,27 @@
                                         @foreach ($shippingCharges as $key => $shippingCharge)
                                             <tr>
                                                 <td>{{ ++$key }}</td>
-                                                <td>{{ $shippingCharge['countries'] }}</td>
+                                                <td>{{ $shippingCharge['country'] }}</td>
                                                 <td>BDT. {{ $shippingCharge['shipping_charges'] }}</td>
-
 
                                                 <td>
                                                     @if ($shippingCharge['status'] == 1)
-                                                        <a title="Change" shippingCharge_id="{{ $shippingCharge['id'] }}"
-                                                            class="text-success shippingCharge_status"
-                                                            id="shippingCharge_{{ $shippingCharge['id'] }}" href="javascript:void(0)">
+                                                        <a title="Change" shipping_id="{{ $shippingCharge['id'] }}"
+                                                            class="text-success shipping_status"
+                                                            id="shipping_{{ $shippingCharge['id'] }}" href="javascript:void(0)">
                                                             Active
                                                         </a>
                                                     @else
-                                                        <a title="Change" shippingCharge_id="{{ $shippingCharge['id'] }}"
-                                                            class="shippingCharge_status text-danger"
-                                                            id="shippingCharge_{{ $shippingCharge['id'] }}" href="javascript:void(0)"> In
+                                                        <a title="Change" shipping_id="{{ $shippingCharge['id'] }}"
+                                                            class="shipping_status text-danger"
+                                                            id="shipping_{{ $shippingCharge['id'] }}" href="javascript:void(0)"> In
                                                             Active
                                                         </a>
                                                     @endif
                                                 </td>
                                                 <td>
                                                     <a class="btn btn-warning btn-sm"
-                                                        href="{{ url('sadmin/add-edit-shipping-charge/' . $shippingCharge['id']) }}">
+                                                        href="{{ url('sadmin/edit-shipping-charge/' . $shippingCharge['id']) }}">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
                                                     <a href="#deleteModal{{ $shippingCharge['id'] }}" data-toggle="modal"
@@ -137,24 +136,24 @@
     <script type="text/javascript">
         //Jquery ready function
         $(document).ready(function() {
-            $(".shippingCharge_status").click(function() {
+            $(".shipping_status").click(function() {
                 var status = $(this).text();
-                var shippingCharge_id = $(this).attr("shippingCharge_id");
+                var shipping_id = $(this).attr("shipping_id");
                 $.ajax({
                     type: 'post',
-                    url: '/sadmin/update-shippingCharge-status',
+                    url: '/sadmin/update-shipping-charge-status',
                     data: {
                         status: status,
-                        shippingCharge_id: shippingCharge_id
+                        shipping_id: shipping_id
                     },
                     success: function(resp) {
                         if (resp['status'] == 0) {
-                            $("#shippingCharge_" + shippingCharge_id).html(
-                                "<a href='javascript:void(0)' class='shippingCharge_status'>In Active</a>"
+                            $("#shipping_" + shipping_id).html(
+                                "<a href='javascript:void(0)' class='shipping_status'>In Active</a>"
                             )
                         } else if (resp['status'] == 1) {
-                            $("#shippingCharge_" + shippingCharge_id).html(
-                                "<a href='javascript:void(0)' class='shippingCharge_status'>Active</a>"
+                            $("#shipping_" + shipping_id).html(
+                                "<a href='javascript:void(0)' class='shipping_status'>Active</a>"
                             )
                         }
                     },

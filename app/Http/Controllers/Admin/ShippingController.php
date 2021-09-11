@@ -18,6 +18,19 @@ class ShippingController extends Controller
         $data['shippingCharges'] = ShippingCharge::latest()->get()->toArray();
         return view('admin.pages.shipping.charges', $data);
     }
+
+    public function editShippingCharge($id, Request $request)
+    {
+        if($request->isMethod('post')){
+            $data = $request->all();
+            ShippingCharge::where('id',$id)->update(['shipping_charges'=>$data['shipping_charges']]);
+            return redirect()->route('sadmin.shipping-charges')->with('success','Shipping charge updated successfully');
+        }
+        $data['title'] = "Edit Shipping Charge";
+        $data['buttonText'] = "Update";
+        $data['charge'] = ShippingCharge::where('id',$id)->first()->toArray();
+        return view('admin.pages.shipping.edit_charges', $data);
+    }
     public function addEditShippingCharge(Request $request, $id = null)
     {
         if ($id == "") {
@@ -33,20 +46,21 @@ class ShippingController extends Controller
             $buttonText = "Update";
             $message = "Shipping Charge has been updated successfully!";
         }
+
         //exit();
         if ($request->isMethod('POST')) {
             $data = $request->all();
             //Form validation
             $rules = [
-                'countries' => 'required|max:255|regex:/^[a-zA-ZÑñ\s]+$/',
+                'country' => 'required|max:255|regex:/^[a-zA-ZÑñ\s]+$/',
                 'shipping_charges' => 'required|numeric'
             ];
             $validationMessages = [
-                'countries.required' => 'The country field can not be blank',
+                'country.required' => 'The country field can not be blank',
                 'shipping_charges.digits' => 'Shipping charges field can not be blank'
             ];
             $this->validate($request, $rules, $validationMessages);
-            $charge->countries = $data['countries'];
+            $charge->country = $data['country'];
             $charge->shipping_charges = $data['shipping_charges'];
             $charge->status = 1;
             $charge->save();
@@ -61,22 +75,30 @@ class ShippingController extends Controller
     public function checkShippingChargeArea(Request $request)
     {
             $data = $request->all();
-            $sChargeCount = ShippingCharge::where('countries', $data['countries'])->count();
+            //dd($data);
+            // if($data['shipping_country_id'] != 0){
+            //     $sChargeCount = ShippingCharge::where('id','!=',$data['shipping_country_id'])->where('country', $data['country'])->count();
+            // }else{
+            // }
+            $sChargeCount = ShippingCharge::where('country', $data['country'])->count();
             if ($sChargeCount > 0) {
                 return "false";
             } else {
                 return "true";
             }
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ShippingCharge  $shippingCharge
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ShippingCharge $shippingCharge)
+    public function updateShippingChargeStatus(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = $request->all();
+            if ($data['status'] == "Active") {
+                $status = 0;
+            } else {
+                $status = 1;
+            }
+            ShippingCharge::where('id', $data['shipping_id'])->update(['status' => $status]);
+            return  response()->json(['status' => $status, 'shipping_id' => $data['shipping_id']]);
+        }
     }
     /**
      * Show the form for editing the specified resource.

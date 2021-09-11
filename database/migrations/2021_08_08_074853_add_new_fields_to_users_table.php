@@ -16,8 +16,8 @@ class AddNewFieldsToUsersTable extends Migration
             $table->string('city')->after('address')->nullable();
             $table->string('state')->after('city')->nullable();
             $table->string('country')->after('state')->nullable();
-            $table->string('pin_code')->after('country')->nullable();
-            $table->string('mobile')->after('pin_code')->nullable();
+            $table->string('zip_code')->after('country')->nullable();
+            $table->string('mobile')->after('zip_code')->nullable();
             $table->tinyInteger('status')->after('mobile')->nullable()->default(1)->comment('0 = Not activated 1 = Activated');
         });
     }
@@ -33,7 +33,7 @@ class AddNewFieldsToUsersTable extends Migration
             $table->dropColumn('city');
             $table->dropColumn('state');
             $table->dropColumn('country');
-            $table->dropColumn('pin_code');
+            $table->dropColumn('zip_code');
             $table->dropColumn('mobile');
             $table->dropColumn('status');
         });

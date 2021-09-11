@@ -57,9 +57,9 @@
                             <input value="{{ $userDetails['city'] }}" type="text" name="city" class="span3" id="city"><br>
                         </div>
                         <div class="form-group">
-                            <label for="pin_code">Pin code</label>
-                            <input value="{{ $userDetails['pin_code'] }}" type="text" name="pin_code" class="span3"
-                                id="pin_code"><br>
+                            <label for="zip_code">Pin code</label>
+                            <input value="{{ $userDetails['zip_code'] }}" type="text" name="zip_code" class="span3"
+                                id="zip_code"><br>
                         </div>
                         <div class="form-group">
                             <label for="mobile">Mobile</label>
@@ -139,7 +139,6 @@
                         minlength: "Your mobile must consist of 10 digits",
                         maxlength: "Your mobile max consist of 10 digits",
                         digits: "Please enter your valid mobile",
-                        //remote: "This is mobile no is already exist"
                     },
                 },
                 errorElement: 'span',

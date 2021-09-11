@@ -19,9 +19,9 @@ class AddressSeeder extends Seeder
             [
                 'user_id'=> 1,
                 'name' => 'Muhammad Hannan',
-                'address'=> 'Mohakhali',
-                'city'=> 'Dhaka',
+                'address'=> '47 Mohakhali C/A',
                 'state'=> 'Dhaka',
+                'city'=> 'Dhaka',
                 'country'=>'Bangladesh',
                 'zip_code'=> '123',
                 'mobile'=> '01744894452',

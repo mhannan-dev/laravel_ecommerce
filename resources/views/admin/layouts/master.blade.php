@@ -184,7 +184,8 @@
     <!-- ./wrapper -->
     <!-- jQuery -->
     <script src="{{ URL::asset('backend') }}/plugins/jquery/jquery.min.js"></script>
-    <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.js" type="text/javascript"></script>
+    <!-- jquery-validation -->
+    <script src="{{ URL::asset('backend') }}/plugins/jquery-validation/jquery.validate.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ URL::asset('backend') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- DataTables  & Plugins -->
@@ -208,7 +209,7 @@
     <script src="{{ URL::asset('backend') }}/dist/js/admin_js.js"></script>
     <!-- Page specific script -->
     <script src="{{ URL::asset('backend') }}/plugins/select2/js/select2.full.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="//unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     {{-- Date picker using tempusdominus --}}
     <script src="{{ URL::asset('backend') }}/plugins/moment/moment.min.js"></script>
     <script src="{{ URL::asset('backend') }}/plugins/inputmask/jquery.inputmask.min.js"></script>

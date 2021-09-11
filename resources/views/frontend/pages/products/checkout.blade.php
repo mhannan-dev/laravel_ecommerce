@@ -38,9 +38,8 @@ use App\Models\Product;
                                 <label for="" class="control-label">
                                     {{ $address_item['name'] }},
                                     {{ $address_item['address'] }},
-                                    {{ $address_item['police_station'] }},
-                                    {{ $address_item['district'] }},
-                                    {{ $address_item['division'] }},
+                                    {{ $address_item['city'] }},
+                                    {{ $address_item['state'] }},
                                     {{ $address_item['country'] }}
                                 </label>
                             </div>

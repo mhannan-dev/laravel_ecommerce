@@ -15,8 +15,8 @@ class CreateShippingChargesTable extends Migration
     {
         Schema::create('shipping_charges', function (Blueprint $table) {
             $table->id();
-            $table->string('countries')->default('Bangladesh')->comment('It is basically location')->unique();
-            $table->string('shipping_charges');
+            $table->string('country');
+            $table->float('shipping_charges');
             $table->tinyInteger('status')->default('1')->comment('1 = active and 0 = inactive');
             $table->timestamps();
         });
