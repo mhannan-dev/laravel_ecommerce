@@ -72,7 +72,7 @@
                                             <td><span class="badge badge-success">{{ $order['order_status'] }}</span></td>
                                             <td title="Cash On Delivery">{{ $order['payment_method'] }}</td>
                                             <td>
-                                                <a href="{{ route('sadmin.orderDetails',$order['id']) }}"><i class="fa fa-eye"></i></a> &nbsp;&nbsp;
+                                                <a href="{{ route('sadmin.orderDetails',$order['id']) }}"><i class="fa fa-search"></i></a> &nbsp;&nbsp;
                                                 @if ($order['order_status'] == "Shipped" || $order['order_status'] == "Delivered")
                                                 <a title="Print html Invoice" target="_blank" href="{{ route('sadmin.orderInvoice',$order['id']) }}"><i class="fa fa-print"></i></a> &nbsp;&nbsp;
                                                 <a title="PDF Invoice" target="_blank" href="{{ route('sadmin.orderPdfInvoice',$order['id']) }}"><i class="fa fa-file-pdf"></i></a>

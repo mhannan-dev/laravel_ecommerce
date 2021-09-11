@@ -367,8 +367,8 @@ class ProductsController extends Controller
             $order->user_id = Auth::user()->id;
             $order->name = $delivery_address['name'];
             $order->address = $delivery_address['address'];
-            $order->city = $delivery_address['division'];
-            $order->state = $delivery_address['district'];
+            $order->city = $delivery_address['city'];
+            $order->state = $delivery_address['state'];
             $order->country = $delivery_address['country'];
             $order->zip_code = $delivery_address['zip_code'];
             $order->mobile = $delivery_address['mobile'];

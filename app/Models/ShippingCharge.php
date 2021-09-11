@@ -18,6 +18,7 @@ class ShippingCharge extends Model
     {
         $shippingDetails = ShippingCharge::where('country', $country)->get()->toArray();
         $shipping_charges = $shippingDetails['shipping_charges'];
+        dd($shippingDetails);
         return $shipping_charges;
     }
 }
