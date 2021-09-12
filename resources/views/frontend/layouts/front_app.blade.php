@@ -53,6 +53,7 @@
     @include('frontend.partials.footer')
     <!-- Placed at the end of the document so the pages load faster ============================================= -->
     <script src="{{ URL::asset('backend') }}/themes/js/jquery.js" type="text/javascript"></script>
+    {{-- <script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
     <!-- jquery-validation -->
     <script src="//code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
     <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.js" type="text/javascript"></script>

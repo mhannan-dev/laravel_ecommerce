@@ -1,5 +1,4 @@
 $(function () {
-
     //X-CSRF-TOKEN
     $.ajaxSetup({
         headers: {
@@ -268,7 +267,7 @@ $(function () {
         $.ajax({
             type: "POST",
             url: "/apply-coupon",
-            data: { code: code},
+            data: { code: code },
             success: function (resp) {
                 if (resp.message != "") {
                     alert(resp.message);
@@ -285,12 +284,24 @@ $(function () {
                     //alert(resp.grand_total);
                     $(".grand_total").text("BDT." + resp.grand_total);
                 }
-
             },
             error: function () {
                 alert("Error");
             },
         });
     });
-
+    //Calculate shipping charge and update grand totla
+    $("input[name=address_id]").bind('change', function (e) {
+        var shipping_charges = $(this).attr("shipping_charges");
+        //alert(shipping_charges);
+        var total_price = $(this).attr("total_price");
+        var coupon_amount = $(this).attr("coupon_amount");
+        if (coupon_amount == "") {
+            coupon_amount = 0;
+        }
+        $(".shipping_charges").html("BDT." + shipping_charges);
+        var grand_total = parseInt(total_price) +  parseInt(shipping_charges) -  parseInt(coupon_amount);
+        $(".grand_total").html("BDT." + grand_total);
+        //alert(grand_total);
+    });
 });

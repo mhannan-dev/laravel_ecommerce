@@ -40,7 +40,7 @@
                         <div class="form-group">
                             <label for="country">Country</label>
                             <select class="span3" id="country" name="country">
-                                <option value="0">Select country</option>
+                                <option disabled>Select country</option>
                                 @foreach ($countries as $country)
                                     <option value="{{ $country['country_name'] }}" @if ($country['country_name'] == $userDetails['country']) selected="" @endif>{{ $country['country_name'] }}
                                     </option>

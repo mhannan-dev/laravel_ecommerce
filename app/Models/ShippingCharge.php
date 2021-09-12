@@ -16,9 +16,9 @@ class ShippingCharge extends Model
 
     public static function getShippingCharges($country)
     {
-        $shippingDetails = ShippingCharge::where('country', $country)->get()->toArray();
+        $shippingDetails = ShippingCharge::where('country', $country)->first()->toArray();
         $shipping_charges = $shippingDetails['shipping_charges'];
-        dd($shippingDetails);
+        
         return $shipping_charges;
     }
 }

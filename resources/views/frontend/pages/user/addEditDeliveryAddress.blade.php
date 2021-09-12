@@ -33,9 +33,10 @@
                     <label class="control-label" for="country">Country<sup>*</sup></label>
                     <div class="controls">
                         <select id="country" name="country">
-                            <option value="" disabled>-</option>
+                            <option value="">-</option>
                             @foreach ($countries as $country)
-                                <option value="{{ $country['country_name'] }}">{{ $country['country_name'] }}</option>
+                                <option value="{{ $country['country_name'] }}"
+                                @if ($country['country_name'] == $address['country']) selected="" @endif>{{ $country['country_name'] }}</option>
                             @endforeach
                         </select>
                         @if ($errors->has('country'))
@@ -49,7 +50,7 @@
                 <div class="control-group">
                     <label class="control-label" for="state">State<sup>*</sup></label>
                     <div class="controls">
-                        <input type="text" name="state" placeholder="State">
+                        <input type="text" name="state" placeholder="State" value="{{ old('state', $address['state']) }}">
                         @if ($errors->has('state'))
                             <span class="alert alert-danger">
                                 <strong>{{ $errors->first('state') }}</strong>

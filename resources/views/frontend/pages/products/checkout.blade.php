@@ -1,5 +1,6 @@
 <?php
 use App\Models\Product;
+
 ?>
 @extends('frontend.layouts.front_app')
 @section('title')
@@ -31,11 +32,12 @@ use App\Models\Product;
                     <tr>
                         <td>
                             <div class="control-group" style="float: left; margin-top: -2px; margin-right: 5px;">
-                                <input type="radio" id="address{{ $address_item['id'] }}" name="address_id"
-                                    value="{{ $address_item['id'] }}">
+                                <input class="address_id" type="radio" id="address{{ $address_item['id'] }}" name="address_id"
+                                    value="{{ $address_item['id'] }}" shipping_charges="{{ $address_item['shipping_charges'] }}"
+                                    total_price="{{ $total_price }}" coupon_amount="{{ Session::get('couponAmount') }}">
                             </div>
                             <div class="control-group">
-                                <label for="" class="control-label">
+                                <label for="address" class="control-label">
                                     {{ $address_item['name'] }},
                                     {{ $address_item['address'] }},
                                     {{ $address_item['city'] }},
@@ -94,7 +96,6 @@ use App\Models\Product;
                 </thead>
                 <tbody>
                     <?php
-                    $total_discount = 0;
                     $total_price = 0;
                     ?>
                     @foreach ($userCartItems as $item)
@@ -134,6 +135,10 @@ use App\Models\Product;
                                 BDT. 0
                             @endif
                         </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="text-align:right">Shipping Charge: </td>
+                        <td class="shipping_charges" style="text-align:right;"> BDT. 0 </td>
                     </tr>
                     <tr>
                         <td colspan="4" style="text-align:right">

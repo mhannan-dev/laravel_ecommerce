@@ -240,6 +240,8 @@ class ProductsController extends Controller
             if ($couponCount == 0) {
                 $userCartItems = Cart::userCartItems();
                 $totalCartItems  = totalCartItems();
+                Session::forget('couponAmount');
+                Session::forget('couponCode');
                 return response()->json([
                     'status' => false,
                     'message' => 'Please Enter Valid Coupon!',
@@ -335,6 +337,22 @@ class ProductsController extends Controller
     }
     public function checkout(Request $request)
     {
+        $userCartItems = Cart::userCartItems();
+        if (count($userCartItems) == 0) {
+            return redirect()->route('cart')->with('error', 'Shopping cart is empty! Please add products to checkout');
+        }
+        $deliveryAddress = DeliveryAddress::deliveryAddress();
+        foreach ($deliveryAddress as $key => $value) {
+            $shippingCharges = ShippingCharge::getShippingCharges($value['country']);
+            $deliveryAddress[$key]['shipping_charges'] = $shippingCharges;
+        }
+        //dd($deliveryAddress);
+        $total_price = 0;
+        foreach ($userCartItems as $item){
+            $attrPrice = Product::getDiscountedAttrPrice($item['product_id'], $item['size']);
+            $total_price = $total_price + $attrPrice['final_price'] * $item['quantity'];
+        }
+
         if ($request->isMethod('post')) {
             $data = $request->all();
             //dd($data);
@@ -354,13 +372,15 @@ class ProductsController extends Controller
                 $payment_method = "Prepaid";
             }
             //Get Delivary Address
-            //$delivery_address = DeliveryAddress::where('id', $data['address_id'])->first()->toArray();
-            $delivery_address = DeliveryAddress::deliveryAddress();
-            foreach ($delivery_address as $key => $value) {
-                $shippingCharges = ShippingCharge::getShippingCharges($value['country']);
-                $delivery_address[$key]['shipping_charges'] = $shippingCharges;
-            }
+            $delivery_address = DeliveryAddress::where('id', $data['address_id'])->first()->toArray();
             //dd($delivery_address);
+            //Get  Shipping Charges get by counrtyr
+            $shipping_charges = ShippingCharge::getShippingCharges($delivery_address['country']);
+            //Calculate grand total price
+            $grand_total = $total_price + $shipping_charges - Session::get('couponAmount');
+            //Put grand_total in session
+            Session::put('grand_total',$grand_total);
+
             DB::beginTransaction();
             //Insert Into Order Details
             $order = new Order;
@@ -373,7 +393,7 @@ class ProductsController extends Controller
             $order->zip_code = $delivery_address['zip_code'];
             $order->mobile = $delivery_address['mobile'];
             $order->email = Auth::user()->email;
-            $order->shipping_charges = 0;
+            $order->shipping_charges = $shipping_charges;
             $order->coupon_code = Session::get('couponCode');
             $order->coupon_amount = Session::get('couponAmount');
             $order->order_status = "New";
@@ -430,12 +450,8 @@ class ProductsController extends Controller
             echo "Order Placed";
             die;
         }
-        $userCartItems = Cart::userCartItems();
-        if (count($userCartItems) == 0) {
-            return redirect()->route('cart')->with('error', 'Shopping cart is empty! Please add products to checkout');
-        }
-        $deliveryAddress = DeliveryAddress::deliveryAddress();
-        return view('frontend.pages.products.checkout', compact('userCartItems', 'deliveryAddress'));
+
+        return view('frontend.pages.products.checkout', compact('userCartItems', 'deliveryAddress','total_price'));
     }
     public function thanks()
     {
@@ -460,6 +476,7 @@ class ProductsController extends Controller
             $address = DeliveryAddress::findOrFail($id);
             $title = "Edit Address";
             $buttonText = "Update";
+            //dd($address);
             $message = "Delivery Address has been updated successfully!";
         }
         //exit;
