@@ -11,7 +11,7 @@
         <h3> {{ $title }}</h3>
         <hr class="soft">
         <div id="legalNotice">
-            <h5>Your order has been placed successfully! Please check your associated email inbox/spam</h5><br>
+            <h3>Your order has been placed successfully! Please check your associated email inbox/spam</h3><br>
             <p>
                 Your order number is <strong>{{ Session::get('order_id') }}</strong> and payable grand total is <strong>{{ Session::get('grand_total') }}</strong>
             </p>
