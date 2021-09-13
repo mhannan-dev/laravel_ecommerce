@@ -7,11 +7,9 @@
         span.error.invalid-feedback {
             color: #f41616;
         }
-
         span.text-danger {
             color: #f21818;
         }
-
     </style>
 @endsection
 @section('content')
@@ -64,20 +62,74 @@
                                         </div>
                                         <div class="col-sm-4">
                                             <div class="form-group">
-                                                <label for="shipping_charges">Shipping Charge</label> <br>
-                                                <input type="number" placeholder="Shipping charges" name="shipping_charges"
-                                                    value="{{ old('shipping_charges', $charge['shipping_charges']) }}"
-                                                    class="form-control {{ $errors->has('shipping_charges') ? 'is-invalid' : '' }}">
-                                                @if ($errors->has('shipping_charges'))
+                                                <label for="shipping_charges">Max 500gm</label> <br>
+                                                <input type="number" placeholder="Shipping charges" name="till_500gm"
+                                                    value="{{ old('till_500gm', $charge['till_500gm']) }}"
+                                                    class="form-control {{ $errors->has('till_500gm') ? 'is-invalid' : '' }}">
+                                                @if ($errors->has('till_500gm'))
                                                     <div class="invalid-feedback">
-                                                        <strong>{{ $errors->first('shipping_charges') }}</strong>
+                                                        <strong>{{ $errors->first('till_500gm') }}</strong>
                                                     </div>
                                                 @endif
                                             </div>
                                         </div>
+                                        <div class="col-md-4">
+                                            <label for="country">Max 1000gm</label> <br>
+                                            <input type="number" placeholder="Shipping charges" name="till_1000gm"
+                                                    value="{{ old('till_1000gm', $charge['till_1000gm']) }}"
+                                                    class="form-control {{ $errors->has('till_1000gm') ? 'is-invalid' : '' }}">
+                                                @if ($errors->has('till_1000gm'))
+                                                    <div class="invalid-feedback">
+                                                        <strong>{{ $errors->first('till_1000gm') }}</strong>
+                                                    </div>
+                                                @endif
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="country">Max 2000gm</label> <br>
+                                            <input type="number" placeholder="Shipping charges" name="till_2000gm"
+                                                    value="{{ old('till_2000gm', $charge['till_2000gm']) }}"
+                                                    class="form-control {{ $errors->has('till_2000gm') ? 'is-invalid' : '' }}">
+                                                @if ($errors->has('till_2000gm'))
+                                                    <div class="invalid-feedback">
+                                                        <strong>{{ $errors->first('till_2000gm') }}</strong>
+                                                    </div>
+                                                @endif
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="country">Max 3000gm</label> <br>
+                                            <input type="number" placeholder="Shipping charges" name="till_3000gm"
+                                                    value="{{ old('till_3000gm', $charge['till_3000gm']) }}"
+                                                    class="form-control {{ $errors->has('till_3000gm') ? 'is-invalid' : '' }}">
+                                                @if ($errors->has('till_3000gm'))
+                                                    <div class="invalid-feedback">
+                                                        <strong>{{ $errors->first('till_3000gm') }}</strong>
+                                                    </div>
+                                                @endif
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="country">Max 4000gm</label> <br>
+                                            <input type="number" placeholder="Shipping charges" name="till_4000gm"
+                                                    value="{{ old('till_4000gm', $charge['till_4000gm']) }}"
+                                                    class="form-control {{ $errors->has('till_4000gm') ? 'is-invalid' : '' }}">
+                                                @if ($errors->has('till_4000gm'))
+                                                    <div class="invalid-feedback">
+                                                        <strong>{{ $errors->first('till_4000gm') }}</strong>
+                                                    </div>
+                                                @endif
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="country">Max 5000gm</label> <br>
+                                            <input type="number" placeholder="Shipping charges" name="till_5000gm"
+                                                    value="{{ old('till_5000gm', $charge['till_5000gm']) }}"
+                                                    class="form-control {{ $errors->has('till_5000gm') ? 'is-invalid' : '' }}">
+                                                @if ($errors->has('till_5000gm'))
+                                                    <div class="invalid-feedback">
+                                                        <strong>{{ $errors->first('till_5000gm') }}</strong>
+                                                    </div>
+                                                @endif
+                                        </div>
                                     </div>
-
-                                    <button type="submit" class="btn btn-primary">{{ $buttonText }}</button>
+                                    <button type="submit" class="btn btn-primary mt-2">{{ $buttonText }}</button>
                                 </form>
                             </div>
                             <!-- /.card-body -->
@@ -110,7 +162,6 @@
                         maxlength: 5,
                         digits: true,
                     },
-
                 },
                 messages: {
                     country: {
@@ -122,9 +173,7 @@
                         required: "Please enter shipping charge",
                         maxlength: "Shipping charge max consist of 5 digits",
                         digits: "Please enter only number",
-
                     }
-
                 },
                 errorElement: 'span',
                 errorPlacement: function(error, element) {

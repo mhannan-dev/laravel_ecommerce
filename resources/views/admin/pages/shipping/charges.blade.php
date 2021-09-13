@@ -35,7 +35,8 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">{{ $title }}</h3>
-                                <a href="{{ url('sadmin/add-edit-shipping-charge') }}" class="btn btn-success float-right">
+                                <a href="{{ url('sadmin/add-edit-shipping-charge') }}"
+                                    class="btn btn-success float-right">
                                     <i class="fa fa-plus-circle" aria-hidden="true"></i> {{ $title }}</a>
                             </div>
                             <!-- /.card-header -->
@@ -45,7 +46,12 @@
                                         <tr>
                                             <th>Serial No.</th>
                                             <th>Country/Location</th>
-                                            <th>Charge</th>
+                                            <th>Max 500gm</th>
+                                            <th>Max 1000gm</th>
+                                            <th>Max 2000gm</th>
+                                            <th>Max 3000gm</th>
+                                            <th>Max 4000gm</th>
+                                            <th>Max 5000gm</th>
                                             <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
@@ -55,19 +61,25 @@
                                             <tr>
                                                 <td>{{ ++$key }}</td>
                                                 <td>{{ $shippingCharge['country'] }}</td>
-                                                <td>BDT. {{ $shippingCharge['shipping_charges'] }}</td>
-
+                                                <td>BDT. {{ $shippingCharge['till_500gm'] }}</td>
+                                                <td>BDT. {{ $shippingCharge['till_1000gm'] }}</td>
+                                                <td>BDT. {{ $shippingCharge['till_1000gm'] }}</td>
+                                                <td>BDT. {{ $shippingCharge['till_1000gm'] }}</td>
+                                                <td>BDT. {{ $shippingCharge['till_1000gm'] }}</td>
+                                                <td>BDT. {{ $shippingCharge['till_5000gm'] }}</td>
                                                 <td>
                                                     @if ($shippingCharge['status'] == 1)
                                                         <a title="Change" shipping_id="{{ $shippingCharge['id'] }}"
                                                             class="text-success shipping_status"
-                                                            id="shipping_{{ $shippingCharge['id'] }}" href="javascript:void(0)">
+                                                            id="shipping_{{ $shippingCharge['id'] }}"
+                                                            href="javascript:void(0)">
                                                             Active
                                                         </a>
                                                     @else
                                                         <a title="Change" shipping_id="{{ $shippingCharge['id'] }}"
                                                             class="shipping_status text-danger"
-                                                            id="shipping_{{ $shippingCharge['id'] }}" href="javascript:void(0)"> In
+                                                            id="shipping_{{ $shippingCharge['id'] }}"
+                                                            href="javascript:void(0)"> In
                                                             Active
                                                         </a>
                                                     @endif
@@ -82,16 +94,18 @@
                                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                                     </a>
                                                     <!-- Delete Modal -->
-                                                    <div class="modal fade" id="deleteModal{{ $shippingCharge['id'] }}"
-                                                        tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                                    <div class="modal fade"
+                                                        id="deleteModal{{ $shippingCharge['id'] }}" tabindex="-1"
+                                                        role="dialog" aria-labelledby="exampleModalLabel"
                                                         aria-hidden="true">
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLabel">Are sure
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Are
+                                                                        sure
                                                                         to delete?</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal"
-                                                                        aria-label="Close">
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                 </div>
@@ -117,7 +131,6 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-
                             </div>
                             <!-- /.card-body -->
                         </div>

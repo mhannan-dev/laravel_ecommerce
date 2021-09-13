@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
-
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Order;
@@ -21,7 +19,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-
 class ProductsController extends Controller
 {
     public function listing(Request $request)
@@ -341,18 +338,21 @@ class ProductsController extends Controller
         if (count($userCartItems) == 0) {
             return redirect()->route('cart')->with('error', 'Shopping cart is empty! Please add products to checkout');
         }
-        $deliveryAddress = DeliveryAddress::deliveryAddress();
-        foreach ($deliveryAddress as $key => $value) {
-            $shippingCharges = ShippingCharge::getShippingCharges($value['country']);
-            $deliveryAddress[$key]['shipping_charges'] = $shippingCharges;
-        }
-        //dd($deliveryAddress);
         $total_price = 0;
+        $total_weight = 0;
         foreach ($userCartItems as $item){
+            $product_weight = $item['product']['weight'];
+            $total_weight = $total_weight + $product_weight;
             $attrPrice = Product::getDiscountedAttrPrice($item['product_id'], $item['size']);
             $total_price = $total_price + $attrPrice['final_price'] * $item['quantity'];
         }
-
+        //echo $total_weight; die;
+        $deliveryAddress = DeliveryAddress::deliveryAddress();
+        foreach ($deliveryAddress as $key => $value) {
+            $shippingCharges = ShippingCharge::getShippingCharges($total_weight, $value['country']);
+            $deliveryAddress[$key]['shipping_charges'] = $shippingCharges;
+        }
+        //dd($deliveryAddress);
         if ($request->isMethod('post')) {
             $data = $request->all();
             //dd($data);
@@ -380,7 +380,6 @@ class ProductsController extends Controller
             $grand_total = $total_price + $shipping_charges - Session::get('couponAmount');
             //Put grand_total in session
             Session::put('grand_total',$grand_total);
-
             DB::beginTransaction();
             //Insert Into Order Details
             $order = new Order;
@@ -450,7 +449,6 @@ class ProductsController extends Controller
             echo "Order Placed";
             die;
         }
-
         return view('frontend.pages.products.checkout', compact('userCartItems', 'deliveryAddress','total_price'));
     }
     public function thanks()
