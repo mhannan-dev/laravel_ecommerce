@@ -1,9 +1,12 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
+
 use Illuminate\Http\Request;
 use App\Models\ShippingCharge;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
+
 class ShippingController extends Controller
 {
     /**
@@ -18,17 +21,23 @@ class ShippingController extends Controller
         $data['shippingCharges'] = ShippingCharge::latest()->get()->toArray();
         return view('admin.pages.shipping.charges', $data);
     }
-
     public function editShippingCharge($id, Request $request)
     {
-        if($request->isMethod('post')){
+        if ($request->isMethod('post')) {
             $data = $request->all();
-            ShippingCharge::where('id',$id)->update(['shipping_charges'=>$data['shipping_charges']]);
-            return redirect()->route('sadmin.shipping-charges')->with('success','Shipping charge updated successfully');
+            ShippingCharge::where('id', $id)->update([
+                '0_500gm' => $data['0_500gm'],
+                '501_1000gm' => $data['501_1000gm'],
+                '1001_2000gm' => $data['1001_2000gm'],
+                '2001_3000gm' => $data['2001_3000gm'],
+                '3001_4000gm' => $data['3001_4000gm'],
+                '4001_5000gm' => $data['4001_5000gm'],
+            ]);
+            return redirect()->route('sadmin.shipping-charges')->with('success', 'Shipping charge updated successfully');
         }
         $data['title'] = "Edit Shipping Charge";
         $data['buttonText'] = "Update";
-        $data['charge'] = ShippingCharge::where('id',$id)->first()->toArray();
+        $data['charge'] = ShippingCharge::where('id', $id)->first()->toArray();
         return view('admin.pages.shipping.edit_charges', $data);
     }
     public function addEditShippingCharge(Request $request, $id = null)
@@ -46,23 +55,39 @@ class ShippingController extends Controller
             $buttonText = "Update";
             $message = "Shipping Charge has been updated successfully!";
         }
-
         //exit();
         if ($request->isMethod('POST')) {
             $data = $request->all();
             //Form validation
             $rules = [
                 'country' => 'required|max:255|regex:/^[a-zA-ZÑñ\s]+$/',
-                'shipping_charges' => 'required|numeric'
+                '0_500gm' => 'required|numeric',
+                '501_1000gm' => 'required|numeric',
+                '1001_2000gm' => 'required|numeric',
+                '2001_3000gm' => 'required|numeric',
+                '3001_4000gm' => 'required|numeric',
+                '4001_5000gm' => 'required|numeric',
+                '4001_5000gm' => 'required|numeric',
             ];
             $validationMessages = [
                 'country.required' => 'The country field can not be blank',
-                'shipping_charges.digits' => 'Shipping charges field can not be blank'
+                'till_500gm.digits' => 'Shipping charges field can not be blank',
+                'till_1000gm' => 'Shipping charges field can not be blank',
+                '501_1000gm' => 'Shipping charges field can not be blank',
+                '1001_2000gm' => 'Shipping charges field can not be blank',
+                '2001_3000gm' => 'Shipping charges field can not be blank',
+                '3001_4000gm' => 'Shipping charges field can not be blank',
+                '4001_5000gm' => 'Shipping charges field can not be blank',
+                '4001_5000gm' => 'Shipping charges field can not be blank',
             ];
             $this->validate($request, $rules, $validationMessages);
             $charge->country = $data['country'];
-            $charge->shipping_charges = $data['shipping_charges'];
-            $charge->status = 1;
+            $charge->till_500gm = $data['till_500gm'];
+            $charge->till_1000gm = $data['till_1000gm'];
+            $charge->till_2000gm = $data['till_2000gm'];
+            $charge->till_3000gm = $data['till_3000gm'];
+            $charge->till_4000gm = $data['till_4000gm'];
+            $charge->till_5000gm = $data['till_5000gm'];
             $charge->save();
             return redirect()->route('sadmin.shipping-charges')->with('success', $message);
         }
@@ -74,18 +99,18 @@ class ShippingController extends Controller
     }
     public function checkShippingChargeArea(Request $request)
     {
-            $data = $request->all();
-            //dd($data);
-            // if($data['shipping_country_id'] != 0){
-            //     $sChargeCount = ShippingCharge::where('id','!=',$data['shipping_country_id'])->where('country', $data['country'])->count();
-            // }else{
-            // }
-            $sChargeCount = ShippingCharge::where('country', $data['country'])->count();
-            if ($sChargeCount > 0) {
-                return "false";
-            } else {
-                return "true";
-            }
+        $data = $request->all();
+        //dd($data);
+        // if($data['shipping_country_id'] != 0){
+        //     $sChargeCount = ShippingCharge::where('id','!=',$data['shipping_country_id'])->where('country', $data['country'])->count();
+        // }else{
+        // }
+        $sChargeCount = ShippingCharge::where('country', $data['country'])->count();
+        if ($sChargeCount > 0) {
+            return "false";
+        } else {
+            return "true";
+        }
     }
     public function updateShippingChargeStatus(Request $request)
     {
