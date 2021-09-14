@@ -47,31 +47,96 @@
                                 <form id="chargeForm" action="{{ url('sadmin/add-edit-shipping-charge', $charge['id']) }}"
                                     method="POST">
                                     @csrf
-                                    <input type="text" name="shipping_country_id" value="{{ $charge['id'] ?? 0 }}">
+
                                     <div class="row">
                                         <div class="col-sm-4">
                                             <div class="form-group">
-                                                <label for="country">Shipping Place</label> <br>
-                                                <input type="text" name="country"
-                                                    class="form-control {{ $errors->has('country') ? 'is-invalid' : '' }}"
+                                                <label for="country_name">Shipping Place</label> <br>
+                                                <input type="text" name="country_name"
+                                                    class="form-control {{ $errors->has('country_name') ? 'is-invalid' : '' }}"
                                                     placeholder="Shipping place"
-                                                    value="{{ old('country', $charge->country) }}">
-                                                @if ($errors->has('country'))
+                                                    value="{{ old('country_name', $charge->country_name) }}">
+                                                @if ($errors->has('country_name'))
                                                     <div class="invalid-feedback">
-                                                        <strong>{{ $errors->first('country') }}</strong>
+                                                        <strong>{{ $errors->first('country_name') }}</strong>
                                                     </div>
                                                 @endif
                                             </div>
                                         </div>
                                         <div class="col-sm-4">
                                             <div class="form-group">
-                                                <label for="shipping_charges">Shipping Charge</label> <br>
-                                                <input type="number" placeholder="Shipping charges" name="shipping_charges"
-                                                    value="{{ old('shipping_charges', $charge->shipping_charges) }}"
-                                                    class="form-control {{ $errors->has('shipping_charges') ? 'is-invalid' : '' }}">
-                                                @if ($errors->has('shipping_charges'))
+                                                <label for="till_500gm">Shipping Charge till_500gm</label> <br>
+                                                <input type="number" placeholder="Shipping charges" name="till_500gm"
+                                                    value="{{ old('till_500gm', $charge->till_500gm) }}"
+                                                    class="form-control {{ $errors->has('till_500gm') ? 'is-invalid' : '' }}">
+                                                @if ($errors->has('till_500gm'))
                                                     <div class="invalid-feedback">
-                                                        <strong>{{ $errors->first('shipping_charges') }}</strong>
+                                                        <strong>{{ $errors->first('till_500gm') }}</strong>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="till_1000gm">Shipping Charge till_1000gm</label> <br>
+                                                <input type="number" placeholder="Shipping charges" name="till_1000gm"
+                                                    value="{{ old('till_1000gm', $charge->till_1000gm) }}"
+                                                    class="form-control {{ $errors->has('till_1000gm') ? 'is-invalid' : '' }}">
+                                                @if ($errors->has('till_1000gm'))
+                                                    <div class="invalid-feedback">
+                                                        <strong>{{ $errors->first('till_1000gm') }}</strong>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="till_2000gm">Shipping Charge till_2000gm</label> <br>
+                                                <input type="number" placeholder="Shipping charges" name="till_2000gm"
+                                                    value="{{ old('till_2000gm', $charge->till_2000gm) }}"
+                                                    class="form-control {{ $errors->has('till_2000gm') ? 'is-invalid' : '' }}">
+                                                @if ($errors->has('till_2000gm'))
+                                                    <div class="invalid-feedback">
+                                                        <strong>{{ $errors->first('till_2000gm') }}</strong>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="till_3000gm">Shipping Charge till_3000gm</label> <br>
+                                                <input type="number" placeholder="Shipping charges" name="till_3000gm"
+                                                    value="{{ old('till_3000gm', $charge->till_3000gm) }}"
+                                                    class="form-control {{ $errors->has('till_3000gm') ? 'is-invalid' : '' }}">
+                                                @if ($errors->has('till_3000gm'))
+                                                    <div class="invalid-feedback">
+                                                        <strong>{{ $errors->first('till_3000gm') }}</strong>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="till_4000gm">Shipping Charge till_4000gm</label> <br>
+                                                <input type="number" placeholder="Shipping charges" name="till_4000gm"
+                                                    value="{{ old('till_4000gm', $charge->till_4000gm) }}"
+                                                    class="form-control {{ $errors->has('till_4000gm') ? 'is-invalid' : '' }}">
+                                                @if ($errors->has('till_4000gm'))
+                                                    <div class="invalid-feedback">
+                                                        <strong>{{ $errors->first('till_4000gm') }}</strong>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="till_5000gm">Shipping Charge till_5000gm</label> <br>
+                                                <input type="number" placeholder="Shipping charges" name="till_5000gm"
+                                                    value="{{ old('till_5000gm', $charge->till_5000gm) }}"
+                                                    class="form-control {{ $errors->has('till_5000gm') ? 'is-invalid' : '' }}">
+                                                @if ($errors->has('till_5000gm'))
+                                                    <div class="invalid-feedback">
+                                                        <strong>{{ $errors->first('till_5000gm') }}</strong>
                                                     </div>
                                                 @endif
                                             </div>
