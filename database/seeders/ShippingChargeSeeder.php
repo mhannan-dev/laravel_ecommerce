@@ -15,10 +15,10 @@ class ShippingChargeSeeder extends Seeder
     public function run()
     {
         $chargeRecord = [
-            ['countries' => 'Bangladesh','shipping_charges'=> 70, 'status' => '1'],
-            ['countries' => 'India','shipping_charges'=> 2000, 'status' => '1'],
-            ['countries' => 'USA','shipping_charges'=> 5000, 'status' => '1'],
-            ['countries' => 'Canada','shipping_charges'=> 7500, 'status' => '1'],
+            ['country_name' => 'Bangladesh','shipping_charges'=> 70, 'status' => '1'],
+            ['country_name' => 'India','shipping_charges'=> 2000, 'status' => '1'],
+            ['country_name' => 'USA','shipping_charges'=> 5000, 'status' => '1'],
+            ['country_name' => 'Canada','shipping_charges'=> 7500, 'status' => '1'],
         ];
         ShippingCharge::insert($chargeRecord);
     }

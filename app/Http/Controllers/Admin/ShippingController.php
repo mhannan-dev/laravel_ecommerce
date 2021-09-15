@@ -1,9 +1,12 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
+
 use Illuminate\Http\Request;
 use App\Models\ShippingCharge;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
+
 class ShippingController extends Controller
 {
     /**
@@ -45,12 +48,6 @@ class ShippingController extends Controller
             $title = "Add Shipping Charge";
             $buttonText = "Save";
             $message = "Shipping charge has been saved successfully!";
-        } else {
-            // Update charge Code
-            $charge = ShippingCharge::findOrFail($id);
-            $title = "Edit Shipping Charge";
-            $buttonText = "Update";
-            $message = "Shipping Charge has been updated successfully!";
         }
         //exit();
         if ($request->isMethod('POST')) {

@@ -375,7 +375,7 @@ class ProductsController extends Controller
             $delivery_address = DeliveryAddress::where('id', $data['address_id'])->first()->toArray();
             //dd($delivery_address);
             //Get  Shipping Charges get by counrtyr
-            $shipping_charges = ShippingCharge::getShippingCharges($delivery_address['country']);
+            $shipping_charges = ShippingCharge::getShippingCharges($total_weight, $delivery_address['country']);
             //Calculate grand total price
             $grand_total = $total_price + $shipping_charges - Session::get('couponAmount');
             //Put grand_total in session
@@ -465,7 +465,7 @@ class ProductsController extends Controller
     public function addEditDeliveryAddress(Request $request, $id = null)
     {
         if ($id == "") {
-            $address = new DeliveryAddress;
+            $address = new DeliveryAddress();
             $title = "Add new address";
             $message = "Delivery Address has been saved successfully!";
             $buttonText = "Save";
@@ -485,7 +485,7 @@ class ProductsController extends Controller
                 //Form validation
                 $rules = [
                     'name' => 'required|regex:/^[\pL\s\-]+$/u',
-                    'address' => 'required|regex:/^[\pL\s\-]+$/u',
+                    'address' => 'required',
                     'country' => 'required',
                     'state' => 'required|regex:/^[\pL\s\-]+$/u',
                     'city' => 'required|regex:/^[\pL\s\-]+$/u',

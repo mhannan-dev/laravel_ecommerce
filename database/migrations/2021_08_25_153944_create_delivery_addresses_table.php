@@ -14,14 +14,14 @@ class CreateDeliveryAddressesTable extends Migration
         Schema::create('delivery_addresses', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
+            $table->text('address')->nullable();
             $table->string('name');
             $table->string('country');
             $table->string('state');
             $table->string('city');
-            $table->string('police_station');
-            $table->text('address');
-            $table->string('mobile')->unique();
-            $table->string('zip_code');
+            $table->string('mobile');
+            $table->string('zip_code')->nullable();
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

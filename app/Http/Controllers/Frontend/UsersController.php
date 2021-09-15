@@ -14,8 +14,7 @@ class UsersController extends Controller
 {
     public function loginRegisterPage()
     {
-        Session::forget('error');
-        Session::forget('success');
+
         return view('frontend.pages.user.loginRegister');
     }
     public function registerUser(Request $request)
@@ -25,8 +24,7 @@ class UsersController extends Controller
             $data = $request->all();
             $userCount = User::where('email', $data['email'])->count();
             if ($userCount > 0) {
-                Session::flash('error', 'User already exist!');
-                return redirect()->back();
+                return redirect()->back()->with('error','User already exist!');
             } else {
                 //Register User
                 $user = new User;
@@ -52,8 +50,7 @@ class UsersController extends Controller
                     }
                 );
                 $message = "Please confirm your email to active your email";
-                Session::put('success', $message);
-                return redirect()->back();
+                return redirect()->back()->with('success',$message);
             }
         }
     }
@@ -190,6 +187,7 @@ class UsersController extends Controller
         $countries = Country::get()->toArray();
         if ($request->isMethod('post')) {
             $data = $request->all();
+            //dd($data);
             $user = User::find($user_id);
             $user->name = $data['name'];
             $user->address = $data['address'];

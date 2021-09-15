@@ -28,32 +28,35 @@ use App\Models\Product;
                             Address</a>
                     </th>
                 </tr>
-                @foreach ($deliveryAddress as $address_item)
+                @foreach ($deliveryAddress as $address)
+                @php
+                    $address
+                @endphp
                     <tr>
                         <td>
                             <div class="control-group" style="float: left; margin-top: -2px; margin-right: 5px;">
-                                <input class="address_id" type="radio" id="address{{ $address_item['id'] }}" name="address_id"
-                                    value="{{ $address_item['id'] }}" shipping_charges="{{ $address_item['shipping_charges'] }}"
+                                <input class="address_id" type="radio" id="address{{ $address['id'] }}" name="address_id"
+                                    value="{{ $address['id'] }}" shipping_charges="{{ $address['shipping_charges'] }}"
                                     total_price="{{ $total_price }}" coupon_amount="{{ Session::get('couponAmount') }}">
                             </div>
                             <div class="control-group">
                                 <label for="address" class="control-label">
-                                    {{ $address_item['name'] }},
-                                    {{ $address_item['address'] }},
-                                    {{ $address_item['city'] }},
-                                    {{ $address_item['state'] }},
-                                    {{ $address_item['country'] }}
+                                    {{ $address['name'] }},
+                                    {{ $address['address'] }},
+                                    {{ $address['city'] }},
+                                    {{ $address['state'] }},
+                                    {{ $address['country'] }}
                                 </label>
                             </div>
                         </td>
                         <td>
                             <a class="btn"
-                                href="{{ url('add-edit-delivery-address/' . $address_item['id']) }}">Edit</a>
-                            <a href="#deleteModal{{ $address_item['id'] }}" data-toggle="modal" class="btn btn-danger">
+                                href="{{ url('add-edit-delivery-address/' . $address['id']) }}">Edit</a>
+                            <a href="#deleteModal{{ $address['id'] }}" data-toggle="modal" class="btn btn-danger">
                                 Delete
                             </a>
                             <!-- Delete Modal -->
-                            <div class="modal fade" id="deleteModal{{ $address_item['id'] }}" tabindex="-1"
+                            <div class="modal fade" id="deleteModal{{ $address['id'] }}" tabindex="-1"
                                 role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
@@ -66,7 +69,7 @@ use App\Models\Product;
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ url('delete-delivery-address/' . $address_item['id']) }}"
+                                            <form action="{{ url('delete-delivery-address/' . $address['id']) }}"
                                                 method="post">
                                                 @csrf
                                                 <button type="submit" class="btn btn-danger">Permanent Delete</button>
