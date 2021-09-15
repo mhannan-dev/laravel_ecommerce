@@ -48,14 +48,14 @@
                                     <div class="row">
                                         <div class="col-sm-4">
                                             <div class="form-group">
-                                                <label for="country">Shipping Place</label> <br>
-                                                <input type="text" name="country"
-                                                    class="form-control {{ $errors->has('country') ? 'is-invalid' : '' }}"
+                                                <label for="country_name">Shipping Place</label> <br>
+                                                <input type="text" name="country_name"
+                                                    class="form-control {{ $errors->has('country_name') ? 'is-invalid' : '' }}"
                                                     placeholder="Shipping place"
-                                                    value="{{ old('country', $charge['country']) }}" readonly>
-                                                @if ($errors->has('country'))
+                                                    value="{{ old('country_name', $charge['country_name']) }}" readonly>
+                                                @if ($errors->has('country_name'))
                                                     <div class="invalid-feedback">
-                                                        <strong>{{ $errors->first('country') }}</strong>
+                                                        <strong>{{ $errors->first('country_name') }}</strong>
                                                     </div>
                                                 @endif
                                             </div>

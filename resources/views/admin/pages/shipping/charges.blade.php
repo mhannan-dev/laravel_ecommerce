@@ -60,7 +60,7 @@
                                         @foreach ($shippingCharges as $key => $shippingCharge)
                                             <tr>
                                                 <td>{{ ++$key }}</td>
-                                                <td>{{ $shippingCharge['country'] }}</td>
+                                                <td>{{ $shippingCharge['country_name'] }}</td>
                                                 <td>BDT. {{ $shippingCharge['till_500gm'] }}</td>
                                                 <td>BDT. {{ $shippingCharge['till_1000gm'] }}</td>
                                                 <td>BDT. {{ $shippingCharge['till_1000gm'] }}</td>

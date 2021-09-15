@@ -42,6 +42,7 @@ class ShippingController extends Controller
     }
     public function addEditShippingCharge(Request $request, $id = null)
     {
+
         if ($id == "") {
             // Add Coupon Code
             $charge = new ShippingCharge();
@@ -52,22 +53,8 @@ class ShippingController extends Controller
         //exit();
         if ($request->isMethod('POST')) {
             $data = $request->all();
-            //Form validation
-            $rules = [
-                'country' => 'required|max:255|regex:/^[a-zA-ZÑñ\s]+$/',
-                '0_500gm' => 'required|numeric',
-                '501_1000gm' => 'required|numeric',
-                '1001_2000gm' => 'required|numeric'
-            ];
-            $validationMessages = [
-                'country.required' => 'The country field can not be blank',
-                'till_500gm.digits' => 'Shipping charges field can not be blank',
-                'till_1000gm' => 'Shipping charges field can not be blank',
-                '501_1000gm' => 'Shipping charges field can not be blank',
-                '1001_2000gm' => 'Shipping charges field can not be blank'
-            ];
-            $this->validate($request, $rules, $validationMessages);
-            $charge->country = $data['country'];
+            //dd($data);
+            $charge->country_name = $data['country_name'];
             $charge->till_500gm = $data['till_500gm'];
             $charge->till_1000gm = $data['till_1000gm'];
             $charge->till_2000gm = $data['till_2000gm'];

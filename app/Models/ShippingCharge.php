@@ -17,8 +17,13 @@ class ShippingCharge extends Model
 
     public static function getShippingCharges($total_weight, $country)
     {
+<<<<<<< HEAD
         $shippingDetails = ShippingCharge::where('country_name', $country)->first();
        // dd($shippingDetails);
+=======
+        $shippingDetails = ShippingCharge::where('country_name',$country)->first()->toArray();
+        //dd($shippingDetails);
+>>>>>>> 37bd2d4fc8cd4a2587a88c27fb7dc6ec9b4212bd
         if ($total_weight > 0) {
             if ($total_weight > 0 && $total_weight <= 500) {
                 $shipping_charges = $shippingDetails['till_500gm'];

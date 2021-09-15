@@ -348,6 +348,7 @@ class ProductsController extends Controller
         }
         //echo $total_weight; die;
         $deliveryAddress = DeliveryAddress::deliveryAddress();
+        //dd($deliveryAddress);
         foreach ($deliveryAddress as $key => $value) {
             $shippingCharges = ShippingCharge::getShippingCharges($total_weight, $value['country']);
             $deliveryAddress[$key]['shipping_charges'] = $shippingCharges;
