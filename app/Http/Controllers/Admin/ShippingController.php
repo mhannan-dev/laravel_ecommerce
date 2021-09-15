@@ -42,18 +42,13 @@ class ShippingController extends Controller
     }
     public function addEditShippingCharge(Request $request, $id = null)
     {
+
         if ($id == "") {
             // Add Coupon Code
             $charge = new ShippingCharge();
             $title = "Add Shipping Charge";
             $buttonText = "Save";
             $message = "Shipping charge has been saved successfully!";
-        } else {
-            // Update charge Code
-            $charge = ShippingCharge::findOrFail($id);
-            $title = "Edit Shipping Charge";
-            $buttonText = "Update";
-            $message = "Shipping Charge has been updated successfully!";
         }
         //exit();
         if ($request->isMethod('POST')) {
