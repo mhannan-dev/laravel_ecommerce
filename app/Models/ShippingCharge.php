@@ -17,26 +17,22 @@ class ShippingCharge extends Model
 
     public static function getShippingCharges($total_weight, $country)
     {
-<<<<<<< HEAD
-        $shippingDetails = ShippingCharge::where('country_name', $country)->first();
-       // dd($shippingDetails);
-=======
-        $shippingDetails = ShippingCharge::where('country_name',$country)->first()->toArray();
-        //dd($shippingDetails);
->>>>>>> 37bd2d4fc8cd4a2587a88c27fb7dc6ec9b4212bd
+        $shippingDetails = ShippingCharge::where('country_name',$country)->first();
+        $sss = json_decode(json_encode($shippingDetails), true);
         if ($total_weight > 0) {
             if ($total_weight > 0 && $total_weight <= 500) {
-                $shipping_charges = $shippingDetails['till_500gm'];
+                $shipping_charges = $sss['till_500gm'];
+                dd($sss['till_500gm']);
             } else if ($total_weight > 501 && $total_weight <= 1000) {
-                $shipping_charges = $shippingDetails['till_1000gm'];
+                $shipping_charges = $sss['till_1000gm'];
             } else if ($total_weight > 1001 && $total_weight <= 2000) {
-                $shipping_charges = $shippingDetails['till_2000gm'];
+                $shipping_charges = $sss['till_2000gm'];
             } else if ($total_weight > 2001 && $total_weight <= 3000) {
-                $shipping_charges = $shippingDetails['till_3000gm'];
+                $shipping_charges = $sss['till_3000gm'];
             } else if ($total_weight > 3001 && $total_weight <= 4000) {
-                $shipping_charges = $shippingDetails['till_4000gm'];
+                $shipping_charges = $sss['till_4000gm'];
             } else if ($total_weight > 4001 && $total_weight <= 5000) {
-                $shipping_charges = $shippingDetails['till_5000gm'];
+                $shipping_charges = $sss['till_5000gm'];
             } else {
                 $shipping_charges = 0;
             }
