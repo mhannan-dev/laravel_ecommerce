@@ -22,7 +22,7 @@ class ShippingCharge extends Model
         if ($total_weight > 0) {
             if ($total_weight > 0 && $total_weight <= 500) {
                 $shipping_charges = $sss['till_500gm'];
-                dd($sss['till_500gm']);
+                //dd($sss['till_500gm']);
             } else if ($total_weight > 501 && $total_weight <= 1000) {
                 $shipping_charges = $sss['till_1000gm'];
             } else if ($total_weight > 1001 && $total_weight <= 2000) {

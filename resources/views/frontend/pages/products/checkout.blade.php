@@ -180,3 +180,6 @@ use App\Models\Product;
         </form>
     </div>
 @endsection
+<?php
+    Session::forget('couponAmount');
+?>

@@ -351,11 +351,11 @@ class ProductsController extends Controller
             $attrPrice = Product::getDiscountedAttrPrice($item['product_id'], $item['size']);
             $total_price = $total_price + $attrPrice['final_price'] * $item['quantity'];
         }
-        echo $total_weight; die;
+        //echo $total_weight; die;
         $deliveryAddress = DeliveryAddress::deliveryAddress();
         //dd($deliveryAddress);
         foreach ($deliveryAddress as $key => $value) {
-            $shippingCharges = ShippingCharge::getShippingCharges($value['country']);
+            $shippingCharges = ShippingCharge::getShippingCharges($total_weight, $value['country']);
             $deliveryAddress[$key]['shipping_charges'] = $shippingCharges;
         }
 

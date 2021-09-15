@@ -293,7 +293,7 @@ $(function () {
     //Calculate shipping charge and update grand totla
     $("input[name=address_id]").bind('change', function (e) {
         var shipping_charges = $(this).attr("shipping_charges");
-        alert(shipping_charges);
+        //alert(shipping_charges);
         var total_price = $(this).attr("total_price");
         var coupon_amount = $(this).attr("coupon_amount");
         if (coupon_amount == "") {
