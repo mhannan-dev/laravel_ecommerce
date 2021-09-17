@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Frontend\UsersController;
 use App\Http\Controllers\Frontend\OrdersController;
+use App\Http\Controllers\Frontend\PaypalController;
 use App\Http\Controllers\Frontend\ProductsController;
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,7 @@ Route::namespace('Frontend')->group(function () {
         Route::post('delete-delivery-address/{id}',[ProductsController::class, 'deleteDeliveryAddress'])->name('deleteDeliveryAddress');
         //Thanks
         Route::get('thanks',[ProductsController::class, 'thanks'])->name('thanks');
+        Route::get('paypal',[PaypalController::class, 'paypal'])->name('paypal');
         //Orders
         Route::get('orders',[OrdersController::class, 'orders'])->name('orders');
         Route::get('orders/{id}',[OrdersController::class, 'orderDetails'])->name('orderDetails');

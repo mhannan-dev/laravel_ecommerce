@@ -373,8 +373,7 @@ class ProductsController extends Controller
             if ($data['payment_gateway'] == "COD") {
                 $payment_method = "COD";
             } else {
-                echo "Coming soon";
-                die;
+                //echo "Coming soon";die;
                 $payment_method = "Prepaid";
             }
             //Get Delivary Address
@@ -388,7 +387,7 @@ class ProductsController extends Controller
             Session::put('grand_total', $grand_total);
             DB::beginTransaction();
             //Insert Into Order Details
-            $order = new Order;
+            $order = new Order();
             $order->user_id = Auth::user()->id;
             $order->name = $delivery_address['name'];
             $order->address = $delivery_address['address'];
@@ -448,12 +447,14 @@ class ProductsController extends Controller
                     }
                 );
                 return redirect()->route('thanks');
+            } else if($data['payment_gateway'] == "PAYPAL"){
+                return redirect()->route('paypal');
             } else {
-                echo "Prepaid method is comming soon";
+                echo "Other payment method is comming sonns";
                 die;
             }
-            echo "Order Placed";
-            die;
+            //echo "Order Placed"; die;
+
         }
         return view('frontend.pages.products.checkout', compact('userCartItems', 'deliveryAddress', 'total_price'));
     }
