@@ -352,9 +352,17 @@ class ProductsController extends Controller
         $deliveryAddresses = DeliveryAddress::deliveryAddresses();
         //dd($deliveryAddress);
         foreach ($deliveryAddresses as $key => $value) {
+
             $shippingCharges = ShippingCharge::getShippingCharges($total_weight, $value['country']);
             $deliveryAddresses[$key]['shipping_charges'] = $shippingCharges;
+            //Check if delivery zipCode is exist in COD product list
+            $deliveryAddresses[$key]['codZipCodeCount'] = DB::table('cod_zip_codes')->where('zip_code',$value['zip_code'])->count();
+            //dd($deliveryAddresses[$key]['codZipCodeCount']);
+            $deliveryAddresses[$key]['prepaidZipCodeCount'] = DB::table('prepaid_zip_codes')->where('zip_code',$value['zip_code'])->count();
+            //dd($deliveryAddresses[$key]['prepaidZipCodeCount']);
         }
+        //echo "<pre>"; print_r($deliveryAddresses); die;
+
         if ($request->isMethod('post')) {
             $data = $request->all();
             //dd($data);
@@ -426,7 +434,7 @@ class ProductsController extends Controller
                     $getProductStock = ProductAttribute::where(['product_id' => $item['product_id'], 'size' => $item['size']])->first()->toArray();
                     //dd($getProductStock);
                     $newStock = $getProductStock['stock'] - $item['quantity'];
-                    ProductAttribute::where(['product_id' => $item['product_id'], 'size' => $item['size']])->update(['stock' => $newStock]);    
+                    ProductAttribute::where(['product_id' => $item['product_id'], 'size' => $item['size']])->update(['stock' => $newStock]);
                 }
                 //Reduce stock script ends
             }

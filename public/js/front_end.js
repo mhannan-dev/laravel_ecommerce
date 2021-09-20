@@ -299,6 +299,23 @@ $(function () {
         //alert(shipping_charges);
         var total_price = $(this).attr("total_price");
         var coupon_amount = $(this).attr("coupon_amount");
+        var codZipCodeCount = $(this).attr("codZipCodeCount");
+        var prepaidZipCodeCount = $(this).attr("prepaidZipCodeCount");
+        //alert(codZipCodeCount);
+        if(codZipCodeCount > 0){
+            $(".codMethod").show();
+        } else{
+            //Hide COD Method
+            alert("Cod Payment method is not possible")
+            //$(".codMethod").hide();
+        }
+        if(prepaidZipCodeCount > 0){
+            //Show pre paid method
+            $(".prePaidMethod").show();
+        } else{
+            //Hide pre paid method
+            $(".prePaidMethod").hide();
+        }
         if (coupon_amount == "") {
             coupon_amount = 0;
         }

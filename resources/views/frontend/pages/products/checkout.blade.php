@@ -29,7 +29,7 @@ use App\Models\Product;
                     </th>
                 </tr>
                 @foreach ($deliveryAddresses as $address)
-                
+
                         {{-- @php
                             dd($address);
                         @endphp --}}
@@ -39,7 +39,9 @@ use App\Models\Product;
                                 <input class="address_id" type="radio" id="address{{ $address['id'] }}"
                                     name="address_id" value="{{ $address['id'] }}"
                                     shipping_charges="{{ $address['shipping_charges'] }}"
-                                    total_price="{{ $total_price }}" coupon_amount="{{ Session::get('couponAmount') }}">
+                                    total_price="{{ $total_price }}" coupon_amount="{{ Session::get('couponAmount') }}"
+                                    codZipCodeCount={{ $address['codZipCodeCount'] }}
+                                    prepaidZipCodeCount={{ $address['prepaidZipCodeCount'] }}>
                             </div>
                             <div class="control-group">
                                 <label for="address" class="control-label">
@@ -48,6 +50,7 @@ use App\Models\Product;
                                     {{ $address['city'] }},
                                     {{ $address['state'] }},
                                     {{ $address['country'] }}
+                                    ({{ $address['zip_code'] }})
                                 </label>
                             </div>
                         </td>
@@ -167,10 +170,14 @@ use App\Models\Product;
                             <div class="control-group">
                                 <label class="control-label"><strong> Payment Method: </strong> </label>
                                 <div class="controls">
-                                    <input type="radio" name="payment_gateway" value="PAYPAL" required>
-                                    <strong class="btn">Paypal</strong>
+                                    <span class="prePaidMethod">
+                                        <input type="radio" name="payment_gateway" value="PAYPAL" required>
+                                        <strong class="btn">Paypal</strong>
+                                    </span>
+                                <span class="codMethod">
                                     <input type="radio" name="payment_gateway" value="COD" required>
                                     <strong class="btn">Cash On Delivery</strong>
+                                </span>
                                 </div>
                             </div>
                         </td>

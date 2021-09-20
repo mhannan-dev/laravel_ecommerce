@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCodZipCodesTable extends Migration
+class CreatePrePaidZipCodesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCodZipCodesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cod_zip_codes', function (Blueprint $table) {
+        Schema::create('prepaid_zip_codes', function (Blueprint $table) {
             $table->id();
             $table->integer('zip_code');
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateCodZipCodesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cod_zip_codes');
+        Schema::dropIfExists('prepaid_zip_codes');
     }
 }
