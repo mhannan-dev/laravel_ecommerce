@@ -51,6 +51,7 @@ Route::namespace('Frontend')->group(function () {
     //Check Email and Mobile is Exist
     Route::match(['get', 'post'], 'check-email', [UsersController::class, 'checkEmail']);
     Route::match(['get', 'post'], 'check-mobile', [UsersController::class, 'checkMobileNo']);
+    Route::post('check-zip-code', [ProductsController::class, 'checkZipCode']);
     //Confirm user account
     Route::match(['GET', 'POST'], 'confirm/{code}', [UsersController::class, 'confirmAccount']);
     //Auth routes group

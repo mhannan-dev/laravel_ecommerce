@@ -302,17 +302,17 @@ $(function () {
         var codZipCodeCount = $(this).attr("codZipCodeCount");
         var prepaidZipCodeCount = $(this).attr("prepaidZipCodeCount");
         //alert(codZipCodeCount);
-        if(codZipCodeCount > 0){
+        if (codZipCodeCount > 0) {
             $(".codMethod").show();
-        } else{
+        } else {
             //Hide COD Method
             alert("Cod Payment method is not possible")
             //$(".codMethod").hide();
         }
-        if(prepaidZipCodeCount > 0){
+        if (prepaidZipCodeCount > 0) {
             //Show pre paid method
             $(".prePaidMethod").show();
-        } else{
+        } else {
             //Hide pre paid method
             $(".prePaidMethod").hide();
         }
@@ -323,5 +323,27 @@ $(function () {
         var grand_total = parseInt(total_price) + parseInt(shipping_charges) - parseInt(coupon_amount);
         $(".grand_total").html("BDT." + grand_total);
         //alert(grand_total);
+    });
+
+    $("#checkZipCode").click(function (e) {
+        var zipCode = $("#zipCode").val();
+
+        if (zipCode == "") {
+            alert("Please enter your area zip code");
+            return false;
+        }
+        $.ajax({
+            type: "POST",
+            data: {
+                zipCode: zipCode
+            },
+            url: "/check-zip-code",
+            success: function (resp) {
+                alert(resp);
+            },
+            error: function (errorThrown) {
+                alert(errorThrown);
+            }
+        });
     });
 });

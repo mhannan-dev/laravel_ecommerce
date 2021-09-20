@@ -1,8 +1,18 @@
 <?php use App\Models\Product; ?>
 @extends('frontend.layouts.front_app')
 @section('title')
-Product Details
+    Product Details
 @endsection
+@section('styles')
+<style>
+
+    .zipCodeCheck {
+        margin-top: 10px;
+    }
+</style>
+@stop
+
+
 @section('content')
     <div class="span9">
         <ul class="breadcrumb">
@@ -40,9 +50,9 @@ Product Details
                         </div>
                     </div>
                     <!--
-                                                                                                        <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-                                                                                            <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-                                                                                            -->
+                                                                                                            <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+                                                                                                <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+                                                                                                -->
                 </div>
                 <div class="btn-toolbar">
                     <div class="btn-group">
@@ -55,6 +65,7 @@ Product Details
                     </div>
                 </div>
             </div>
+
             <div class="span6">
                 {{-- Stock error message --}}
                 @include('frontend.partials.flash_msg')
@@ -77,13 +88,23 @@ Product Details
                             @endif
                         </h4>
                         <select name="size" id="getPrice" product_id={{ $product_details['id'] }} class="span2 pull-left"
-                            required>
+                            >
                             <option value="">Select Size</option>
                             @foreach ($product_details['attributes'] as $attribute)
                                 <option value="{{ $attribute['size'] }}">{{ $attribute['size'] }}</option>
                             @endforeach
                         </select>
-                        <input type="number" name="quantity" class="span1" placeholder="Qty." required>
+                        <input type="number" name="quantity" class="span1" placeholder="Qty."> <br>
+                        <div class="zipCodeCheck">
+                            <strong>Deliery</strong>
+
+                            <input class="span1" style="width: 120px;" type="text" name="zipCode" id="zipCode"
+                                placeholder="Enter Zip Code">
+                            <button id="checkZipCode" class="btn">Check</button>
+
+                        </div>
+
+
                         <button type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i
                                 class=" icon-shopping-cart"></i></button>
                     </div>
@@ -229,9 +250,9 @@ Product Details
                                                 <h4 style="text-align:center">
                                                     <a class="btn"
                                                         href="{{ route('detail', $related_product['id']) }}"> <i
-                                                            class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
-                                                            class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
-                                                        href="#">BDT.{!! $related_product['price'] !!}</a>
+                                                            class="icon-zoom-in"></i></a> <a class="btn"
+                                                        href="#">Add to <i class="icon-shopping-cart"></i></a> <a
+                                                        class="btn btn-primary" href="#">BDT.{!! $related_product['price'] !!}</a>
                                                 </h4>
                                             </div>
                                         </div>

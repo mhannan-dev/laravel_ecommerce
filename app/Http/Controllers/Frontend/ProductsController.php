@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Frontend;
+
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Order;
@@ -19,6 +21,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+
 class ProductsController extends Controller
 {
     public function listing(Request $request)
@@ -109,6 +112,29 @@ class ProductsController extends Controller
         //echo "<pre>";//print_r($related_products);//die;
         return view('frontend.pages.products.detail', compact('product_details', 'total_stock', 'related_products'));
     }
+    public function checkZipCode(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+            $data = $request->all();
+            $codZipCodeCount = DB::table('cod_zip_codes')->where('zip_code', $data['zipCode'])->count();
+            ///dd($codZipCodeCount);
+            $prepaidZipCodeCount = DB::table('prepaid_zip_codes')->where('zip_code', $data['zipCode'])->count();
+            if ($codZipCodeCount == 0 && $prepaidZipCodeCount == 0) {
+                echo "This zip code is not availiable for delivery";
+                die;
+            } else {
+                echo "This zip code is availiable for delivery";
+                die;
+            }
+        }
+        //$data = $request->all();
+        // $moblCount = User::where('mobile', $data['mobile'])->count();
+        // if ($moblCount > 0) {
+        //     return "false";
+        // } else {
+        //     return "true";
+        // }
+    }
     public function getProductPrice(Request $request)
     {
         if ($request->ajax()) {
@@ -121,6 +147,15 @@ class ProductsController extends Controller
     {
         if ($request->isMethod('post')) {
             $data = $request->all();
+            if($data['quantity'] <= 0){
+                $data['quantity'] = 1;
+            }
+            if(empty($data['size'])){
+                $message = "Please select a product size";
+                Session::flash('error', $message);
+                //Session::flash('error', 'Please select a product size');
+                return redirect()->back();
+            }
             //Check product stock if product availiable in stock
             $getProductStock = ProductAttribute::where(['product_id' => $data['product_id'], 'size' => $data['size']])->first()->toArray();
             //echo $getProductStock['stock']; die;
@@ -165,7 +200,7 @@ class ProductsController extends Controller
             $cart->size = $data['size'];
             $cart->quantity = $data['quantity'];
             $cart->save();
-            Session::flash('product_added_to_cart_msg', 'Product added to cart');
+            Session::flash('success', 'Product added to cart');
             return redirect('cart');
         }
     }
@@ -352,17 +387,15 @@ class ProductsController extends Controller
         $deliveryAddresses = DeliveryAddress::deliveryAddresses();
         //dd($deliveryAddress);
         foreach ($deliveryAddresses as $key => $value) {
-
             $shippingCharges = ShippingCharge::getShippingCharges($total_weight, $value['country']);
             $deliveryAddresses[$key]['shipping_charges'] = $shippingCharges;
             //Check if delivery zipCode is exist in COD product list
-            $deliveryAddresses[$key]['codZipCodeCount'] = DB::table('cod_zip_codes')->where('zip_code',$value['zip_code'])->count();
+            $deliveryAddresses[$key]['codZipCodeCount'] = DB::table('cod_zip_codes')->where('zip_code', $value['zip_code'])->count();
             //dd($deliveryAddresses[$key]['codZipCodeCount']);
-            $deliveryAddresses[$key]['prepaidZipCodeCount'] = DB::table('prepaid_zip_codes')->where('zip_code',$value['zip_code'])->count();
+            $deliveryAddresses[$key]['prepaidZipCodeCount'] = DB::table('prepaid_zip_codes')->where('zip_code', $value['zip_code'])->count();
             //dd($deliveryAddresses[$key]['prepaidZipCodeCount']);
         }
         //echo "<pre>"; print_r($deliveryAddresses); die;
-
         if ($request->isMethod('post')) {
             $data = $request->all();
             //dd($data);
