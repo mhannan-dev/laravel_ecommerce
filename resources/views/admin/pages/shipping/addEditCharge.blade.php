@@ -104,43 +104,19 @@
                                         </div>
                                         <div class="col-sm-4">
                                             <div class="form-group">
-                                                <label for="till_3000gm">Shipping Charge till_3000gm</label> <br>
-                                                <input type="number" placeholder="Shipping charges" name="till_3000gm"
-                                                    value="{{ old('till_3000gm', $charge->till_3000gm) }}"
-                                                    class="form-control {{ $errors->has('till_3000gm') ? 'is-invalid' : '' }}">
-                                                @if ($errors->has('till_3000gm'))
+                                                <label for="above_5000gm">Shipping Charge above_5000gm</label> <br>
+                                                <input type="number" placeholder="Shipping charges" name="above_5000gm"
+                                                    value="{{ old('above_5000gm', $charge->above_5000gm) }}"
+                                                    class="form-control {{ $errors->has('above_5000gm') ? 'is-invalid' : '' }}">
+                                                @if ($errors->has('above_5000gm'))
                                                     <div class="invalid-feedback">
-                                                        <strong>{{ $errors->first('till_3000gm') }}</strong>
+                                                        <strong>{{ $errors->first('above_5000gm') }}</strong>
                                                     </div>
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label for="till_4000gm">Shipping Charge till_4000gm</label> <br>
-                                                <input type="number" placeholder="Shipping charges" name="till_4000gm"
-                                                    value="{{ old('till_4000gm', $charge->till_4000gm) }}"
-                                                    class="form-control {{ $errors->has('till_4000gm') ? 'is-invalid' : '' }}">
-                                                @if ($errors->has('till_4000gm'))
-                                                    <div class="invalid-feedback">
-                                                        <strong>{{ $errors->first('till_4000gm') }}</strong>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label for="till_5000gm">Shipping Charge till_5000gm</label> <br>
-                                                <input type="number" placeholder="Shipping charges" name="till_5000gm"
-                                                    value="{{ old('till_5000gm', $charge->till_5000gm) }}"
-                                                    class="form-control {{ $errors->has('till_5000gm') ? 'is-invalid' : '' }}">
-                                                @if ($errors->has('till_5000gm'))
-                                                    <div class="invalid-feedback">
-                                                        <strong>{{ $errors->first('till_5000gm') }}</strong>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
+                                        
+            
                                     </div>
 
                                     <button type="submit" class="btn btn-primary">{{ $buttonText }}</button>
@@ -169,7 +145,7 @@
                         required: true,
                         minlength: 3,
                         //check-shipping-location is laravel route
-                       remote: "check-shipping-area",
+                        remote: "check-shipping-area",
                     },
                     shipping_charges: {
                         required: true,

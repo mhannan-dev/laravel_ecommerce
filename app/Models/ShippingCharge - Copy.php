@@ -12,13 +12,16 @@ class ShippingCharge extends Model
     protected $table = 'shipping_charges';
     protected $fillable =
     [
-        'country_name', 'till_500gm', 'till_1000gm', 'till_2000gm', 'till_3000gm', 'till_4000gm', 'till_5000gm', 'status', 'created_at', 'updated_at'
+        'country_name', 'till_500gm', 'till_1000gm', 'till_2000gm', 'above_5000gm', 'status', 'created_at', 'updated_at'
     ];
 
     public static function getShippingCharges($total_weight, $country)
     {
+
         $shippingDetails = ShippingCharge::where('country_name', $country)->first();
+        // dd($shippingDetails->till_500gm);
         //$shippingDetails = json_decode(json_encode($shippingDetails), true);
+        //dd($shippingDetails['till_500gm']);
         if ($total_weight > 0) {
             if ($total_weight > 0 && $total_weight <= 500) {
                 $shipping_charges = $shippingDetails->till_500gm ?? '';

@@ -10,10 +10,11 @@ class DeliveryAddress extends Model
 {
     use HasFactory;
 
-    public static function deliveryAddress()
+    public static function deliveryAddresses()
     {
         $user_id = Auth::user()->id;
-        $deliveryAddress = DeliveryAddress::where('user_id',$user_id)->get()->toArray();
-        return $deliveryAddress;
+        $deliveryAddresses = DeliveryAddress::where('user_id', $user_id)->get()->toArray();
+        //dd($deliveryAddresses);
+        return $deliveryAddresses;
     }
 }

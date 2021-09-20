@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
-
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Order;
@@ -21,7 +19,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-
 class ProductsController extends Controller
 {
     public function listing(Request $request)
@@ -341,24 +338,23 @@ class ProductsController extends Controller
         if (count($userCartItems) == 0) {
             return redirect()->route('cart')->with('error', 'Shopping cart is empty! Please add products to checkout');
         }
-
         $total_price = 0;
         $total_weight = 0;
         foreach ($userCartItems as $item) {
             $product_weight = $item['product']['weight'];
-            $total_weight = $total_weight + $product_weight * $item['quantity'];
+            $total_weight = $total_weight + $product_weight;
             //dd($total_weight);
             $attrPrice = Product::getDiscountedAttrPrice($item['product_id'], $item['size']);
             $total_price = $total_price + $attrPrice['final_price'] * $item['quantity'];
         }
-        //echo $total_weight; die;
-        $deliveryAddress = DeliveryAddress::deliveryAddress();
+        //echo $total_weight;
+        //die;
+        $deliveryAddresses = DeliveryAddress::deliveryAddresses();
         //dd($deliveryAddress);
-        foreach ($deliveryAddress as $key => $value) {
+        foreach ($deliveryAddresses as $key => $value) {
             $shippingCharges = ShippingCharge::getShippingCharges($total_weight, $value['country']);
-            $deliveryAddress[$key]['shipping_charges'] = $shippingCharges;
+            $deliveryAddresses[$key]['shipping_charges'] = $shippingCharges;
         }
-
         if ($request->isMethod('post')) {
             $data = $request->all();
             //dd($data);
@@ -424,6 +420,15 @@ class ProductsController extends Controller
                 $cartItem->product_price = $getDiscountedAttrPrice['final_price'];
                 $cartItem->product_qty = $item['quantity'];
                 $cartItem->save();
+                //Reduce product quantity form product attribute table
+                if ($data['payment_gateway'] == "COD") {
+                    //Get size and product_id wise product stock
+                    $getProductStock = ProductAttribute::where(['product_id' => $item['product_id'], 'size' => $item['size']])->first()->toArray();
+                    //dd($getProductStock);
+                    $newStock = $getProductStock['stock'] - $item['quantity'];
+                    ProductAttribute::where(['product_id' => $item['product_id'], 'size' => $item['size']])->update(['stock' => $newStock]);    
+                }
+                //Reduce stock script ends
             }
             Session::put('order_id', $order_id);
             DB::commit();
@@ -447,16 +452,15 @@ class ProductsController extends Controller
                     }
                 );
                 return redirect()->route('thanks');
-            } else if($data['payment_gateway'] == "PAYPAL"){
+            } else if ($data['payment_gateway'] == "PAYPAL") {
                 return redirect()->route('paypal');
             } else {
                 echo "Other payment method is comming sonns";
                 die;
             }
             //echo "Order Placed"; die;
-
         }
-        return view('frontend.pages.products.checkout', compact('userCartItems', 'deliveryAddress', 'total_price'));
+        return view('frontend.pages.products.checkout', compact('userCartItems', 'deliveryAddresses', 'total_price'));
     }
     public function thanks()
     {

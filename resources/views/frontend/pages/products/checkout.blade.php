@@ -28,15 +28,17 @@ use App\Models\Product;
                             Address</a>
                     </th>
                 </tr>
-                @foreach ($deliveryAddress as $address)
-                @php
-                    $address
-                @endphp
+                @foreach ($deliveryAddresses as $address)
+                
+                        {{-- @php
+                            dd($address);
+                        @endphp --}}
                     <tr>
                         <td>
                             <div class="control-group" style="float: left; margin-top: -2px; margin-right: 5px;">
-                                <input class="address_id" type="radio" id="address{{ $address['id'] }}" name="address_id"
-                                    value="{{ $address['id'] }}" shipping_charges="{{ $address['shipping_charges'] }}"
+                                <input class="address_id" type="radio" id="address{{ $address['id'] }}"
+                                    name="address_id" value="{{ $address['id'] }}"
+                                    shipping_charges="{{ $address['shipping_charges'] }}"
                                     total_price="{{ $total_price }}" coupon_amount="{{ Session::get('couponAmount') }}">
                             </div>
                             <div class="control-group">
@@ -56,8 +58,8 @@ use App\Models\Product;
                                 Delete
                             </a>
                             <!-- Delete Modal -->
-                            <div class="modal fade" id="deleteModal{{ $address['id'] }}" tabindex="-1"
-                                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="deleteModal{{ $address['id'] }}" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -118,7 +120,7 @@ use App\Models\Product;
                                 Size : {{ $item['size'] }}
                             </td>
                             <td style="text-align:right;">BDT. {{ $attrPrice['price'] * $item['quantity'] }}</td>
-                            <td style="text-align:right;">BDT. {{ $attrPrice['discount']  * $item['quantity']}}</td>
+                            <td style="text-align:right;">BDT. {{ $attrPrice['discount'] * $item['quantity'] }}</td>
                             <td style="text-align:right;">BDT. {{ $attrPrice['final_price'] * $item['quantity'] }}</td>
                         </tr>
                         <?php
@@ -181,5 +183,5 @@ use App\Models\Product;
     </div>
 @endsection
 <?php
-    Session::forget('couponAmount');
+Session::forget('couponAmount');
 ?>

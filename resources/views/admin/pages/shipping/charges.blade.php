@@ -49,9 +49,7 @@
                                             <th>Max 500gm</th>
                                             <th>Max 1000gm</th>
                                             <th>Max 2000gm</th>
-                                            <th>Max 3000gm</th>
-                                            <th>Max 4000gm</th>
-                                            <th>Max 5000gm</th>
+                                            <th>Above 5000gm</th>
                                             <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
@@ -63,10 +61,9 @@
                                                 <td>{{ $shippingCharge['country_name'] }}</td>
                                                 <td>BDT. {{ $shippingCharge['till_500gm'] }}</td>
                                                 <td>BDT. {{ $shippingCharge['till_1000gm'] }}</td>
-                                                <td>BDT. {{ $shippingCharge['till_1000gm'] }}</td>
-                                                <td>BDT. {{ $shippingCharge['till_1000gm'] }}</td>
-                                                <td>BDT. {{ $shippingCharge['till_1000gm'] }}</td>
-                                                <td>BDT. {{ $shippingCharge['till_5000gm'] }}</td>
+                                                <td>BDT. {{ $shippingCharge['till_2000gm'] }}</td>
+                                                <td>BDT. {{ $shippingCharge['above_5000gm'] }}</td>
+                                            
                                                 <td>
                                                     @if ($shippingCharge['status'] == 1)
                                                         <a title="Change" shipping_id="{{ $shippingCharge['id'] }}"

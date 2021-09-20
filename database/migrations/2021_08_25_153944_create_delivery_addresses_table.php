@@ -1,7 +1,9 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+
 class CreateDeliveryAddressesTable extends Migration
 {
     /**
@@ -14,13 +16,13 @@ class CreateDeliveryAddressesTable extends Migration
         Schema::create('delivery_addresses', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->text('address')->nullable();
             $table->string('name');
             $table->string('country');
             $table->string('state');
             $table->string('city');
-            $table->string('mobile');
             $table->string('zip_code')->nullable();
+            $table->string('mobile');
+            $table->text('address')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });

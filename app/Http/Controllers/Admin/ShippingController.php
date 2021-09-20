@@ -58,9 +58,7 @@ class ShippingController extends Controller
             $charge->till_500gm = $data['till_500gm'];
             $charge->till_1000gm = $data['till_1000gm'];
             $charge->till_2000gm = $data['till_2000gm'];
-            $charge->till_3000gm = $data['till_3000gm'];
-            $charge->till_4000gm = $data['till_4000gm'];
-            $charge->till_5000gm = $data['till_5000gm'];
+            $charge->above_5000gm = $data['above_5000gm'];
             $charge->save();
             return redirect()->route('sadmin.shipping-charges')->with('success', $message);
         }

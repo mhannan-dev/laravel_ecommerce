@@ -303,7 +303,10 @@ $(function () {
             coupon_amount = 0;
         }
         $(".shipping_charges").html("BDT." + shipping_charges);
-        var grand_total = parseInt(total_price) + parseInt(shipping_charges) - parseInt(coupon_amount);
+        var grand_total =
+            parseInt(total_price) +
+            parseInt(shipping_charges) -
+            parseInt(coupon_amount);
         $(".grand_total").html("BDT." + grand_total);
         //alert(grand_total);
     });
