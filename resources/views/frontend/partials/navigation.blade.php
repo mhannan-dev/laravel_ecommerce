@@ -3,6 +3,12 @@ use App\Models\Section;
 $sections = Section::sections();
 //echo '<pre>'; print_r($sections);die;
 @endphp
+@section('styles')
+    <style>
+    
+
+    </style>
+@endsection
 <div id="header">
     <div class="container">
         <div id="welcomeLine" class="row">
@@ -10,11 +16,12 @@ $sections = Section::sections();
             <div class="span12">
                 <div class="pull-right">
                     <a href="{{ url('/cart') }}">
-                        <span class="btn btn-mini btn-primary">
+                        <span class="btn btn-success">
                             <i class="icon-shopping-cart icon-white"></i>
                             [ <span class="totalCartItems">{{ totalCartItems() }} </span> ] Items in your
                             cart </span>
-                        </a>
+                    </a>
+
                 </div>
             </div>
         </div>
@@ -64,7 +71,7 @@ $sections = Section::sections();
                             <ul class="nav pull-right">
                                 <li><a href="#">Contact</a></li>
                                 @if (Auth::check())
-                                <li class="divider-vertical"></li>
+                                    <li class="divider-vertical"></li>
                                     <li><a href="{{ url('orders') }}">Orders</a></li>
                                     <li class="divider-vertical"></li>
                                     <li><a href="{{ url('account') }}">Account</a></li>

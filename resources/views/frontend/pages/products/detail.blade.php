@@ -1,7 +1,7 @@
 <?php use App\Models\Product; ?>
 @extends('frontend.layouts.front_app')
 @section('title')
-    Product Details
+    {{ $product_details['title'] }} Information
 @endsection
 @section('styles')
 <style>
@@ -100,7 +100,7 @@
 
                             <input class="span1" style="width: 120px;" type="text" name="zipCode" id="zipCode"
                                 placeholder="Enter Zip Code">
-                            <button id="checkZipCode" class="btn">Check</button>
+                            <button type="button" id="checkZipCode" class="btn">Check</button>
 
                         </div>
 

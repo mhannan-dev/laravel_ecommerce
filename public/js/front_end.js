@@ -327,7 +327,6 @@ $(function () {
 
     $("#checkZipCode").click(function (e) {
         var zipCode = $("#zipCode").val();
-
         if (zipCode == "") {
             alert("Please enter your area zip code");
             return false;

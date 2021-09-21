@@ -116,14 +116,19 @@ class ProductsController extends Controller
     {
         if ($request->isMethod('POST')) {
             $data = $request->all();
-            $codZipCodeCount = DB::table('cod_zip_codes')->where('zip_code', $data['zipCode'])->count();
-            ///dd($codZipCodeCount);
-            $prepaidZipCodeCount = DB::table('prepaid_zip_codes')->where('zip_code', $data['zipCode'])->count();
-            if ($codZipCodeCount == 0 && $prepaidZipCodeCount == 0) {
-                echo "This zip code is not availiable for delivery";
-                die;
+            if (is_numeric($data['zipCode']) && $data['zipCode'] > 0 && $data['zipCode'] == round($data['zipCode'], 0)) {
+                $codZipCodeCount = DB::table('cod_zip_codes')->where('zip_code', $data['zipCode'])->count();
+                ///dd($codZipCodeCount);
+                $prepaidZipCodeCount = DB::table('prepaid_zip_codes')->where('zip_code', $data['zipCode'])->count();
+                if ($codZipCodeCount == 0 && $prepaidZipCodeCount == 0) {
+                    echo "This zip code is not availiable for delivery";
+                    die;
+                } else {
+                    echo "This zip code is availiable for delivery";
+                    die;
+                }
             } else {
-                echo "This zip code is availiable for delivery";
+                echo "Please enter a valid zip code";
                 die;
             }
         }
@@ -147,10 +152,10 @@ class ProductsController extends Controller
     {
         if ($request->isMethod('post')) {
             $data = $request->all();
-            if($data['quantity'] <= 0){
+            if ($data['quantity'] <= 0) {
                 $data['quantity'] = 1;
             }
-            if(empty($data['size'])){
+            if (empty($data['size'])) {
                 $message = "Please select a product size";
                 Session::flash('error', $message);
                 //Session::flash('error', 'Please select a product size');
