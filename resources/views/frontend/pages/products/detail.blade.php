@@ -4,12 +4,12 @@
     {{ $product_details['title'] }} Information
 @endsection
 @section('styles')
-<style>
+    <style>
+        .zipCodeCheck {
+            margin-top: 10px;
+        }
 
-    .zipCodeCheck {
-        margin-top: 10px;
-    }
-</style>
+    </style>
 @stop
 
 
@@ -50,9 +50,9 @@
                         </div>
                     </div>
                     <!--
-                                                                                                            <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-                                                                                                <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-                                                                                                -->
+                                                                                                                                                        <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+                                                                                                                                            <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+                                                                                                                                            -->
                 </div>
                 <div class="btn-toolbar">
                     <div class="btn-group">
@@ -87,16 +87,16 @@
                                 BDT.{{ $product_details['price'] }}
                             @endif
                         </h4>
-                        <select name="size" id="getPrice" product_id={{ $product_details['id'] }} class="span2 pull-left"
-                            >
+                        <select name="size" id="getPrice" product_id={{ $product_details['id'] }}
+                            class="span2 pull-left" required>
                             <option value="">Select Size</option>
                             @foreach ($product_details['attributes'] as $attribute)
                                 <option value="{{ $attribute['size'] }}">{{ $attribute['size'] }}</option>
                             @endforeach
                         </select>
-                        <input type="number" name="quantity" class="span1" placeholder="Qty."> <br>
+                        <input type="number" name="quantity" class="span1" placeholder="Qty." required> <br>
                         <div class="zipCodeCheck">
-                            <strong>Deliery</strong>
+                            <strong>Delivery</strong>
 
                             <input class="span1" style="width: 120px;" type="text" name="zipCode" id="zipCode"
                                 placeholder="Enter Zip Code">

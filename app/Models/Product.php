@@ -109,7 +109,7 @@ class Product extends Model
             $final_price = $proAttrPrice['price'];
             $discount = 0;
         }
-        return array('price' => $proAttrPrice['price'], 'final_price' => $final_price, 'discount'=> $discount);
+        return array('price' => $proAttrPrice['price'], 'final_price' => $final_price, 'discount' => $discount);
     }
 
 
@@ -117,5 +117,27 @@ class Product extends Model
     {
         $getProductImage = Product::select('image')->where('id', $product_id)->first()->toArray();
         return $getProductImage;
+    }
+
+    public static function getProductStatus($product_id)
+    {
+        $getProductStatus = Product::select('status')->where('id', $product_id)->first()->toArray();
+        return $getProductStatus['status'];
+    }
+    //Size wise product stock check
+    public static function getProductSizeStock($product_id, $product_size)
+    {
+        $getProductStock = ProductAttribute::select('stock')->where(['product_id' => $product_id, 'size' => $product_size])->first()->toArray();
+        return $getProductStock['stock'];
+    }
+    //Status wise product stock check
+    public static function getProductSizeStatus($product_id, $product_size)
+    {
+        $getProductStock = ProductAttribute::select('status')->where(['product_id' => $product_id, 'size' => $product_size])->first()->toArray();
+        return $getProductStock['status'];
+    }
+    public static function deleteCartProduct($product_id)
+    {
+        Cart::where('product_id', $product_id)->delete();
     }
 }

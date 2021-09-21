@@ -11,16 +11,17 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\OrderProduct;
 use Illuminate\Http\Request;
+use App\Models\ShippingCharge;
 use App\Models\DeliveryAddress;
 use App\Models\ProductAttribute;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\ShippingCharge;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+
 
 class ProductsController extends Controller
 {
@@ -130,7 +131,6 @@ class ProductsController extends Controller
             } else {
                 echo "Please enter a valid zip code";
                 die;
-                die;
             }
         }
     }
@@ -146,21 +146,28 @@ class ProductsController extends Controller
     {
         if ($request->isMethod('post')) {
             $data = $request->all();
-            //dd($data);
-            // if ($data['quantity'] <= 0) {
-            //     $data['quantity'] = 1;
-            // }
+            // $rules = [
+            //     'size' => 'required',
+            //     'quantity' => 'required',
+            // ];
+            // $addToCartValidMessage = [
+            //     'name.required' => 'Please select a product size!',
+            //     'quantity.digits' => 'Please enter quantity!',
+            // ];
+            // $this->validate($request, $rules, $addToCartValidMessage);
+
             // if (empty($data['size'])) {
-            //     $message = "Please select a product size";
-            //     Session::flash('error', $message);
-            //     //Session::flash('error', 'Please select a product size');
-            //     return redirect()->back();
+            //     return redirect()->back()->with('error', 'Please select a product size!');
+            // }
+            // if ($data['quantity'] <= 0) {
+            //     //dd('okay1');
+            //     $data['quantity'] = 1;
             // }
             //Check product stock if product availiable in stock
             $getProductStock = ProductAttribute::where(['product_id' => $data['product_id'], 'size' => $data['size']])->first()->toArray();
             //echo $getProductStock['stock']; die;
             if ($getProductStock['stock'] < $data['quantity']) {
-                Session::flash('stock_error_message', 'Required quantity is not availiable');
+                Session::flash('error', 'Required quantity is not availiable');
                 return redirect()->back();
             }
             //Generate session ID if not exist
@@ -402,32 +409,18 @@ class ProductsController extends Controller
             //echo "<pre>"; print_r($userCartItems); die;
             //fetch user cart items
             foreach ($userCartItems as $key => $cart) {
-                //dd($cart);
                 //echo "<pre>";
                 $product_status = Product::getProductStatus($cart['product_id']);
                 //die;
                 if ($product_status == 0) {
-                    //Product::deleteCartProduct($cart['product_id']);
-                    $message = $cart['product']['title'] . ' ' . "not available now so please remove from cart";
-                    Session::flash('error', $message);
-                    return redirect('/cart');
-                }
-
-                //Prevent out of stock product to place order
-                $product_size_stock = Product::getProductSizeStock($cart['product_id'], $cart['size']);
-                $product_size_status = Product::getProductSizeStatus($cart['product_id'], $cart['size']);
-                //die;
-                if ($product_size_stock == 0) {
-                    $message = $cart['product']['title'] . ' ' . "not available now so please remove from cart";
-                    Session::flash('error', $message);
-                    return redirect('/cart');
-                }
-                if ($product_size_status == 0) {
-                    $message = $cart['product']['title'] . ' ' . "not available now so please remove from cart";
+                    Product::deleteCartProduct($cart['product_id']);
+                    $message = $cart['product_code'] . "Product not available now please remove";
                     Session::flash('error', $message);
                     return redirect('/cart');
                 }
             }
+
+
             //dd($data);
             if (empty($data['address_id'])) {
                 $message = "Please select delivery address";
