@@ -1,12 +1,8 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
-
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-
 class UserController extends Controller
 {
     /**
@@ -21,8 +17,6 @@ class UserController extends Controller
         //dd($data['users']);
         return view('admin.pages.user.users', $data);
     }
-
-
     public function update_user_status(Request $request)
     {
         if ($request->ajax()) {
