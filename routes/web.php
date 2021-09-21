@@ -1,9 +1,11 @@
 <?php
+
 use App\Models\Coupon;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\BannerController;
@@ -22,6 +24,7 @@ use App\Http\Controllers\Frontend\ProductsController;
 | Web Routes
 |--------------------------------------------------------------------------
 */
+
 Route::namespace('Frontend')->group(function () {
     // Home route
     Route::get('/', [HomeController::class, 'index']);
@@ -66,13 +69,13 @@ Route::namespace('Frontend')->group(function () {
         Route::match(['GET', 'POST'], 'checkout', [ProductsController::class, 'checkout'])->name('checkout');
         // Add Edit Delivery Address
         Route::match(['GET', 'POST'], 'add-edit-delivery-address/{id?}', [ProductsController::class, 'addEditDeliveryAddress'])->name('addEditDeliveryAddress');
-        Route::post('delete-delivery-address/{id}',[ProductsController::class, 'deleteDeliveryAddress'])->name('deleteDeliveryAddress');
+        Route::post('delete-delivery-address/{id}', [ProductsController::class, 'deleteDeliveryAddress'])->name('deleteDeliveryAddress');
         //Thanks
-        Route::get('thanks',[ProductsController::class, 'thanks'])->name('thanks');
-        Route::get('paypal',[PaypalController::class, 'paypal'])->name('paypal');
+        Route::get('thanks', [ProductsController::class, 'thanks'])->name('thanks');
+        Route::get('paypal', [PaypalController::class, 'paypal'])->name('paypal');
         //Orders
-        Route::get('orders',[OrdersController::class, 'orders'])->name('orders');
-        Route::get('orders/{id}',[OrdersController::class, 'orderDetails'])->name('orderDetails');
+        Route::get('orders', [OrdersController::class, 'orders'])->name('orders');
+        Route::get('orders/{id}', [OrdersController::class, 'orderDetails'])->name('orderDetails');
     });
 });
 Auth::routes();
@@ -98,6 +101,9 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
         Route::get('banners', [BannerController::class, 'banners'])->name('sadmin.banners');
         Route::resource('banner', '\App\Http\Controllers\Admin\BannerController')->except('index');
         Route::post('update-banner-status', [BannerController::class, 'update_banner_status']);
+        //Users
+        Route::get('users', [UserController::class, 'users']);
+        Route::post('update-user-status', [UserController::class, 'update_user_status']);
         //Product
         Route::get('products', [ProductController::class, 'products'])->name('sadmin.products');
         Route::resource('product', '\App\Http\Controllers\Admin\ProductController')->except('index');
@@ -115,19 +121,19 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
         Route::get('coupons', [CouponController::class, 'coupons'])->name('sadmin.coupons');
         Route::match(['get', 'post'], 'add-edit-coupon/{id?}', [CouponController::class, 'addEditCoupon']);
         Route::post('update-coupon-status', [CouponController::class, 'updateCouponStatus']);
-        Route::post('delete-coupon/{id}',[CouponController::class, 'deleteCoupon']);
+        Route::post('delete-coupon/{id}', [CouponController::class, 'deleteCoupon']);
         //Orders
         Route::get('orders', [OrderController::class, 'orders'])->name('sadmin.orders');
-        Route::get('orderDetail/{id}',[OrderController::class, 'orderDetails'])->name('sadmin.orderDetails');
-        Route::post('update-order-status',[OrderController::class, 'updateOrderStatus']);
-        Route::get('orderInvoice/{id}',[OrderController::class, 'orderInvoice'])->name('sadmin.orderInvoice');
-        Route::get('order-pdf-invoice/{id}',[OrderController::class, 'orderPdfInvoice'])->name('sadmin.orderPdfInvoice');
+        Route::get('orderDetail/{id}', [OrderController::class, 'orderDetails'])->name('sadmin.orderDetails');
+        Route::post('update-order-status', [OrderController::class, 'updateOrderStatus']);
+        Route::get('orderInvoice/{id}', [OrderController::class, 'orderInvoice'])->name('sadmin.orderInvoice');
+        Route::get('order-pdf-invoice/{id}', [OrderController::class, 'orderPdfInvoice'])->name('sadmin.orderPdfInvoice');
         //Shipping charge
         Route::get('shipping-charges', [ShippingController::class, 'shippingCharges'])->name('sadmin.shipping-charges');
         Route::match(['get', 'post'], 'add-edit-shipping-charge/{id?}', [ShippingController::class, 'addEditShippingCharge']);
         Route::match(['get', 'post'], 'edit-shipping-charge/{id}', [ShippingController::class, 'editShippingCharge']);
         Route::post('update-shipping-charge-status', [ShippingController::class, 'updateShippingChargeStatus']);
-        Route::post('delete-shipping-charge/{id}',[ShippingController::class, 'deleteShippingCharge']);
+        Route::post('delete-shipping-charge/{id}', [ShippingController::class, 'deleteShippingCharge']);
         Route::match(['get', 'post'], 'check-shipping-area', [ShippingController::class, 'checkShippingChargeArea']);
     });
 });

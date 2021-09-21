@@ -57,9 +57,9 @@
                     </a>
                     <ul class="nav nav-treeview" style="display: block;">
                         @if (Session::get('page') == 'banners')
-                            <?php $active = "active"; ?>
+                            <?php $active = 'active'; ?>
                         @else
-                            <?php $active = ""; ?>
+                            <?php $active = ''; ?>
                         @endif
                         <li class="nav-item">
                             <a href="{{ url('sadmin/banners') }}" class="nav-link {{ $active }}">
@@ -71,7 +71,7 @@
                     </ul>
                 </li>
                 {{-- Settings --}}
-                @if (Session::get('page') == 'settings'  || Session::get('page') == 'profile_update')
+                @if (Session::get('page') == 'settings' || Session::get('page') == 'profile_update')
                     <?php $active = 'active'; ?>
                 @else
                     <?php $active = ''; ?>
@@ -86,9 +86,9 @@
                     </a>
                     <ul class="nav nav-treeview" style="display: block;">
                         @if (Session::get('page') == 'settings')
-                            <?php $active = "active"; ?>
+                            <?php $active = 'active'; ?>
                         @else
-                            <?php $active = ""; ?>
+                            <?php $active = ''; ?>
                         @endif
                         <li class="nav-item">
                             <a href="{{ url('sadmin/settings') }}" class="nav-link {{ $active }}">
@@ -112,7 +112,7 @@
 
 
                 {{-- Catalogues --}}
-                @if (Session::get('page') == 'section'  || Session::get('page') == 'categories')
+                @if (Session::get('page') == 'section' || Session::get('page') == 'categories')
                     <?php $active = 'active'; ?>
                 @else
                     <?php $active = ''; ?>
@@ -127,9 +127,9 @@
                     </a>
                     <ul class="nav nav-treeview" style="display: block;">
                         @if (Session::get('page') == 'sections')
-                            <?php $active = "active"; ?>
+                            <?php $active = 'active'; ?>
                         @else
-                            <?php $active = ""; ?>
+                            <?php $active = ''; ?>
                         @endif
                         <li class="nav-item">
                             <a href="{{ url('sadmin/sections') }}" class="nav-link {{ $active }}">
@@ -190,6 +190,17 @@
                             <a href="{{ url('sadmin/shipping-charges') }}" class="nav-link {{ $active }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Shipping Charges</p>
+                            </a>
+                        </li>
+                        @if (Session::get('page') == 'users')
+                            <?php $active = 'active'; ?>
+                        @else
+                            <?php $active = ''; ?>
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{ url('sadmin/users') }}" class="nav-link {{ $active }}">
+                                <i class="far fa-user nav-icon"></i>
+                                <p>Users</p>
                             </a>
                         </li>
                     </ul>
