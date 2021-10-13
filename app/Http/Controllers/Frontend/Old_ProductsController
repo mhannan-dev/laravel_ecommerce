@@ -11,16 +11,17 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\OrderProduct;
 use Illuminate\Http\Request;
+use App\Models\ShippingCharge;
 use App\Models\DeliveryAddress;
 use App\Models\ProductAttribute;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\ShippingCharge;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+
 
 class ProductsController extends Controller
 {
@@ -109,13 +110,8 @@ class ProductsController extends Controller
 		}, 'images'])->find($id)->toArray();
 		$total_stock = ProductAttribute::where('product_id', $id)->sum('stock');
 		$related_products = Product::where('category_id', $product_details['category']['id'])->where('id', '!=', $id)->get()->toArray();
-		//Same group product
-		$groupProducts = array();
-		if (!empty($product_details['group_code'])) {
-			$groupProducts = Product::select('id', 'image')->where('id', '!=', $id)->where(['group_code' => $product_details['group_code'], 'status' => 1])->get()->toArray();
-		}
-		//echo "<pre>";print_r($groupProducts);die;
-		return view('frontend.pages.products.detail', compact('product_details', 'total_stock', 'related_products', 'groupProducts'));
+		//echo "<pre>";//print_r($related_products);//die;
+		return view('frontend.pages.products.detail', compact('product_details', 'total_stock', 'related_products'));
 	}
 	public function checkZipCode(Request $request)
 	{
@@ -150,14 +146,15 @@ class ProductsController extends Controller
 	{
 		if ($request->isMethod('post')) {
 			$data = $request->all();
-			//dd($data['quantity']);
+			dd($data['quantity']);
 			if ($data['quantity'] <= 0 || $data['quantity'] = "") {
 				$data['quantity'] = 1;
 			}
 			//Check product stock if product availiable in stock
 			$getProductStock = ProductAttribute::where(['product_id' => $data['product_id'], 'size' => $data['size']])->first()->toArray();
+			//echo $getProductStock['stock']; die;
 			if ($getProductStock['stock'] < $data['quantity']) {
-				Session::flash('stock_error_message', 'Required quantity is not availiable');
+				Session::flash('error', 'Required quantity is not availiable');
 				return redirect()->back();
 			}
 			//Generate session ID if not exist
@@ -190,7 +187,7 @@ class ProductsController extends Controller
 			} else {
 				$user_id = 0;
 			}
-			$cart = new Cart();
+			$cart = new Cart;
 			$cart->session_id = $session_id;
 			$cart->user_id = $user_id;
 			$cart->product_id = $data['product_id'];
@@ -399,38 +396,18 @@ class ProductsController extends Controller
 			//echo "<pre>"; print_r($userCartItems); die;
 			//fetch user cart items
 			foreach ($userCartItems as $key => $cart) {
+				//echo "<pre>";
 				$product_status = Product::getProductStatus($cart['product_id']);
 				//die;
 				if ($product_status == 0) {
-					//Product::deleteCartProduct($cart['product_id']);
-					$message = $cart['product']['title'] . ' ' . "not available now so please remove from cart";
-					Session::flash('error', $message);
-					return redirect('/cart');
-				}
-
-				//Prevent out of stock product to place order
-				$product_stock = Product::getProductStock($cart['product_id'], $cart['size']);
-				if ($product_stock == 0) {
-					$message = $cart['product']['title'] . ' ' . "not available now so please remove from cart";
-					Session::flash('error', $message);
-					return redirect('/cart');
-				}
-				//Prevent disabled or deleted product to place order
-				$getAttributeCount = Product::getAttributeCount($cart['product_id'], $cart['size']);
-				if ($getAttributeCount == 0) {
-					$message = $cart['product']['title'] . ' ' . "not available now so please remove from cart";
-					Session::flash('error', $message);
-					return redirect('/cart');
-				}
-				//Prevent disabled category product to place order
-				$category_status = Product::getCategoryStatus($cart['product']['category_id']);
-				//echo "<pre>"; print_r($category_status['status']); die;
-				if ($category_status == 0) {
-					$message = $cart['product']['title'] . ' ' . "not available now so please remove from cart";
+					Product::deleteCartProduct($cart['product_id']);
+					$message = $cart['product_code'] . "Product not available now please remove";
 					Session::flash('error', $message);
 					return redirect('/cart');
 				}
 			}
+
+
 			//dd($data);
 			if (empty($data['address_id'])) {
 				$message = "Please select delivery address";

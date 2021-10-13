@@ -177,6 +177,7 @@ class UsersController extends Controller
     public function logoutUser(Request $request)
     {
         Auth::logout();
+				Session::flush();
         return redirect('/');
     }
     public function account(Request $request)

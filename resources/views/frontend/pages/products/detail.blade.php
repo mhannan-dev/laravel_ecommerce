@@ -8,6 +8,7 @@
         .zipCodeCheck {
             margin-top: 10px;
         }
+
     </style>
 @stop
 @section('content')
@@ -47,9 +48,9 @@
                         </div>
                     </div>
                     <!--
-                                                                                                                                                                <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-                                                                                                                                                    <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-                                                                                                                                                    -->
+                                                                                                                                                                                                                                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+                                                                                                                                                                                                                        <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+                                                                                                                                                                                                                        -->
                 </div>
                 <div class="btn-toolbar">
                     <div class="btn-group">
@@ -69,20 +70,22 @@
                 <small>- {{ $product_details['brand']['title'] }}</small>
                 <hr class="soft">
                 @if (count($groupProducts) > 0)
-									
-								{{-- More Colors --}}
-								<div class="more-color">
-										<div><strong>More colors</strong></div>
-										<div style="margin-top: 5px">
-												@foreach ($groupProducts as $groupPrd)
-														<a href="{{ route('detail', $groupPrd['id']) }}">
-																<img style="height: 100px; width:100px;" src="{{ asset('uploads/product_img_small/' . $groupPrd['image']) }}" alt="product photo">
-														</a>
-												@endforeach
-										</div>
-								</div>
-									
-								@endif
+
+                    {{-- More Colors --}}
+                    <div class="more-color">
+                        <div><strong>More colors</strong></div>
+                        <div style="margin-top: 5px">
+                            @foreach ($groupProducts as $groupPrd)
+                                <a href="{{ route('detail', $groupPrd['id']) }}">
+                                    <img style="height: 100px; width:100px;"
+                                        src="{{ asset('uploads/product_img_small/' . $groupPrd['image']) }}"
+                                        alt="product photo">
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+
+                @endif
                 <small><span class="badge badge-primary">{{ $total_stock }}</span> items in stock</small>
                 <form action="{{ url('add-to-cart') }}" method="post" class="form-horizontal qtyFrm">
                     @csrf
@@ -104,7 +107,12 @@
                                 <option value="{{ $attribute['size'] }}">{{ $attribute['size'] }}</option>
                             @endforeach
                         </select>
-                        <input type="number" name="quantity" class="span1" placeholder="Qty." required> <br>
+
+                        {{-- <input class="span1" type="number" id="quantity" placeholder="Qty." name="quantity"
+                            required> --}}
+                        <input class="span1" type="number" id="quantity" placeholder="Qty." name="quantity"
+                            value="1">
+                        <br>
                         <div class="zipCodeCheck">
                             <strong>Delivery</strong>
                             <input class="span1" style="width: 120px;" type="text" name="zipCode" id="zipCode"
