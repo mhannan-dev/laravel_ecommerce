@@ -63,7 +63,7 @@
                                                 <td>BDT. {{ $shippingCharge['till_1000gm'] }}</td>
                                                 <td>BDT. {{ $shippingCharge['till_2000gm'] }}</td>
                                                 <td>BDT. {{ $shippingCharge['above_5000gm'] }}</td>
-                                            
+
                                                 <td>
                                                     @if ($shippingCharge['status'] == 1)
                                                         <a title="Change" shipping_id="{{ $shippingCharge['id'] }}"
