@@ -8,7 +8,6 @@
         .zipCodeCheck {
             margin-top: 10px;
         }
-
     </style>
 @stop
 @section('content')
@@ -70,7 +69,6 @@
                 <small>- {{ $product_details['brand']['title'] }}</small>
                 <hr class="soft">
                 @if (count($groupProducts) > 0)
-
                     {{-- More Colors --}}
                     <div class="more-color">
                         <div><strong>More colors</strong></div>
@@ -84,7 +82,6 @@
                             @endforeach
                         </div>
                     </div>
-
                 @endif
                 <small><span class="badge badge-primary">{{ $total_stock }}</span> items in stock</small>
                 <form action="{{ url('add-to-cart') }}" method="post" class="form-horizontal qtyFrm">
@@ -107,11 +104,7 @@
                                 <option value="{{ $attribute['size'] }}">{{ $attribute['size'] }}</option>
                             @endforeach
                         </select>
-
-                        {{-- <input class="span1" type="number" id="quantity" placeholder="Qty." name="quantity"
-                            required> --}}
-                        <input class="span1" type="number" id="quantity" placeholder="Qty." name="quantity"
-                            value="1">
+                        <input class="span1" type="number" id="quantity" placeholder="Qty." name="quantity">
                         <br>
                         <div class="zipCodeCheck">
                             <strong>Delivery</strong>

@@ -7,7 +7,6 @@ use App\Models\Product;
             <li class="span3">
                 <div class="thumbnail">
                     <a href="{{ route('detail', $product['id']) }}">
-
                         @if (!empty($product['image']))
                             <img src="{{ asset('uploads/product_img_small/' . $product['image']) }}"
                                 alt="{!! $product['title'] !!}">
@@ -16,7 +15,6 @@ use App\Models\Product;
                         @endif
                     </a>
                     <div class="caption">
-
                         <h5>{{ $product['title'] }}</h5>
                         <p>
                             {{ Str::limit($product['description'], 50) }}
@@ -38,7 +36,6 @@ use App\Models\Product;
                                     BDT. {{ $product['price'] }}
                                 </button>
                             @endif
-
                         </h4>
                         @if ($discounted_price > 0)
                             <h4 style="text-align:center">
@@ -51,7 +48,6 @@ use App\Models\Product;
                 </div>
             </li>
         @endforeach
-
     </ul>
     <hr class="soft">
 </div>

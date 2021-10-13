@@ -150,7 +150,6 @@ class ProductsController extends Controller
 	{
 		if ($request->isMethod('post')) {
 			$data = $request->all();
-			//dd($data['quantity']);
 			if ($data['quantity'] <= 0 || $data['quantity'] = "") {
 				$data['quantity'] = 1;
 			}
@@ -395,7 +394,7 @@ class ProductsController extends Controller
 		//echo "<pre>"; print_r($deliveryAddresses); die;
 		if ($request->isMethod('post')) {
 			$data = $request->all();
-			//Web site secutiry checking 
+			//Web site secutiry checking
 			//echo "<pre>"; print_r($userCartItems); die;
 			//fetch user cart items
 			foreach ($userCartItems as $key => $cart) {
