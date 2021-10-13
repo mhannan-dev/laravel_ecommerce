@@ -99,7 +99,12 @@
             @endforeach
         </select>
     </div>
+
     <div class="form-group col-md-4">
+			<label for="group_code">Group Code</label> <span class="text-danger">*</span>
+			<input type="text" class="form-control" name="group_code" placeholder="Product group code">
+		</div>
+    <div class="form-group col-md-6">
         <label for="meta_title">Meta title</label><span class="text-danger">*</span>
         <input type="text" value="{{ @old('meta_title', $product_data['meta_title']) }}" name="meta_title" class="form-control {{ $errors->has('meta_title') ? 'is-invalid' : '' }}" id="meta_title" placeh@older="Product meta title">
     </div>

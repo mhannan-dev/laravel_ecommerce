@@ -11,7 +11,10 @@ class Product extends Model
 	protected $table = 'products';
 	protected $fillable =
 	[
-		'section_id', 'brand_id', 'category_id', 'title', 'slug', 'code', 'color', 'price', 'weight', 'discount_amt', 'image', 'description', 'wash_care', 'fabric', 'pattern', 'sleeve', 'fit', 'occasion', 'meta_title', 'meta_description', 'meta_keyword', 'is_featured', 'status'
+		'section_id', 'brand_id', 'category_id', 'title', 'slug', 'code',
+		'color', 'price', 'weight', 'discount_amt', 'image', 'description',
+		'wash_care', 'fabric', 'pattern', 'sleeve', 'fit', 'occasion', 'group_code',
+		'meta_title', 'meta_description', 'meta_keyword', 'is_featured', 'status'
 	];
 	public function setTitleAttribute($value)
 	{

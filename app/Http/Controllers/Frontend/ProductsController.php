@@ -109,8 +109,13 @@ class ProductsController extends Controller
 		}, 'images'])->find($id)->toArray();
 		$total_stock = ProductAttribute::where('product_id', $id)->sum('stock');
 		$related_products = Product::where('category_id', $product_details['category']['id'])->where('id', '!=', $id)->get()->toArray();
-		//echo "<pre>";//print_r($related_products);//die;
-		return view('frontend.pages.products.detail', compact('product_details', 'total_stock', 'related_products'));
+		//Same group product
+		$groupProducts = array();
+		if (!empty($product_details['group_code'])) {
+			$groupProducts = Product::select('id', 'image')->where('id', '!=', $id)->where(['group_code' => $product_details['group_code'], 'status' => 1])->get()->toArray();
+		}
+		//echo "<pre>";print_r($groupProducts);die;
+		return view('frontend.pages.products.detail', compact('product_details', 'total_stock', 'related_products', 'groupProducts'));
 	}
 	public function checkZipCode(Request $request)
 	{

@@ -8,11 +8,8 @@
         .zipCodeCheck {
             margin-top: 10px;
         }
-
     </style>
 @stop
-
-
 @section('content')
     <div class="span9">
         <ul class="breadcrumb">
@@ -50,9 +47,9 @@
                         </div>
                     </div>
                     <!--
-                                                                                                                                                        <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-                                                                                                                                            <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-                                                                                                                                            -->
+                                                                                                                                                                <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+                                                                                                                                                    <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+                                                                                                                                                    -->
                 </div>
                 <div class="btn-toolbar">
                     <div class="btn-group">
@@ -65,20 +62,33 @@
                     </div>
                 </div>
             </div>
-
             <div class="span6">
                 {{-- Stock error message --}}
                 @include('frontend.partials.flash_msg')
                 <h3>{{ $product_details['title'] }}</h3>
                 <small>- {{ $product_details['brand']['title'] }}</small>
                 <hr class="soft">
+                @if (count($groupProducts) > 0)
+									
+								{{-- More Colors --}}
+								<div class="more-color">
+										<div><strong>More colors</strong></div>
+										<div style="margin-top: 5px">
+												@foreach ($groupProducts as $groupPrd)
+														<a href="{{ route('detail', $groupPrd['id']) }}">
+																<img style="height: 100px; width:100px;" src="{{ asset('uploads/product_img_small/' . $groupPrd['image']) }}" alt="product photo">
+														</a>
+												@endforeach
+										</div>
+								</div>
+									
+								@endif
                 <small><span class="badge badge-primary">{{ $total_stock }}</span> items in stock</small>
                 <form action="{{ url('add-to-cart') }}" method="post" class="form-horizontal qtyFrm">
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $product_details['id'] }}">
                     <div class="control-group">
                         <?php $discounted_price = Product::getDiscountedPrice($product_details['id']); ?>
-
                         <h4 class="getAttrPrice">
                             @if ($discounted_price > 0)
                                 <del>BDT.{{ $product_details['price'] }}</del>
@@ -87,8 +97,8 @@
                                 BDT.{{ $product_details['price'] }}
                             @endif
                         </h4>
-                        <select name="size" id="getPrice" product_id={{ $product_details['id'] }}
-                            class="span2 pull-left" required>
+                        <select name="size" id="getPrice" product_id={{ $product_details['id'] }} class="span2 pull-left"
+                            required>
                             <option value="">Select Size</option>
                             @foreach ($product_details['attributes'] as $attribute)
                                 <option value="{{ $attribute['size'] }}">{{ $attribute['size'] }}</option>
@@ -97,14 +107,10 @@
                         <input type="number" name="quantity" class="span1" placeholder="Qty." required> <br>
                         <div class="zipCodeCheck">
                             <strong>Delivery</strong>
-
                             <input class="span1" style="width: 120px;" type="text" name="zipCode" id="zipCode"
                                 placeholder="Enter Zip Code">
                             <button type="button" id="checkZipCode" class="btn">Check</button>
-
                         </div>
-
-
                         <button type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i
                                 class=" icon-shopping-cart"></i></button>
                     </div>
