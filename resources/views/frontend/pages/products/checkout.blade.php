@@ -10,7 +10,7 @@ use App\Models\Product;
     <!-- Sidebar end=============================================== -->
     <div class="span9">
         <ul class="breadcrumb">
-            <li><a href="index.html">Home</a> <span class="divider">/</span></li>
+            <li><a href="{{ url('/') }}">Home</a> <span class="divider">/</span></li>
             <li class="active"> CHECK OUT</li>
         </ul>
         <h3> CHECK OUT [ <small> <span class="totalCartItems">{{ totalCartItems() }} </span> Item(s) </small>]<a
@@ -30,9 +30,6 @@ use App\Models\Product;
                 </tr>
                 @foreach ($deliveryAddresses as $address)
 
-                        {{-- @php
-                            dd($address);
-                        @endphp --}}
                     <tr>
                         <td>
                             <div class="control-group" style="float: left; margin-top: -2px; margin-right: 5px;">

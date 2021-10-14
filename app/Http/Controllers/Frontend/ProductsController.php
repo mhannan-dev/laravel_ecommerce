@@ -150,14 +150,14 @@ class ProductsController extends Controller
 	{
 		if ($request->isMethod('post')) {
 			$data = $request->all();
-			//dd($data['quantity']);
-			if ($data['quantity'] <= 0 || $data['quantity'] = "") {
-				$data['quantity'] = 1;
-			}
+			//echo '<pre>'; print_r($data); die;
+
 			//Check product stock if product availiable in stock
 			$getProductStock = ProductAttribute::where(['product_id' => $data['product_id'], 'size' => $data['size']])->first()->toArray();
 			if ($getProductStock['stock'] < $data['quantity']) {
-				Session::flash('stock_error_message', 'Required quantity is not availiable');
+				//echo '<pre>'; print_r(session()->all()); die;
+				//echo "Required quantity is not availiable!"; die;
+				toast('Required quantity is not availiable!', 'success', 'top-right');
 				return redirect()->back();
 			}
 			//Generate session ID if not exist
@@ -181,7 +181,7 @@ class ProductsController extends Controller
 				])->count();
 			}
 			if ($countProduct > 0) {
-				Session::flash('product_exist_msg', 'This product is already exist in cart');
+				Session::flash('error', 'This product is already exist in cart');
 				return redirect()->back();
 			}
 			if (Auth::check()) {
@@ -374,7 +374,7 @@ class ProductsController extends Controller
 		$total_weight = 0;
 		foreach ($userCartItems as $item) {
 			$product_weight = $item['product']['weight'];
-			$total_weight = $total_weight + $product_weight;
+			$total_weight = $total_weight + ($product_weight * $item['quantity']);
 			//dd($total_weight);
 			$attrPrice = Product::getDiscountedAttrPrice($item['product_id'], $item['size']);
 			$total_price = $total_price + $attrPrice['final_price'] * $item['quantity'];
