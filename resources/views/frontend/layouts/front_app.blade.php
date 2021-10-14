@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>@yield('title', 'eCommerce')</title>
@@ -30,7 +29,6 @@
     <style type="text/css" id="enject"></style>
     @yield('styles')
 </head>
-
 <body>
     @include('frontend.partials.navigation')
     {{-- @if (Request::segment(2) == null)
@@ -63,5 +61,4 @@
     <script src="{{ URL::asset('') }}js/front_end.js"></script>
     @yield('scripts')
 </body>
-
 </html>

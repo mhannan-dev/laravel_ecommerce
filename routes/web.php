@@ -35,6 +35,8 @@ Route::namespace('Frontend')->group(function () {
 		//Route::get('/' . $slug, [ProductsController::class, 'listing'])->name('slug');
 		Route::get('/' . $slug, [ProductsController::class, 'listing']);
 	}
+	//Search products
+	Route::get('search-products', [ProductsController::class, 'listing']);
 	//Get proeuct attributes
 	Route::post('get-product-price', [ProductsController::class, 'getProductPrice']);
 	//Add to cart

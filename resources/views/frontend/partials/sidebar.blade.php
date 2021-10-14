@@ -27,19 +27,19 @@ $sections = Section::with('categories')
         @endforeach
     </ul>
     <br />
-    @if (isset($page_name) && ($page_name = 'listing'))
+    @if (isset($page_name) && ($page_name = 'listing') && !isset($_REQUEST['search']))
         <div class="well well-small">
             <h5 class="subMenu">Fabrics</h5>
             @foreach ($fabrics as $fabric)
-                <input class="fabric" style="margin-top: -3px;" type="checkbox" name="fabric[]" id="{{ $fabric }}"
-                    value="{{ $fabric }}"> &nbsp;{{ $fabric }} <br>
+                <input class="fabric" style="margin-top: -3px;" type="checkbox" name="fabric[]"
+                    id="{{ $fabric }}" value="{{ $fabric }}"> &nbsp;{{ $fabric }} <br>
             @endforeach<br>
         </div>
         <div class="well well-small">
             <h5 class="subMenu">Sleeves</h5>
             @foreach ($sleeves as $sleeve)
-                <input class="sleeve" style="margin-top: -3px;" type="checkbox" name="sleeve[]" id="{{ $sleeve }}"
-                    value="{{ $sleeve }}"> &nbsp;{{ $sleeve }} <br>
+                <input class="sleeve" style="margin-top: -3px;" type="checkbox" name="sleeve[]"
+                    id="{{ $sleeve }}" value="{{ $sleeve }}"> &nbsp;{{ $sleeve }} <br>
             @endforeach<br>
         </div>
         <div class="well well-small">
@@ -59,8 +59,8 @@ $sections = Section::with('categories')
         <div class="well well-small">
             <h5 class="subMenu">Fits</h5>
             @foreach ($fits as $fit)
-                <input style="margin-top: -3px;" class="fit" type="checkbox" name="fit[]" id="{{ $fit }}"
-                    value="{{ $fit }}"> &nbsp; {!! $fit !!} <br>
+                <input style="margin-top: -3px;" class="fit" type="checkbox" name="fit[]"
+                    id="{{ $fit }}" value="{{ $fit }}"> &nbsp; {!! $fit !!} <br>
             @endforeach<br>
         </div>
 
