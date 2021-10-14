@@ -1,5 +1,4 @@
 <?php
-
 use App\Models\Coupon;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +9,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\CmsPageController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Frontend\HomeController;
@@ -24,6 +24,16 @@ use App\Http\Controllers\Frontend\ProductsController;
 | Web Routes
 |--------------------------------------------------------------------------
 */
+//To clear all cache
+Route::get('clear', function () {
+	Artisan::call('cache:clear');
+	Artisan::call('config:clear');
+	Artisan::call('config:cache');
+	Artisan::call('view:clear');
+	Artisan::call('optimize:clear');
+	return "Cleared!";
+});
+
 
 Route::namespace('Frontend')->group(function () {
 	// Home route
@@ -35,6 +45,8 @@ Route::namespace('Frontend')->group(function () {
 		//Route::get('/' . $slug, [ProductsController::class, 'listing'])->name('slug');
 		Route::get('/' . $slug, [ProductsController::class, 'listing']);
 	}
+	//Search products
+	Route::get('search-products', [ProductsController::class, 'listing']);
 	//Get proeuct attributes
 	Route::post('get-product-price', [ProductsController::class, 'getProductPrice']);
 	//Add to cart
@@ -135,14 +147,10 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
 		Route::post('update-shipping-charge-status', [ShippingController::class, 'updateShippingChargeStatus']);
 		Route::post('delete-shipping-charge/{id}', [ShippingController::class, 'deleteShippingCharge']);
 		Route::match(['get', 'post'], 'check-shipping-area', [ShippingController::class, 'checkShippingChargeArea']);
+        // CMS Page Route
+		Route::get('cms-pages', [CmsPageController::class, 'cmsPages'])->name('sadmin.cms-pages');
+		Route::match(['get', 'post'], 'add-edit-page/{id?}', [CmsPageController::class, 'addEditPage']);
+		Route::post('update-page-status', [CmsPageController::class, 'updatePageStatus']);
+        Route::delete('delete-page/{id}', [CmsPageController::class, 'deleteCmsPage']);
 	});
-});
-//To clear all cache
-Route::get('clear', function () {
-	Artisan::call('cache:clear');
-	Artisan::call('config:clear');
-	Artisan::call('config:cache');
-	Artisan::call('view:clear');
-	Artisan::call('optimize:clear');
-	return "Cleared!";
 });

@@ -81,7 +81,22 @@ class ProductsController extends Controller
 		} else {
 			$slug = Route::getFacadeRoot()->current()->uri();
 			$categoryCount = Category::where(['slug' => $slug, 'status' => 1])->count();
-			if ($categoryCount > 0) {
+			if (isset($_REQUEST['search']) && !empty($_REQUEST['search'])) {
+				$search_product = $_REQUEST['search'];
+				$categoryDetails['breadcrumbs'] = $search_product;
+				$categoryDetails['catDetails']['title'] = $search_product;
+				$categoryDetails['catDetails']['description'] = "Search result for " .$search_product;
+				$categoryProducts = Product::with('brand')->where(function ($query) use ($search_product) {
+					$query->where('title', 'like', '%' . $search_product . '%')
+						->orWhere('code', 'like', '%' . $search_product . '%')
+						->orWhere('color', 'like', '%' . $search_product . '%')
+						->orWhere('sleeve', 'like', '%' . $search_product . '%')
+						->orWhere('description', 'like', '%' . $search_product . '%');
+				})->where('status', 1);
+				$categoryProducts = $categoryProducts->get();
+				$page_name = "search_result";
+				return view('frontend.pages.products.listing', compact('categoryDetails', 'categoryProducts', 'page_name'));
+			} else if ($categoryCount > 0) {
 				$categoryDetails = Category::catDetails($slug);
 				$categoryProducts = Product::with('brand')->whereIn('category_id', $categoryDetails['catIds'])->where('status', 1);
 				//echo "<pre>"; print_r($categoryProducts); exit;
@@ -150,13 +165,13 @@ class ProductsController extends Controller
 	{
 		if ($request->isMethod('post')) {
 			$data = $request->all();
-			if ($data['quantity'] <= 0 || $data['quantity'] = "") {
-				$data['quantity'] = 1;
-			}
+			//echo '<pre>'; print_r($data); die;
 			//Check product stock if product availiable in stock
 			$getProductStock = ProductAttribute::where(['product_id' => $data['product_id'], 'size' => $data['size']])->first()->toArray();
 			if ($getProductStock['stock'] < $data['quantity']) {
-				Session::flash('stock_error_message', 'Required quantity is not availiable');
+				//echo '<pre>'; print_r(session()->all()); die;
+				//echo "Required quantity is not availiable!"; die;
+				toast('Required quantity is not availiable!', 'success', 'top-right');
 				return redirect()->back();
 			}
 			//Generate session ID if not exist
@@ -180,7 +195,7 @@ class ProductsController extends Controller
 				])->count();
 			}
 			if ($countProduct > 0) {
-				Session::flash('product_exist_msg', 'This product is already exist in cart');
+				Session::flash('error', 'This product is already exist in cart');
 				return redirect()->back();
 			}
 			if (Auth::check()) {
@@ -373,7 +388,7 @@ class ProductsController extends Controller
 		$total_weight = 0;
 		foreach ($userCartItems as $item) {
 			$product_weight = $item['product']['weight'];
-			$total_weight = $total_weight + $product_weight;
+			$total_weight = $total_weight + ($product_weight * $item['quantity']);
 			//dd($total_weight);
 			$attrPrice = Product::getDiscountedAttrPrice($item['product_id'], $item['size']);
 			$total_price = $total_price + $attrPrice['final_price'] * $item['quantity'];
@@ -406,7 +421,6 @@ class ProductsController extends Controller
 					Session::flash('error', $message);
 					return redirect('/cart');
 				}
-
 				//Prevent out of stock product to place order
 				$product_stock = Product::getProductStock($cart['product_id'], $cart['size']);
 				if ($product_stock == 0) {

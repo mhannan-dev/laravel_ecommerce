@@ -40,7 +40,6 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-
                 {{-- Settings --}}
                 @if (Session::get('page') == 'banners')
                     <?php $active = 'active'; ?>
@@ -67,7 +66,6 @@
                                 <p>Banners</p>
                             </a>
                         </li>
-
                     </ul>
                 </li>
                 {{-- Settings --}}
@@ -109,8 +107,6 @@
                         </li>
                     </ul>
                 </li>
-
-
                 {{-- Catalogues --}}
                 @if (Session::get('page') == 'section' || Session::get('page') == 'categories')
                     <?php $active = 'active'; ?>
@@ -126,6 +122,17 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview" style="display: block;">
+                        @if (Session::get('page') == 'cms_pages')
+                        <?php $active = 'active'; ?>
+                    @else
+                        <?php $active = ''; ?>
+                    @endif
+                    <li class="nav-item">
+                        <a href="{{ url('sadmin/cms-pages') }}" class="nav-link {{ $active }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Pages</p>
+                        </a>
+                    </li>
                         @if (Session::get('page') == 'sections')
                             <?php $active = 'active'; ?>
                         @else
@@ -205,7 +212,6 @@
                         </li>
                     </ul>
                 </li>
-
                 <li class="nav-item">
                     <a href="{{ url('sadmin/logout') }}" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt text-danger"></i>

@@ -10,8 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
-use App\Http\Requests\Admin\CouponRequest;
-use App\Models\Admin\Todo as AdminTodo;
+
 
 class CouponController extends Controller
 {

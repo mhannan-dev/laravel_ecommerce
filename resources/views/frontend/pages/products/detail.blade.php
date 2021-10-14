@@ -8,10 +8,12 @@
         .zipCodeCheck {
             margin-top: 10px;
         }
+
     </style>
 @stop
 @section('content')
     <div class="span9">
+        @include('frontend.partials.flash_msg')
         <ul class="breadcrumb">
             <li><a href="{{ url('/') }}">Home</a> <span class="divider">/</span></li>
             <li><a
@@ -47,9 +49,9 @@
                         </div>
                     </div>
                     <!--
-                                                                                                                                                                                                                                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-                                                                                                                                                                                                                        <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-                                                                                                                                                                                                                        -->
+                                                                                                                                                                                                                                                                                                <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+                                                                                                                                                                                                                                                                                    <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+                                                                                                                                                                                                                                                                                    -->
                 </div>
                 <div class="btn-toolbar">
                     <div class="btn-group">
@@ -64,7 +66,6 @@
             </div>
             <div class="span6">
                 {{-- Stock error message --}}
-                @include('frontend.partials.flash_msg')
                 <h3>{{ $product_details['title'] }}</h3>
                 <small>- {{ $product_details['brand']['title'] }}</small>
                 <hr class="soft">
@@ -104,7 +105,8 @@
                                 <option value="{{ $attribute['size'] }}">{{ $attribute['size'] }}</option>
                             @endforeach
                         </select>
-                        <input class="span1" type="number" id="quantity" placeholder="Qty." name="quantity">
+                        <input type="number" id="quantity" name="quantity" min="1" max="9000" class="span1"
+                            placeholder="Qty." required>
                         <br>
                         <div class="zipCodeCheck">
                             <strong>Delivery</strong>
@@ -274,4 +276,5 @@
             </div>
         </div>
     </div>
+    @include('sweetalert::alert')
 @endsection
