@@ -1,13 +1,11 @@
 @php
 use App\Models\Category;
-
 @endphp
 @extends('admin.layouts.master')
 @section('title')
     Dashboard-Web Blogs
 @endsection
 @section('styles')
-
 @endsection
 @section('content')
     <!-- Content Wrapper. Contains page content -->
@@ -40,15 +38,18 @@ use App\Models\Category;
                                 <!-- /.card-header -->
                                 <div class="card-body">
                                     <div class="form-row">
-
-
                                         <div class="form-group col-md-6">
                                             <label for="title">Page title</label><span class="text-danger">*</span>
                                             <input type="text" name="title"
                                                 class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}"
                                                 placeholder="Page name" value="{{ $cms['title'] }}">
-                                        </div>
 
+                                            @if ($errors->has('title'))
+                                                <div class="invalid-feedback">
+                                                    <strong>{{ $errors->first('title') }}</strong>
+                                                </div>
+                                            @endif
+                                        </div>
                                         <div class="form-group col-md-5">
                                             <label for="meta_title">Meta title <small>For SEO</small></label><span
                                                 class="text-danger">*</span>
@@ -56,20 +57,37 @@ use App\Models\Category;
                                                 name="meta_title"
                                                 class="form-control {{ $errors->has('meta_title') ? 'is-invalid' : '' }}"
                                                 placeholder="Page meta title">
-                                        </div>
 
+                                            @if ($errors->has('meta_title'))
+                                                <div class="invalid-feedback">
+                                                    <strong>{{ $errors->first('meta_title') }}</strong>
+                                                </div>
+                                            @endif
+                                        </div>
                                         <div class="form-group col-md-6">
-                                            <label for="description">Description</label><span class="text-danger">*</span>
+                                            <label for="description">Description</label><span
+                                                class="text-danger">*</span>
                                             <textarea id="description"
                                                 class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}"
                                                 name="description">{{ @old('description', $cms['description']) }}</textarea>
+                                            @if ($errors->has('description'))
+                                                <div class="invalid-feedback">
+                                                    <strong>{{ $errors->first('description') }}</strong>
+                                                </div>
+                                            @endif
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="meta_description">Meta Description</label><span
                                                 class="text-danger">*</span>
-                                                <textarea id="postBody"
+                                            <textarea id="postBody"
                                                 class="form-control {{ $errors->has('meta_description') ? 'is-invalid' : '' }}"
                                                 name="meta_description">{{ @old('meta_description', $cms['meta_description']) }}</textarea>
+
+                                            @if ($errors->has('meta_description'))
+                                                <div class="invalid-feedback">
+                                                    <strong>{{ $errors->first('meta_description') }}</strong>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-primary">{{ $buttonText }}</button>

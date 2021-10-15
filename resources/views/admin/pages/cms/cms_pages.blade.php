@@ -27,10 +27,12 @@
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
+
         </brand>
         <!-- Main content -->
         <brand class="content">
             <div class="container-fluid">
+                @include('admin.partials.message')
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -62,25 +64,25 @@
                                                     <td>{{ $page['slug'] }}</td>
                                                     <td>
                                                         @if ($page['status'] == 1)
-
-
                                                             <a title="Change" page_id="{{ $page['id'] }}"
-                                                            class="text-success page_status"
-                                                            id="page_{{ $page['id'] }}" href="javascript:void(0)">
-                                                            Active
-                                                        </a>
+                                                                class="text-success page_status btn btn-default btn-sm"
+                                                                id="page_{{ $page['id'] }}" href="javascript:void(0)">
+                                                                Active
+                                                            </a>
+
                                                         @else
-                                                            <a class="update_cms_status" id="cms_{{ $page['id'] }}"
+                                                            <a class="update_cms_status btn btn-default btn-sm" id="cms_{{ $page['id'] }}"
                                                                 cms_id="{{ $page['id'] }}" href="javascript:void(0)">In
                                                                 Active
                                                             </a>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a title="Edit" href="" class="btn btn-warning btn-sm">
+                                                        <a title="Edit" href="{{ url('sadmin/add-edit-page/' . $page['id']) }}" class="btn btn-warning btn-sm">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
-                                                        <button class="deleteRecord btn btn-sm btn-danger btn-sm" data-id="{{ $page['id'] }}">
+                                                        <button class="deleteRecord btn btn-sm btn-danger btn-sm"
+                                                            data-id="{{ $page['id'] }}">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
                                                     </td>
@@ -156,7 +158,6 @@
                     });
                 }
             });
-
         });
     </script>
 @endsection

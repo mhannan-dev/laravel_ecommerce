@@ -4,9 +4,9 @@
         <div class="row">
             <div class="span4">
                 <h5>INFORMATION</h5>
-                <a href="#">CONTACT</a>
-                <a href="#">TERMS AND CONDITIONS</a>
-                <a href="#">FAQ</a>
+                <a href="{{ url('about-us') }}">ABOUT US</a>
+                <a href="{{ url('privacy-policy') }}">PRIVACY POLICY</a>
+                <a href="{{ url('contact-us') }}">CONTACT US</a>
             </div>
             <div class="span4">
                 <h5>OUR OFFERS</h5>

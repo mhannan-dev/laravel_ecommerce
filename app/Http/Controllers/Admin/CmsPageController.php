@@ -37,6 +37,20 @@ class CmsPageController extends Controller
         if ($request->isMethod('POST')) {
             $data = $request->all();
             //echo '<pre>'; print_r($data); die;
+            $rules = [
+                'title' => 'required',
+                'meta_title' => 'required',
+                'meta_description' => 'required',
+                'description' => 'required'
+            ];
+            //Validation message
+            $customMessage = [
+                'title.required' => 'Page name is required',
+                'meta_title.required' => 'Meta title is required',
+                'meta_description.required' => 'Meta description is required',
+                'description.required' => 'Description is required'
+            ];
+            $this->validate($request, $rules, $customMessage);
             $cms->title = $data['title'];
             $cms->meta_title = $data['meta_title'];
             $cms->meta_description = $data['meta_description'];
@@ -47,10 +61,10 @@ class CmsPageController extends Controller
         }
         return view('admin.pages.cms.addEditPage', compact(
             'title',
+            'message',
             'buttonText','cms'
         ));
     }
-
     public function updatePageStatus(Request $request)
     {
         //dd($request);
@@ -65,7 +79,6 @@ class CmsPageController extends Controller
             return  response()->json(['status' => $status, 'page_id' => $data['page_id']]);
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *

@@ -1,5 +1,6 @@
 <?php
 use App\Models\Coupon;
+use App\Models\CmsPage;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Admin\CmsPageController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\PageController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Frontend\UsersController;
@@ -33,8 +35,6 @@ Route::get('clear', function () {
 	Artisan::call('optimize:clear');
 	return "Cleared!";
 });
-
-
 Route::namespace('Frontend')->group(function () {
 	// Home route
 	Route::get('/', [HomeController::class, 'index']);
@@ -42,8 +42,13 @@ Route::namespace('Frontend')->group(function () {
 	Route::get('product/{id}', [ProductsController::class, 'detail'])->name('detail');
 	$catSlugs = Category::select('slug')->where('status', 1)->get()->pluck('slug')->toArray();
 	foreach ($catSlugs as $slug) {
-		//Route::get('/' . $slug, [ProductsController::class, 'listing'])->name('slug');
 		Route::get('/' . $slug, [ProductsController::class, 'listing']);
+	}
+    //CMS Page
+	$cmsSlug = CmsPage::select('slug')->where('status', 1)->get()->pluck('slug')->toArray();
+    //dd($cmsSlug);
+	foreach ($cmsSlug as $page_slug) {
+		Route::get('/' . $page_slug, [PageController::class, 'cms_page'])->name('cms_page');
 	}
 	//Search products
 	Route::get('search-products', [ProductsController::class, 'listing']);
@@ -57,6 +62,8 @@ Route::namespace('Frontend')->group(function () {
 	Route::post('delete-cart-item', [ProductsController::class, 'deleteCartItem']);
 	//Login Register Page
 	Route::get('login-register', [UsersController::class, 'loginRegisterPage'])->name('login-register');
+	//Contact us
+	Route::get('contact-us', [UsersController::class, 'contactUs'])->name('contactUs');
 	//Login user
 	Route::post('login-user', [UsersController::class, 'loginUser']);
 	//Register user

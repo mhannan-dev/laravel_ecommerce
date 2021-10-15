@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
+
 class UsersController extends Controller
 {
     public function loginRegisterPage()
@@ -239,5 +241,11 @@ class UsersController extends Controller
                 return redirect()->back();
             }
         }
+    }
+
+    public function contactUs()
+    {
+        $data['title'] = "Contact Us";
+        return view('frontend.pages.products.contact',$data);
     }
 }

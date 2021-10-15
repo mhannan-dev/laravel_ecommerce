@@ -598,6 +598,7 @@ class ComposerStaticInit40f86f2d699c9e96a0760dccd83d3f9c
         'App\\Http\\Controllers\\Frontend\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/Frontend/HomeController.php',
         'App\\Http\\Controllers\\Frontend\\IndexController' => __DIR__ . '/../..' . '/app/Http/Controllers/Frontend/IndexController.php',
         'App\\Http\\Controllers\\Frontend\\OrdersController' => __DIR__ . '/../..' . '/app/Http/Controllers/Frontend/OrdersController.php',
+        'App\\Http\\Controllers\\Frontend\\PageController' => __DIR__ . '/../..' . '/app/Http/Controllers/Frontend/PageController.php',
         'App\\Http\\Controllers\\Frontend\\PaypalController' => __DIR__ . '/../..' . '/app/Http/Controllers/Frontend/PaypalController.php',
         'App\\Http\\Controllers\\Frontend\\ProductsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Frontend/ProductsController.php',
         'App\\Http\\Controllers\\Frontend\\UsersController' => __DIR__ . '/../..' . '/app/Http/Controllers/Frontend/UsersController.php',
