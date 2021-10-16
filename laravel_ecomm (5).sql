@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 14, 2021 at 01:05 PM
+-- Generation Time: Oct 16, 2021 at 12:40 PM
 -- Server version: 5.7.33
 -- PHP Version: 7.4.19
 
@@ -71,9 +71,9 @@ CREATE TABLE `banners` (
 --
 
 INSERT INTO `banners` (`id`, `title`, `banner_image`, `alt`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Banner One', '1634186436.jpg', 'banner-one', 1, NULL, '2021-10-13 22:40:36'),
-(2, 'Banner Two', '1634186449.jpg', 'banner-two', 1, NULL, '2021-10-13 22:40:49'),
-(3, 'Banner Three', '1634186463.jpg', 'banner-three', 1, NULL, '2021-10-13 22:41:05');
+(1, 'Banner One', '1634387278.jpg', 'banner-one', 1, NULL, '2021-10-16 06:27:59'),
+(2, 'Banner Two', '1634387287.jpg', 'banner-two', 1, NULL, '2021-10-16 06:28:08'),
+(3, 'Banner Three', '1634387301.jpg', 'banner-three', 1, NULL, '2021-10-16 06:28:21');
 
 -- --------------------------------------------------------
 
@@ -147,6 +147,33 @@ INSERT INTO `categories` (`id`, `parent_id`, `section_id`, `title`, `slug`, `ima
 (1, 0, 1, 'T-Shirt', 't-shirt', '1632121635.jpg', '0.00', 'description t-shirt', 'meta_title', 'meta_description', 1, NULL, '2021-09-20 01:07:15'),
 (2, 1, 1, 'Casual T Shirt', 'casual-t-shirt', '1632121659.jpg', '0.00', 'description f-pant', 'meta_title', 'meta_description', 1, NULL, '2021-10-13 03:41:58'),
 (3, 1, 1, 'Formal T Shirt', 'formal-t-shirt', '1634114342.jpg', '2.00', 'Formal T Shirt', 'Formal T Shirt', 'Formal T Shirt', 1, '2021-10-13 02:39:02', '2021-10-13 04:33:34');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cms_pages`
+--
+
+CREATE TABLE `cms_pages` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `meta_title` varchar(255) NOT NULL,
+  `meta_tags` varchar(255) NOT NULL,
+  `meta_description` text NOT NULL,
+  `description` mediumtext NOT NULL,
+  `status` tinyint(2) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `cms_pages`
+--
+
+INSERT INTO `cms_pages` (`id`, `title`, `slug`, `meta_title`, `meta_tags`, `meta_description`, `description`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'About Us', 'about-us', 'meta title about page', 'meta_tags', 'meta description about page', 'description about page', 1, '2021-10-16 04:51:45', '2021-10-15 23:02:08'),
+(2, 'Privacy Policy', 'privacy-policy', 'meta title about page', 'meta_tags', 'meta description about page', 'description about page', 1, '2021-10-16 04:51:45', '2021-10-15 23:24:59');
 
 -- --------------------------------------------------------
 
@@ -961,7 +988,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (21, '2021_09_08_051638_add_column_orders_table', 1),
 (22, '2021_09_10_122452_create_shipping_charges_table', 1),
 (23, '2021_09_20_113103_create_cod_zip_codes_table', 2),
-(24, '2021_09_20_151740_create_prepaid_zip_codes_table', 3);
+(24, '2021_09_20_151740_create_prepaid_zip_codes_table', 3),
+(25, '2021_10_16_080251_create_seo_settings_table', 4);
 
 -- --------------------------------------------------------
 
@@ -1002,7 +1030,8 @@ INSERT INTO `orders` (`id`, `user_id`, `name`, `address`, `city`, `state`, `coun
 (2, 1, 'Muhammad Hannan Ali', 'House 21, Road 17, Banani C/A', 'Dhaka', 'Dhaka', 'Bangladesh', 1213, 1531261214, 'mdhannan.info@gmail.com', '70', NULL, NULL, 'New', 'COD', 'COD', '2693.50', NULL, NULL, '2021-10-13 23:05:04', '2021-10-13 23:05:04'),
 (3, 1, 'Abu Saleh', 'House 21, Road 17, Banani C/A', 'Dhaka', 'Dhaka', 'Afghanistan', 1213, 1531261214, 'mdhannan.info@gmail.com', '100', NULL, NULL, 'New', 'COD', 'COD', '7673.50', NULL, NULL, '2021-10-14 01:48:55', '2021-10-14 01:48:55'),
 (4, 1, 'Abu Saleh', 'House 21, Road 17, Banani C/A', 'Dhaka', 'Dhaka', 'Afghanistan', 1213, 1531261214, 'mdhannan.info@gmail.com', '100', NULL, NULL, 'New', 'COD', 'COD', '5149.00', NULL, NULL, '2021-10-14 01:53:23', '2021-10-14 01:53:23'),
-(5, 1, 'Muhammad Hannan Ali', 'House 21, Road 17, Banani C/A', 'Dhaka', 'Dhaka', 'Bangladesh', 1213, 1531261214, 'mdhannan.info@gmail.com', '300', NULL, NULL, 'Shipped', 'COD', 'COD', '7873.50', NULL, NULL, '2021-10-14 02:33:34', '2021-10-14 02:34:54');
+(5, 1, 'Muhammad Hannan Ali', 'House 21, Road 17, Banani C/A', 'Dhaka', 'Dhaka', 'Bangladesh', 1213, 1531261214, 'mdhannan.info@gmail.com', '300', NULL, NULL, 'Shipped', 'COD', 'COD', '7873.50', NULL, NULL, '2021-10-14 02:33:34', '2021-10-14 02:34:54'),
+(6, 1, 'Muhammad Hannan Ali', 'House 21, Road 17, Banani C/A', 'Dhaka', 'Dhaka', 'Bangladesh', 1213, 1531261214, 'mdhannan.info@gmail.com', '200', NULL, NULL, 'New', 'COD', 'COD', '5249.00', NULL, NULL, '2021-10-16 05:46:40', '2021-10-16 05:46:40');
 
 -- --------------------------------------------------------
 
@@ -1057,7 +1086,8 @@ INSERT INTO `order_products` (`id`, `order_id`, `user_id`, `product_id`, `produc
 (2, 2, 1, 5, 'Lotto Men\'s Sports Casual T-Shirt', 'Vibrant', 'Medium', 'LMSCTS', '2623.50', '1', '2021-10-13 23:05:04', '2021-10-13 23:05:04'),
 (3, 3, 1, 5, 'Lotto Men\'s Sports Casual T-Shirt', 'Vibrant', 'Small', 'LMSCTS', '2524.50', '3', '2021-10-14 01:48:55', '2021-10-14 01:48:55'),
 (4, 4, 1, 5, 'Lotto Men\'s Sports Casual T-Shirt', 'Vibrant', 'Small', 'LMSCTS', '2524.50', '2', '2021-10-14 01:53:23', '2021-10-14 01:53:23'),
-(5, 5, 1, 5, 'Lotto Men\'s Sports Casual T-Shirt', 'Vibrant', 'Small', 'LMSCTS', '2524.50', '3', '2021-10-14 02:33:34', '2021-10-14 02:33:34');
+(5, 5, 1, 5, 'Lotto Men\'s Sports Casual T-Shirt', 'Vibrant', 'Small', 'LMSCTS', '2524.50', '3', '2021-10-14 02:33:34', '2021-10-14 02:33:34'),
+(6, 6, 1, 5, 'Lotto Men\'s Sports Casual T-Shirt', 'Vibrant', 'Small', 'LMSCTS', '2524.50', '2', '2021-10-16 05:46:40', '2021-10-16 05:46:40');
 
 -- --------------------------------------------------------
 
@@ -1812,7 +1842,7 @@ INSERT INTO `products` (`id`, `section_id`, `brand_id`, `category_id`, `title`, 
 (2, 1, 2, 2, 'Casual T Shirt', 'casual-t-shirt', 'CTS', 'Red', '1500.00', 600.00, '10.00', '1632121714.jpg', 'Cotton', 'Printed', 'Half-Sleeve', 'Regular', 'Casual', '100', 'Casual T Shirt', 'Casual T Shirt', 'Casual T Shirt', 'Formal T Shirt One Updated meta description', 'Formal T Shirt One Updated meta keyword', 'Yes', 1, NULL, '2021-10-13 05:01:37'),
 (3, 1, 3, 3, 'Formal T Shirt One', 'formal-t-shirt-one', 'FTSO', 'Red', '1570.00', 500.00, '0.00', '1634114417.jpg', 'Wool', 'Printed', 'Long-Sleeve', 'Regular', 'Formal', NULL, 'Formal T Shirt', 'Formal T Shirt', 'Factory wash', 'Formal T Shirt', 'Formal T Shirt', 'Yes', 1, '2021-10-13 02:40:18', '2021-10-13 05:01:24'),
 (4, 1, 3, 2, 'Check Group Casual T Shirt', 'check-group-casual-t-shirt', 'CGSTS', 'Blue', '1890.00', 400.00, '2.00', '1634123022.jpg', 'Cotton', 'Plain', 'Half-Sleeve', 'Regular', 'Casual', '100', 'Check Group Casual T Shirt', 'Check Group Casual T Shirt', 'Check Group Casual T Shirt', 'Check Group Casual T Shirt', 'Check Group Casual T Shirt', 'Yes', 1, '2021-10-13 05:03:42', '2021-10-13 05:03:42'),
-(5, 1, 1, 2, 'Lotto Men\'s Sports Casual T-Shirt', 'lotto-mens-sports-casual-t-shirt', 'LMSCTS', 'Vibrant', '2500.00', 500.00, '1.00', '1634123948.jpg', 'Wool', 'Plain', 'Half-Sleeve', 'Regular', 'Casual', NULL, 'Lotto Men\'s Sports Casual T-Shirt', 'Lotto Men\'s Sports Casual T-Shirt search', 'Lotto Men\'s Sports Casual T-Shirt', 'Lotto Men\'s Sports Casual T-Shirt', 'Lotto Men\'s Sports Casual T-Shirt', 'Yes', 1, '2021-10-13 05:19:08', '2021-10-14 06:39:36');
+(5, 1, 1, 3, 'Lotto Men\'s formal T Shirt', 'lotto-mens-formal-t-shirt', 'LMSCTS', 'Vibrant', '2500.00', 500.00, '1.00', '1634387497.jpg', 'Wool', 'Plain', 'Half-Sleeve', 'Regular', 'Casual', NULL, 'Lotto Men\'s Sports Casual T-Shirt', 'Lotto Men\'s Sports Casual T-Shirt search', 'Lotto Men\'s Sports Casual T-Shirt', 'Lotto Men\'s Sports Casual T-Shirt', 'Lotto Men\'s Sports Casual T-Shirt', 'Yes', 1, '2021-10-13 05:19:08', '2021-10-16 06:31:38');
 
 -- --------------------------------------------------------
 
@@ -1842,7 +1872,7 @@ INSERT INTO `product_attributes` (`id`, `product_id`, `size`, `price`, `stock`, 
 (3, 2, 'Large', '1750.00', 0, 'CTS-L', 1, NULL, '2021-10-13 00:42:21'),
 (4, 3, 'Small', '1800.00', 0, 'FTSO-S', 1, NULL, '2021-10-13 03:24:59'),
 (5, 3, 'Medium', '1900.00', 0, 'FTSO-M', 1, NULL, '2021-10-13 04:33:50'),
-(6, 5, 'Small', '2550.00', 7, 'LMSCTS-S', 1, NULL, '2021-10-14 02:33:34'),
+(6, 5, 'Small', '2550.00', 5, 'LMSCTS-S', 1, NULL, '2021-10-16 05:46:40'),
 (7, 5, 'Medium', '2650.00', 10, 'LMSCTS-M', 1, NULL, '2021-10-14 02:17:32');
 
 -- --------------------------------------------------------
@@ -1859,6 +1889,18 @@ CREATE TABLE `product_images` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `product_images`
+--
+
+INSERT INTO `product_images` (`id`, `product_id`, `images`, `status`, `created_at`, `updated_at`) VALUES
+(1, 5, '1634387515.jpg', 1, '2021-10-16 06:31:55', '2021-10-16 06:31:55'),
+(2, 5, '1634387515.jpg', 1, '2021-10-16 06:31:55', '2021-10-16 06:31:55'),
+(3, 5, '1634387515.jpg', 1, '2021-10-16 06:31:55', '2021-10-16 06:31:55'),
+(4, 4, '1634387549.jpg', 1, '2021-10-16 06:32:29', '2021-10-16 06:32:29'),
+(5, 4, '1634387549.jpg', 1, '2021-10-16 06:32:29', '2021-10-16 06:32:29'),
+(6, 4, '1634387549.jpg', 1, '2021-10-16 06:32:29', '2021-10-16 06:32:29');
 
 -- --------------------------------------------------------
 
@@ -1883,6 +1925,28 @@ INSERT INTO `sections` (`id`, `title`, `slug`, `status`, `created_at`, `updated_
 (1, 'Men', 'men', 1, NULL, NULL),
 (2, 'Women', 'women', 1, NULL, NULL),
 (3, 'Kid', 'kid', 1, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `seo_settings`
+--
+
+CREATE TABLE `seo_settings` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `meta_title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `meta_tags` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `meta_description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `seo_settings`
+--
+
+INSERT INTO `seo_settings` (`id`, `meta_title`, `meta_tags`, `meta_description`, `created_at`, `updated_at`) VALUES
+(1, 'Laravel bootstrap modern ecommerce for sale', 'Laravel, Bootstrap, Ajax, MySQL, ecommerce', 'Full featured Laravel bootstrap based modern ecommerce theme for sale.', '2021-10-16 04:04:34', '2021-10-16 04:04:34');
 
 -- --------------------------------------------------------
 
@@ -1977,6 +2041,12 @@ ALTER TABLE `carts`
 -- Indexes for table `categories`
 --
 ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `cms_pages`
+--
+ALTER TABLE `cms_pages`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -2080,6 +2150,12 @@ ALTER TABLE `sections`
   ADD UNIQUE KEY `sections_title_unique` (`title`);
 
 --
+-- Indexes for table `seo_settings`
+--
+ALTER TABLE `seo_settings`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `shipping_charges`
 --
 ALTER TABLE `shipping_charges`
@@ -2118,13 +2194,19 @@ ALTER TABLE `brands`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `cms_pages`
+--
+ALTER TABLE `cms_pages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `cod_zip_codes`
@@ -2160,13 +2242,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `orders_logs`
@@ -2178,7 +2260,7 @@ ALTER TABLE `orders_logs`
 -- AUTO_INCREMENT for table `order_products`
 --
 ALTER TABLE `order_products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `order_status`
@@ -2208,13 +2290,19 @@ ALTER TABLE `product_attributes`
 -- AUTO_INCREMENT for table `product_images`
 --
 ALTER TABLE `product_images`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `sections`
 --
 ALTER TABLE `sections`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `seo_settings`
+--
+ALTER TABLE `seo_settings`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `shipping_charges`

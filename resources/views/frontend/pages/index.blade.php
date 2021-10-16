@@ -5,7 +5,7 @@ use App\Models\Product;
 @section('content')
     <div class="span9">
         <div class="well well-small">
-            <h4>Featured Products <small class="pull-right">200+ featured products</small></h4>
+            <h4>Featured Products <small class="pull-right" style="display: none">200+ featured products</small></h4>
             <div class="row-fluid">
                 <div id="featured" class="carousel slide">
                     <div class="carousel-inner">

@@ -3,6 +3,7 @@
 use App\Models\Coupon;
 use App\Models\CmsPage;
 use App\Models\Category;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -28,6 +29,10 @@ use App\Http\Controllers\Frontend\ProductsController;
 | Web Routes
 |--------------------------------------------------------------------------
 */
+
+if (env('APP_ENV') === 'production') {
+	URL::forceSchema('https');
+}
 //To clear all cache
 Route::get('clear', function () {
 	Artisan::call('cache:clear');
