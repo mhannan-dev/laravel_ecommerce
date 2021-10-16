@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
-    <title>@yield('title', 'eCommerce')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <meta name="description" content="">
-    <meta name="author" content="">
+    @if (!empty($seo_data))
+        @foreach ($seo_data as $seo)
+            <title>{{ $seo->meta_title }}</title>
+            <meta name=”keywords” content="{{ $seo->meta_tags }}">
+            <meta name=”description” content="{{ $seo->meta_description }}">
+        @endforeach
+    @else
+        <title>@yield('title', 'Laravel bootstrap modern ecommerce for sale')</title>
+        <meta name=”keywords” content="Laravel, Bootstrap, Ajax, MySQL, ecommerce">
+        <meta name=”description” content="Full featured Laravel bootstrap based modern ecommerce theme for sale.">
+    @endif
+    <meta name="author" content="Muhammad Hannan">
     <!-- Front style -->
     <link rel="preconnect" href="//fonts.googleapis.com" />
     <link rel="preconnect" href="//fonts.gstatic.com" crossorigin />
@@ -29,6 +39,7 @@
     <style type="text/css" id="enject"></style>
     @yield('styles')
 </head>
+
 <body>
     @include('frontend.partials.navigation')
     {{-- @if (Request::segment(2) == null)
@@ -61,4 +72,5 @@
     <script src="{{ URL::asset('') }}js/front_end.js"></script>
     @yield('scripts')
 </body>
+
 </html>

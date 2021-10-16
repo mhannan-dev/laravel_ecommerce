@@ -55,6 +55,17 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview" style="display: block;">
+                        @if (Session::get('page') == 'seoData')
+                            <?php $active = 'active'; ?>
+                        @else
+                            <?php $active = ''; ?>
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{ url('sadmin/seo-data') }}" class="nav-link {{ $active }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>SEO Settings</p>
+                            </a>
+                        </li>
                         @if (Session::get('page') == 'banners')
                             <?php $active = 'active'; ?>
                         @else
@@ -123,16 +134,16 @@
                     </a>
                     <ul class="nav nav-treeview" style="display: block;">
                         @if (Session::get('page') == 'cms_pages')
-                        <?php $active = 'active'; ?>
-                    @else
-                        <?php $active = ''; ?>
-                    @endif
-                    <li class="nav-item">
-                        <a href="{{ url('sadmin/cms-pages') }}" class="nav-link {{ $active }}">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Pages</p>
-                        </a>
-                    </li>
+                            <?php $active = 'active'; ?>
+                        @else
+                            <?php $active = ''; ?>
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{ url('sadmin/cms-pages') }}" class="nav-link {{ $active }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Pages</p>
+                            </a>
+                        </li>
                         @if (Session::get('page') == 'sections')
                             <?php $active = 'active'; ?>
                         @else

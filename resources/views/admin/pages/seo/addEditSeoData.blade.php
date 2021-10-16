@@ -34,26 +34,16 @@ use App\Models\Category;
                     <div class="col-12">
                         <!-- /.card -->
                         <div class="card">
-                            <form method="POST" action="{{ url('sadmin/add-edit-page', $cms['id']) }}">
+                            <form method="POST" action="{{ url('sadmin/add-edit-seoData', $seoData['id']) }}">
                                 @csrf
                                 <!-- /.card-header -->
                                 <div class="card-body">
                                     <div class="form-row">
-                                        <div class="form-group col-md-4">
-                                            <label for="title">Page title</label><span class="text-danger">*</span>
-                                            <input type="text" name="title"
-                                                class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}"
-                                                placeholder="Page name" value="{{ $cms['title'] }}">
-                                            @if ($errors->has('title'))
-                                                <div class="invalid-feedback">
-                                                    <strong>{{ $errors->first('title') }}</strong>
-                                                </div>
-                                            @endif
-                                        </div>
-                                        <div class="form-group col-md-4">
+
+                                        <div class="form-group col-md-6">
                                             <label for="meta_title">Meta title <small>For SEO</small></label><span
                                                 class="text-danger">*</span>
-                                            <input type="text" value="{{ @old('meta_title', $cms['meta_title']) }}"
+                                            <input type="text" value="{{ @old('meta_title', $seoData['meta_title']) }}"
                                                 name="meta_title"
                                                 class="form-control {{ $errors->has('meta_title') ? 'is-invalid' : '' }}"
                                                 placeholder="Page meta title">
@@ -63,10 +53,10 @@ use App\Models\Category;
                                                 </div>
                                             @endif
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
                                             <label for="meta_tags">Meta Tags<small>For SEO</small></label><span
                                                 class="text-danger">*</span>
-                                            <input type="text" value="{{ @old('meta_tags', $cms['meta_tags']) }}"
+                                            <input type="text" value="{{ @old('meta_tags', $seoData['meta_tags']) }}"
                                                 name="meta_tags"
                                                 class="form-control {{ $errors->has('meta_tags') ? 'is-invalid' : '' }}"
                                                 placeholder="Page meta tags">
@@ -76,24 +66,13 @@ use App\Models\Category;
                                                 </div>
                                             @endif
                                         </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="description">Description</label><span
-                                                class="text-danger">*</span>
-                                            <textarea id="description"
-                                                class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}"
-                                                name="description">{{ @old('description', $cms['description']) }}</textarea>
-                                            @if ($errors->has('description'))
-                                                <div class="invalid-feedback">
-                                                    <strong>{{ $errors->first('description') }}</strong>
-                                                </div>
-                                            @endif
-                                        </div>
-                                        <div class="form-group col-md-6">
+
+                                        <div class="form-group col-md-12">
                                             <label for="meta_description">Meta Description</label><span
                                                 class="text-danger">*</span>
-                                            <textarea id="postBody"
+                                            <textarea id="postBody" rows="10"
                                                 class="form-control {{ $errors->has('meta_description') ? 'is-invalid' : '' }}"
-                                                name="meta_description">{{ @old('meta_description', $cms['meta_description']) }}</textarea>
+                                                name="meta_description">{{ @old('meta_description', $seoData['meta_description']) }}</textarea>
                                             @if ($errors->has('meta_description'))
                                                 <div class="invalid-feedback">
                                                     <strong>{{ $errors->first('meta_description') }}</strong>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCmsPagesTable extends Migration
+class CreateSeoSettingsTable extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -13,18 +13,15 @@ class CreateCmsPagesTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('cms_pages', function (Blueprint $table) {
+		Schema::create('seo_settings', function (Blueprint $table) {
 			$table->id();
-			$table->string('title')->unique();
-			$table->string('slug');
 			$table->string('meta_title');
 			$table->string('meta_tags');
-			$table->string('meta_description');
-			$table->mediumText('description');
-			$table->tinyInteger('status')->default(1)->comment('0 Inactive 1 Active');
+			$table->text('meta_description');
 			$table->timestamps();
 		});
 	}
+
 	/**
 	 * Reverse the migrations.
 	 *
@@ -32,6 +29,6 @@ class CreateCmsPagesTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('cms_pages');
+		Schema::dropIfExists('seo_settings');
 	}
 }

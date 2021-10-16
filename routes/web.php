@@ -1,10 +1,12 @@
 <?php
+
 use App\Models\Coupon;
 use App\Models\CmsPage;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\Admin\SeoController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OrderController;
@@ -44,11 +46,11 @@ Route::namespace('Frontend')->group(function () {
 	foreach ($catSlugs as $slug) {
 		Route::get('/' . $slug, [ProductsController::class, 'listing']);
 	}
-    //CMS Page
+	//CMS Page
 	$cmsSlug = CmsPage::select('slug')->where('status', 1)->get()->pluck('slug')->toArray();
-    //dd($cmsSlug);
+	//dd($cmsSlug);
 	foreach ($cmsSlug as $page_slug) {
-		Route::get('/' . $page_slug, [PageController::class, 'cms_page'])->name('cms_page');
+		Route::get('/' . $page_slug, [PageController::class, 'cms_page']);
 	}
 	//Search products
 	Route::get('search-products', [ProductsController::class, 'listing']);
@@ -63,7 +65,7 @@ Route::namespace('Frontend')->group(function () {
 	//Login Register Page
 	Route::get('login-register', [UsersController::class, 'loginRegisterPage'])->name('login-register');
 	//Contact us
-	Route::get('contact-us', [UsersController::class, 'contactUs'])->name('contactUs');
+	Route::match(['get', 'post'], 'contact', [PageController::class, 'contactUs']);
 	//Login user
 	Route::post('login-user', [UsersController::class, 'loginUser']);
 	//Register user
@@ -154,10 +156,14 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
 		Route::post('update-shipping-charge-status', [ShippingController::class, 'updateShippingChargeStatus']);
 		Route::post('delete-shipping-charge/{id}', [ShippingController::class, 'deleteShippingCharge']);
 		Route::match(['get', 'post'], 'check-shipping-area', [ShippingController::class, 'checkShippingChargeArea']);
-        // CMS Page Route
+		// CMS Page Route
 		Route::get('cms-pages', [CmsPageController::class, 'cmsPages'])->name('sadmin.cms-pages');
 		Route::match(['get', 'post'], 'add-edit-page/{id?}', [CmsPageController::class, 'addEditPage']);
 		Route::post('update-page-status', [CmsPageController::class, 'updatePageStatus']);
-        Route::delete('delete-page/{id}', [CmsPageController::class, 'deleteCmsPage']);
+		Route::delete('delete-page/{id}', [CmsPageController::class, 'deleteCmsPage']);
+
+		//SEO
+		Route::get('seo-data', [SeoController::class, 'seoData'])->name('siteSeo');
+		Route::match(['get', 'post'], 'add-edit-seoData/{id?}', [SeoController::class, 'addEditSeoData']);
 	});
 });

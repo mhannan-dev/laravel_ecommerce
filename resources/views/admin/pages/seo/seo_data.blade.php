@@ -1,12 +1,11 @@
 @extends('admin.layouts.master')
 @section('title')
-    Manage - CMS
+    SEO Settings
 @endsection
 @section('styles')
     <style>
-        a {
-            color: #5da1eb;
-        }
+        
+
     </style>
 @endsection
 @section('content')
@@ -36,8 +35,10 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">{{ $title }}</h3>
-                                <a href="{{ url('sadmin/add-edit-page') }}" class="btn btn-success float-right">
-                                    <i class="fa fa-plus-circle" aria-hidden="true"></i> {{ $title }}</a>
+                                @if (count($seo_data) == 0)
+                                    <a href="{{ url('sadmin/add-edit-seoData') }}" class="btn btn-success float-right">
+                                        <i class="fa fa-plus-circle" aria-hidden="true"></i> {{ $title }}</a>
+                                @endif
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -45,46 +46,28 @@
                                     <thead>
                                         <tr>
                                             <th>SL</th>
-                                            <th>Name</th>
-                                            <th>Slug</th>
-                                            <th>Status</th>
+                                            <th>Meta Ttitle</th>
+                                            <th>Meta Tags</th>
+                                            <th>Meta Description</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (count($cms_pages))
-                                            @foreach ($cms_pages as $key => $page)
+                                        @if (count($seo_data))
+                                            @foreach ($seo_data as $key => $seoData)
                                                 <tr>
                                                     <td>{{ ++$key }}</td>
                                                     <td>
-                                                        {{ $page['title'] }}
+                                                        {{ $seoData->meta_title }}
                                                     </td>
-                                                    <td>{{ $page['slug'] }}</td>
-                                                    <td>
-                                                        @if ($page['status'] == 1)
-                                                            <a title="Change" page_id="{{ $page['id'] }}"
-                                                                class="text-success page_status"
-                                                                id="page_{{ $page['id'] }}" href="javascript:void(0)">
-                                                                Active
-                                                            </a>
-                                                        @else
-                                                            <a title="Change" class="page_status text-warning"
-                                                                id="page_{{ $page['id'] }}"
-                                                                page_id="{{ $page['id'] }}" href="javascript:void(0)">In
-                                                                Active
-                                                            </a>
-                                                        @endif
-                                                    </td>
+                                                    <td>{{ $seoData->meta_tags }}</td>
+                                                    <td>{{ $seoData->meta_description }}</td>
                                                     <td>
                                                         <a title="Edit"
-                                                            href="{{ url('sadmin/add-edit-page/' . $page['id']) }}"
+                                                            href="{{ url('sadmin/add-edit-seoData/' . $seoData->id) }}"
                                                             class="btn btn-warning btn-sm">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
-                                                        <button class="deleteRecord btn btn-sm btn-danger btn-sm"
-                                                            data-id="{{ $page['id'] }}">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -93,6 +76,39 @@
                                                 <td colspan="7">No {{ $title }} found</td>
                                             </tr>
                                         @endif
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Demo Table</h3>
+                                <a href="{{ url('sadmin/add-edit-seoData') }}" class="btn btn-success float-right">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>Demo Table</a>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example1" class="table table-bordered table-striped table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>SL</th>
+                                            <th>Meta Ttitle</th>
+                                            <th>Meta Tags</th>
+                                            <th>Meta Description</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>A</td>
+                                            <td>A</td>
+                                            <td>A</td>
+                                            <td>A</td>
+                                            <td>A</td>
+
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
