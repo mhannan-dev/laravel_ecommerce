@@ -53,7 +53,7 @@
                                                                                                                                                                                                                                                                                     <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
                                                                                                                                                                                                                                                                                     -->
                 </div>
-                <div class="btn-toolbar">
+                {{--<div class="btn-toolbar">
                     <div class="btn-group">
                         <span class="btn"><i class="icon-envelope"></i></span>
                         <span class="btn"><i class="icon-print"></i></span>
@@ -62,7 +62,7 @@
                         <span class="btn"><i class=" icon-thumbs-up"></i></span>
                         <span class="btn"><i class="icon-thumbs-down"></i></span>
                     </div>
-                </div>
+                </div>--}}
             </div>
             <div class="span6">
                 {{-- Stock error message --}}

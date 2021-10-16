@@ -41,7 +41,7 @@
             <div class="tab-content filter_products_ajax">
                 @include('frontend/pages/products/ajax_prd_listing')
             </div>
-            <a href="#" class="btn btn-large pull-right">Compair Product</a>
+            {{--<a href="#" class="btn btn-large pull-right">Compair Product</a>--}}
             <div class="pagination">
                 @if (!isset($_REQUEST['search']))
                     @if (isset($_GET['sort']) && !empty($_GET['sort']))
