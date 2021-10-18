@@ -85,14 +85,15 @@ class ProductsController extends Controller
 				$search_product = $_REQUEST['search'];
 				$categoryDetails['breadcrumbs'] = $search_product;
 				$categoryDetails['catDetails']['title'] = $search_product;
-				$categoryDetails['catDetails']['description'] = "Search result for " .$search_product;
-				$categoryProducts = Product::with('brand')->where(function ($query) use ($search_product) {
-					$query->where('title', 'like', '%' . $search_product . '%')
-						->orWhere('code', 'like', '%' . $search_product . '%')
-						->orWhere('color', 'like', '%' . $search_product . '%')
-						->orWhere('sleeve', 'like', '%' . $search_product . '%')
-						->orWhere('description', 'like', '%' . $search_product . '%');
-				})->where('status', 1);
+				$categoryDetails['catDetails']['description'] = "Search result for " . $search_product;
+				$categoryProducts = Product::with('brand')->join('categories', 'categories.id', '=', 'products.category_id')->where(function ($query) use ($search_product) {
+					$query->where('products.title', 'like', '%' . $search_product . '%')
+						->orWhere('.products.code', 'like', '%' . $search_product . '%')
+						->orWhere('products.color', 'like', '%' . $search_product . '%')
+						->orWhere('products.sleeve', 'like', '%' . $search_product . '%')
+						->orWhere('products.description', 'like', '%' . $search_product . '%')
+						->orWhere('categories.title', 'like', '%' . $search_product . '%');
+				})->where('products.status', 1);
 				$categoryProducts = $categoryProducts->get();
 				$page_name = "search_result";
 				return view('frontend.pages.products.listing', compact('categoryDetails', 'categoryProducts', 'page_name'));

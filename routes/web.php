@@ -45,6 +45,8 @@ Route::get('clear', function () {
 Route::namespace('Frontend')->group(function () {
 	// Home route
 	Route::get('/', [HomeController::class, 'index']);
+	//Sitemap route	
+	Route::get('/sitemap.xml', [HomeController::class, 'sitemap'])->name('sitemap');
 	// Product Detail
 	Route::get('product/{id}', [ProductsController::class, 'detail'])->name('detail');
 	$catSlugs = Category::select('slug')->where('status', 1)->get()->pluck('slug')->toArray();
@@ -170,5 +172,9 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
 		//SEO
 		Route::get('seo-data', [SeoController::class, 'seoData'])->name('siteSeo');
 		Route::match(['get', 'post'], 'add-edit-seoData/{id?}', [SeoController::class, 'addEditSeoData']);
+		// Admin/Subadmins route
+		Route::get('admins', [AdminController::class, 'adminSubAdmins']);
+		Route::post('update-admin-status', [AdminController::class, 'updateAdminsStatus']);
+		Route::delete('delete-admin/{id}', [AdminController::class, 'deleteAdmin']);
 	});
 });

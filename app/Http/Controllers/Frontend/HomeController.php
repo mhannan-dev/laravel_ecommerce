@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Models\Brand;
 use App\Models\Product;
+use App\Models\Section;
+use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -25,5 +29,13 @@ class HomeController extends Controller
 		$data['seo_data'] = DB::table('seo_settings')->select('meta_title', 'meta_tags', 'meta_description')->get();
 		//dd($data['seo_data']);
 		return view('frontend.pages.index', $data);
+	}
+
+	public function sitemap(Request $request)
+	{
+		$products = Product::orderBy('id', 'desc')->get();
+		$categories = DB::table('categories')->orderBy('id', 'desc')->select('title', 'slug', 'created_at')->get();
+		$brands = DB::table('brands')->orderBy('id', 'desc')->select('title', 'slug', 'created_at')->get();
+		return response()->view('frontend.sitemap.sitemap', compact('products', 'categories', 'brands'))->header('Content-Type', 'text/xml');
 	}
 }

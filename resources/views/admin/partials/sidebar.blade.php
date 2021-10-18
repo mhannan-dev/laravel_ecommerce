@@ -144,6 +144,17 @@
                                 <p>Pages</p>
                             </a>
                         </li>
+                        @if (Session::get('page') == 'admins')
+                            <?php $active = 'active'; ?>
+                        @else
+                            <?php $active = ''; ?>
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{ url('sadmin/admins') }}" class="nav-link {{ $active }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Admin/Subadmins</p>
+                            </a>
+                        </li>
                         @if (Session::get('page') == 'sections')
                             <?php $active = 'active'; ?>
                         @else
