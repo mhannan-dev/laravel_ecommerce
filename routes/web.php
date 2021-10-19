@@ -45,7 +45,7 @@ Route::get('clear', function () {
 Route::namespace('Frontend')->group(function () {
 	// Home route
 	Route::get('/', [HomeController::class, 'index']);
-	//Sitemap route	
+	//Sitemap route
 	Route::get('/sitemap.xml', [HomeController::class, 'sitemap'])->name('sitemap');
 	// Product Detail
 	Route::get('product/{id}', [ProductsController::class, 'detail'])->name('detail');
@@ -168,7 +168,6 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
 		Route::match(['get', 'post'], 'add-edit-page/{id?}', [CmsPageController::class, 'addEditPage']);
 		Route::post('update-page-status', [CmsPageController::class, 'updatePageStatus']);
 		Route::delete('delete-page/{id}', [CmsPageController::class, 'deleteCmsPage']);
-
 		//SEO
 		Route::get('seo-data', [SeoController::class, 'seoData'])->name('siteSeo');
 		Route::match(['get', 'post'], 'add-edit-seoData/{id?}', [SeoController::class, 'addEditSeoData']);
