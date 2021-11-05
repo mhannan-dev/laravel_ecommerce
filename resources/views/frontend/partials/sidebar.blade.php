@@ -4,16 +4,13 @@ $sections = Section::with('categories')
     ->where('status', 1)
     ->get();
 @endphp
-<!-- Sidebar ================================================== -->
 <div id="sidebar" class="span3">
-
     <ul id="sideManu" class="nav nav-tabs nav-stacked">
         @foreach ($sections as $section)
             @if (count($section['categories']) > 0)
                 <li class="subMenu"><a>{!! $section['title'] !!}</a>
                     @foreach ($section['categories'] as $category)
                         <ul>
-
                             <li><a href="{{ url($category['slug']) }}"><i
                                         class="icon-chevron-right"></i><strong>{!! $category['title'] !!}</strong></a></li>
                             @foreach ($category['subcategories'] as $subcategory)
@@ -63,12 +60,6 @@ $sections = Section::with('categories')
                     id="{{ $fit }}" value="{{ $fit }}"> &nbsp; {!! $fit !!} <br>
             @endforeach<br>
         </div>
-
-
-
-
     @endif
     <br />
-
 </div>
-<!-- Sidebar end=============================================== -->

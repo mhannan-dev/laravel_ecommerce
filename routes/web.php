@@ -173,6 +173,7 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
 		Route::match(['get', 'post'], 'add-edit-seoData/{id?}', [SeoController::class, 'addEditSeoData']);
 		// Admin/Subadmins route
 		Route::get('admins', [AdminController::class, 'adminSubAdmins']);
+		Route::match(['get', 'post'], 'add-edit-admin/{id?}', [AdminController::class, 'addEditAdminSubadmin']);
 		Route::post('update-admin-status', [AdminController::class, 'updateAdminsStatus']);
 		Route::delete('delete-admin/{id}', [AdminController::class, 'deleteAdmin']);
 	});

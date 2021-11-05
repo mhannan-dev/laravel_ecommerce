@@ -394,7 +394,16 @@ class ProductsController extends Controller
 			$attrPrice = Product::getDiscountedAttrPrice($item['product_id'], $item['size']);
 			$total_price = $total_price + $attrPrice['final_price'] * $item['quantity'];
 		}
-		//echo $total_weight;
+		//Check minimum purchase amount
+		if ($total_price < 500) {
+			$message = "Minimum cart amount must be BDT. 500. Please add some product";
+			return redirect()->back()->with('error', $message);
+		}
+		//Check max purchase amount
+		if ($total_price > 50000) {
+			$message = "Maximum cart amount is 50000. Please place order less than 50000 BDT.";
+			return redirect()->back()->with('error', $message);
+		}
 		//die;
 		$deliveryAddresses = DeliveryAddress::deliveryAddresses();
 		//dd($deliveryAddress);

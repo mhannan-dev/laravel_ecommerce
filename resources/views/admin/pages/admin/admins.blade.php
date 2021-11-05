@@ -7,6 +7,7 @@
         a {
             color: #5da1eb;
         }
+
     </style>
 @endsection
 @section('content')
@@ -79,15 +80,17 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a title="Edit"
-                                                            href="{{ url('sadmin/add-edit-admin/' . $admin['id']) }}"
-                                                            class="btn btn-warning btn-sm">
-                                                            <i class="fa fa-edit"></i>
-                                                        </a>
-                                                        <button class="deleteRecord btn btn-sm btn-danger btn-sm"
-                                                            data-id="{{ $admin['id'] }}">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
+                                                        @if ($admin['type'] != 'admin')
+                                                            <a title="Edit"
+                                                                href="{{ url('sadmin/add-edit-admin/' . $admin['id']) }}"
+                                                                class="btn btn-warning btn-sm">
+                                                                <i class="fa fa-edit"></i>
+                                                            </a>
+                                                            <button class="deleteRecord btn btn-sm btn-danger btn-sm"
+                                                                data-id="{{ $admin['id'] }}">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach

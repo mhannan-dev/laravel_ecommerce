@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
+
 use Carbon\Carbon;
 use App\Models\Admin;
 use Illuminate\Http\Request;
@@ -10,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
+
 class AdminController extends Controller
 {
 	/**
@@ -158,6 +161,27 @@ class AdminController extends Controller
 		$a = DB::table('admins')->get();
 		$data['admins'] = json_decode($a, true);
 		return view('admin.pages.admin.admins', $data);
+	}
+	public function addEditAdminSubadmin(Request $request, $id = null)
+	{
+		if ($id == "") {
+			// Add Coupon Code
+			$adminData = new Admin();
+			$title = "Add Admin/Subadmin User";
+			$buttonText = "Save";
+			$message = "User saved successfully!";
+			//dd($message);
+		} else {
+			// Update Coupon Code
+			$adminData = Admin::find($id);
+			$title = "Edit Admin/Subadmin";
+			$buttonText = "Update";
+			$message = "User updated successfully!";
+		}
+		if ($request->isMethod('post')) {
+			$data = $request->all();
+		}
+		return view('admin.pages.admin.addEditAdmin', compact('title', 'buttonText', 'adminData', 'message'));
 	}
 	public function updateAdminsStatus(Request $request)
 	{
