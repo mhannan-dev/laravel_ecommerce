@@ -6,7 +6,6 @@ use App\Models\Category;
     Dashboard-Web Blogs
 @endsection
 @section('styles')
-
 @endsection
 @section('content')
     <!-- Content Wrapper. Contains page content -->
@@ -34,7 +33,6 @@ use App\Models\Category;
                     <div class="col-12">
                         <!-- /.card -->
                         <div class="card">
-
                             <!-- form start -->
                             <form class="form-horizontal" action="{{ url('sadmin/add-edit-admin', $adminData['id']) }}"
                                 method="post" enctype="multipart/form-data">
@@ -44,58 +42,75 @@ use App\Models\Category;
                                         <label for="name" class="col-sm-3 col-form-label">Name</label>
                                         <div class="col-sm-10">
                                             <input type="text" name="name" class="form-control rounded-0" id="name"
-                                                value="" placeholder="Admin/Subadmin name">
+                                                value="{{ old('email', $adminData['name']) }}"
+                                                placeholder="Admin/Subadmin name">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="email" class="col-sm-3 col-form-label">Email</label>
                                         <div class="col-sm-10">
-                                            <input type="email" class="form-control rounded-0" value="" name="email" placeholder="Email ID">
+                                            <input type="email" @if (isset($adminData['id'])) disabled="" @else required="" @endif class="form-control rounded-0"
+                                                name="email" placeholder="Email ID"
+                                                value="{{ old('email', $adminData['email']) }}">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="type" class="col-sm-3 col-form-label">Admin Type</label>
                                         <div class="col-sm-10">
-                                            <select class="form-control rounded-0" id="type" name="type">
+                                            <select class="form-control rounded-0" id="type" name="type"
+                                                @if (isset($adminData['id'])) disabled="" @else required="" @endif>
                                                 <option value="">Select type</option>
-                                                <option value="admin">Admin</option>
-                                                <option value="sub-admin">Sub-Admin</option>
-                                                <option value="operator">Operator</option>
-
+                                                <option value="admin" @if ($adminData['type'] == 'admin') selected="" @endif>
+                                                    Admin
+                                                </option>
+                                                <option value="sub-admin" @if ($adminData['type'] == 'sub-admin') selected @endif>
+                                                    Sub-Admin
+                                                </option>
+                                                <option value="operator" @if ($adminData['type'] == 'operator') selected @endif>
+                                                    Operator
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
-
                                     <div class="form-group row">
                                         <label for="mobile" class="col-sm-3 col-form-label">Mobile No</label>
                                         <div class="col-sm-10">
                                             <input type="text" name="mobile" class="form-control rounded-0" id="mobile"
-                                                value="Enter mobile no">
+                                                placeholder="Enter mobile no"
+                                                value="{{ old('mobile', $adminData['mobile']) }}">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="password" class="col-sm-3 col-form-label">Password</label>
                                         <div class="col-sm-10">
                                             <input type="text" name="password" class="form-control rounded-0" id="password"
-                                                value="{{ $adminData['password'] }}" placeholder="Enter password">
+                                                @if (!empty($adminData['password']))
+                                            value="{{ $adminData['password'] }}"
+                                        @else
+                                            value="{{ old('password') }}"
+                                            @endif placeholder="Enter password">
+                                            {{-- <input type="text" name="password" class="form-control rounded-0" id="password"
+                                                value="{{ old('password', $adminData['password']) }}"
+                                                placeholder="Enter password"> --}}
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <div class="col-sm-10">
-																						<label for="password" class="col-sm-3 col-form-label">Photo</label>
-                                            <div class="custom-file">
-                                                <label class="custom-file-label" for="customFile">Choose Photo</label>
-                                                <input type="file" class="custom-file-input rounded-0" id="customFile" name="image"
+                                        <div class="col-sm-8">
+                                            <label for="password" class="col-sm-3 col-form-label">Photo</label>
+                                            <input type="file" name="image" accept="image/*">
+                                            {{-- <div class="custom-file">
+																								<label class="custom-file-label" for="customFile">Choose Photo</label>
+                                                <input type="file" class="custom-file-input" id="customFile" name="image"
                                                     accept="image/*">
-                                            </div>
-                                            {{-- @if (!@empty(Auth::guard('admin')->user()->image))
+                                            </div> --}}
+                                            @if (!empty($adminData['image']))
                                                 <img style="width: 80px; height: 80px; margin-top:5px;"
                                                     class="rounded float-right"
-                                                    src="{{ url('storage/admin/' . Auth::guard('admin')->user()->image) }}"
-                                                    alt="Admin Image">
+                                                    src="{{ url('storage/admin/' . $adminData['image']) }}"
+                                                    alt="{{ $adminData['image'] }}">
                                                 <input type="hidden" name="current_image"
-                                                    value="{{ !empty(Auth::guard('admin')->user()->image) }}">
-                                            @endif --}}
+                                                    value="{{ $adminData['image'] }}">
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -105,8 +120,6 @@ use App\Models\Category;
                                 </div>
                                 <!-- /.card-footer -->
                             </form>
-
-
                         </div>
                         <!-- /.card -->
                     </div>

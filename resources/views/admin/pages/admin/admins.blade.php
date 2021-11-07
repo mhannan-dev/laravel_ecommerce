@@ -7,7 +7,6 @@
         a {
             color: #5da1eb;
         }
-
     </style>
 @endsection
 @section('content')
@@ -36,7 +35,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">{{ $title }}</h3>
+                                <h3 class="card-title">{{ $title }} Users</h3>
                                 <a href="{{ url('sadmin/add-edit-admin') }}" class="btn btn-success float-right">
                                     <i class="fa fa-plus-circle" aria-hidden="true"></i> {{ $title }}</a>
                             </div>
@@ -49,6 +48,7 @@
                                             <th>Name</th>
                                             <th>Mobile</th>
                                             <th>Type</th>
+                                            <th>Image</th>
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -63,6 +63,10 @@
                                                     </td>
                                                     <td>{{ $admin['mobile'] }}</td>
                                                     <td>{{ $admin['type'] }}</td>
+                                                    <td><img class="img-circle" width="60px"
+                                                            src="{{ asset('storage/admin/' . $admin['image']) }}"
+                                                            alt="{{ $admin['name'] }}" title="{{ $admin['name'] }}">
+                                                    </td>
                                                     <td>
                                                         @if ($admin['status'] == 1)
                                                             <a title="Change" admin_id="{{ $admin['id'] }}"

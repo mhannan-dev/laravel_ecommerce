@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class AdminController extends Controller
 {
@@ -141,7 +142,7 @@ class AdminController extends Controller
 				}
 				$postImage = Image::make($image)->resize(150, 150)->save(storage_path('admin'));
 				Storage::disk('public')->put('admin/' . $imageName, $postImage);
-			} else if (!empty($data['current_image'])) {
+			} elseif (!empty($data['current_image'])) {
 				$imageName = $data['current_image'];
 			} else {
 				$imageName = "default.png";
@@ -170,7 +171,6 @@ class AdminController extends Controller
 			$title = "Add Admin/Subadmin User";
 			$buttonText = "Save";
 			$message = "User saved successfully!";
-			//dd($message);
 		} else {
 			// Update Coupon Code
 			$adminData = Admin::find($id);
@@ -180,6 +180,57 @@ class AdminController extends Controller
 		}
 		if ($request->isMethod('post')) {
 			$data = $request->all();
+			//dd($data);
+			//Check admin/subadmin user is exist
+			if ($id == "") {
+				$adminCount = Admin::where('email', $data['email'])->count();
+				//dd($adminCount);
+				if ($adminCount > 0) {
+					return redirect()->with('error', 'Admin/Subadmin user already exist!!');
+				}
+			}
+			$rules = [
+				'name' => 'required|max:255|regex:/^[a-zA-ZÑñ\s]+$/',
+				'mobile' => 'required|numeric',
+				'image' => 'required'
+			];
+			$customMessage = [
+				'name.required' => 'Name is required',
+				'name.regex' => 'Valid name is required',
+				'mobile.required' => 'Mobile is required',
+				'image.required' => 'Valid Image is required'
+			];
+			$this->validate($request, $rules, $customMessage);
+			//Upload profile image
+			if ($request->has('image')) {
+				$image = $request->file('image');
+				$currentDate = Carbon::now()->toDateString();
+				$imageName = $currentDate . '-' . rand(1, 100) . '.' . $image->getClientOriginalExtension();
+				if (!Storage::disk('public')->exists('admin')) {
+					Storage::disk('public')->makeDirectory('admin');
+				}
+				$postImage = Image::make($image)->resize(150, 150)->save(storage_path('admin'));
+				Storage::disk('public')->put('admin/' . $imageName, $postImage);
+			} elseif (!empty($data['current_image'])) {
+				$imageName = $data['current_image'];
+			} else {
+				$imageName = "";
+			}
+			$adminData->image = $imageName;
+			$adminData->name = $data['name'];
+			$adminData->mobile = $data['mobile'];
+			$adminData->status = 1;
+			//checking if id exist
+			if ($id == "") {
+				//dd($id);
+				$adminData->email = $data['email'];
+				$adminData->type = $data['type'];
+			}
+			if (!empty($data['password'])) {
+				$adminData->password = bcrypt($data['password']);
+			}
+			$adminData->save();
+			return redirect('sadmin/admins')->with('success', $message);
 		}
 		return view('admin.pages.admin.addEditAdmin', compact('title', 'buttonText', 'adminData', 'message'));
 	}
@@ -194,6 +245,22 @@ class AdminController extends Controller
 			}
 			Admin::where('id', $data['admin_id'])->update(['status' => $status]);
 			return  response()->json(['status' => $status, 'admin_id' => $data['admin_id']]);
+		}
+	}
+	public function deleteAdmin($id)
+	{
+		try {
+			$admin_user = Admin::findOrFail($id);
+			$image_path = public_path() . '/storage/admin/' . $admin_user['image'];
+			//dd($bank_image_path);
+			if (!is_null($admin_user)) {
+				$admin_user->delete();
+				unlink($image_path);
+				return response()->json(['success' => 'User has been deleted!!']);
+			}
+		} catch (\Throwable $th) {
+			//dd($th);
+			return response()->json(['error' => 'User not deleted!!']);
 		}
 	}
 }
