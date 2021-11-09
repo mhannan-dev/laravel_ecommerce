@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -33,10 +32,8 @@
             // jQuery code
         });
         // jquery end
-
     </script>
 </head>
-
 <body>
     <header class="section-header">
         <nav class="navbar navbar-expand-lg navbar-light">
@@ -257,88 +254,103 @@
                 </aside>
                 <!-- col.// -->
                 <main class="col-sm-9">
-                    <div id="code_prod_simple">
-                        <div class="row">
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item"><a href="#">Library</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Data</li>
-                                </ol>
-                            </nav>
-                            <div class="card mt-2">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Product</th>
-                                            <th>Description</th>
-                                            <th>Quantity/Update</th>
-                                            <th>Price</th>
-                                            <th>Discount</th>
-                                            <th>Tax</th>
-                                            <th>Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td> <img width="60" src="images/items/1.jpg" alt=""></td>
-                                            <td>Casual T-Shirt<br>Color : Black</td>
-                                            <td>
-                                                <div class="form-group col-md flex-grow-0">
-                                                    <div class="input-group input-spinner">
-                                                        <div class="input-group-prepend">
-                                                            <button class="btn btn-light" type="button"
-                                                                id="button-plus"> + </button>
-                                                        </div>
-                                                        <input type="text" class="form-control" value="1">
-                                                        <div class="input-group-append">
-                                                            <button class="btn btn-light" type="button"
-                                                                id="button-minus"> − </button>
-                                                        </div>
-                                                        <a href="" class="btn btn-outline-danger"> × Remove</a>
-                                                    </div> <!-- input-spinner.// -->
-                                                </div>
-                                            </td>
-                                            <td>Rs.1000.00</td>
-                                            <td>Rs.0.00</td>
-                                            <td>Rs.0.00</td>
-                                            <td>Rs.1000.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6" style="text-align:right">Total Price: </td>
-                                            <td> Rs.3000.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6" style="text-align:right">Total Discount: </td>
-                                            <td> Rs.0.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6" style="text-align:right">Total Tax: </td>
-                                            <td> Rs.0.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6" style="text-align:right"><strong>TOTAL (Rs.3000 - Rs.0 +
-                                                    Rs.0) =</strong></td>
-                                            <td class="label label-important" style="display:block"> <strong> Rs.3000.00
-                                                </strong></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="col-md-4">
-                                    <form>
-                                        <div class="input-group mb-2">
-                                            <input type="text" class="form-control" placeholder="Coupon" name="">
-                                            <span class="input-group-append"><button
-                                                    class="btn btn-primary">Apply</button></span>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <a href="#" class="btn btn-warning btn-block mt-2">Continue Shopping</a>
-                            <a href="checkout.html" class="btn btn-block btn-success">Next</a>
+                    <h3>Checkout</h3>
+                    <div class="row">
+                        <div class="card mt-2">
+                            <form name="checkOutForm" id="checkOutForm" action="" method="post">
+                                
+															<table class="table table-bordered">
+																<thead>
+																	<tr>
+																		<th>Address <a href="" class="btn btn-outline-success">Add
+																		Address</a></th>
+																		<th>Action</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr>
+																		<th>
+																			<input type="radio" name="" id=""> Muhammad Hannan Ali, House 21, Road 17, Banani C/A, Dhaka, Bangladesh (1213)
+																		</th>
+																		<td>Edit/Delete</td>
+																	</tr>
+																</tbody>
+															</table>
+                            </form>
                         </div>
-                        <!-- row.// -->
+                        <div class="card mt-2">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Description</th>
+                                        <th>Quantity/Update</th>
+                                        <th>Price</th>
+                                        <th>Discount</th>
+                                        <th>Tax</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td> <img width="60" src="images/items/1.jpg" alt=""></td>
+                                        <td>Casual T-Shirt<br>Color : Black</td>
+                                        <td>
+                                            <div class="form-group col-md flex-grow-0">
+                                                <div class="input-group input-spinner">
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-light" type="button" id="button-plus"> +
+                                                        </button>
+                                                    </div>
+                                                    <input type="text" class="form-control" value="1">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-light" type="button" id="button-minus"> −
+                                                        </button>
+                                                    </div>
+                                                    <a href="" class="btn btn-outline-danger"> × Remove</a>
+                                                </div>
+                                                <!-- input-spinner.// -->
+                                            </div>
+                                        </td>
+                                        <td>Rs.1000.00</td>
+                                        <td>Rs.0.00</td>
+                                        <td>Rs.0.00</td>
+                                        <td>Rs.1000.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="text-align:right">Total Price: </td>
+                                        <td> Rs.3000.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="text-align:right">Total Discount: </td>
+                                        <td> Rs.0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="text-align:right">Total Tax: </td>
+                                        <td> Rs.0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" style="text-align:right"><strong>TOTAL (Rs.3000 - Rs.0 +
+                                                Rs.0) =</strong>
+                                        </td>
+                                        <td class="label label-important" style="display:block"> <strong> Rs.3000.00
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="col-md-4">
+                                <p>Select preferred payment method:</p>
+                                <input type="radio" id="paypal" name="payment_gateway" value="PAYPAL">
+                                <label for="contactChoice1">Paypal</label>
+                                <input type="radio" id="COD" name="payment_gateway" value="COD">
+                                <label for="contactChoice1">Cash On Delivery</label>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-warning btn-block mt-2">Back to cart</a>
+                        <a href="thanks.html" class="btn btn-block btn-success">Place Order</a>
                     </div>
+                    <!-- row.// -->
                 </main>
                 <!-- col.// -->
             </div>
@@ -422,5 +434,4 @@
     </footer>
     <!-- ========================= FOOTER END // ========================= -->
 </body>
-
 </html>
