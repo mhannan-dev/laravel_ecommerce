@@ -41,24 +41,30 @@ use App\Models\Category;
                                     <div class="form-group row">
                                         <label for="name" class="col-sm-3 col-form-label">Name</label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="name" class="form-control rounded-0" id="name"
-                                                value="{{ old('email', $adminData['name']) }}"
-                                                placeholder="Admin/Subadmin name">
+                                            <input type="text" required="" name="name" class="form-control rounded-0"
+                                                id="name" placeholder="Admin/Subadmin name" @if (!empty($adminData['name']))
+                                            value="{{ $adminData['name'] }}"
+                                        @else
+                                            value="{{ old('name') }}"
+                                            @endif>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="email" class="col-sm-3 col-form-label">Email</label>
                                         <div class="col-sm-10">
-                                            <input type="email" @if (isset($adminData['id'])) disabled="" @else required="" @endif class="form-control rounded-0"
-                                                name="email" placeholder="Email ID"
-                                                value="{{ old('email', $adminData['email']) }}">
+                                            <input @if ($adminData['id'] != '') disabled="" @else required="" @endif type="email" class="form-control rounded-0"
+                                                name="email" placeholder="Email ID" @if (!empty($adminData['email']))
+                                            value="{{ $adminData['email'] }}"
+                                        @else
+                                            value="{{ old('email') }}"
+                                            @endif>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="type" class="col-sm-3 col-form-label">Admin Type</label>
                                         <div class="col-sm-10">
                                             <select class="form-control rounded-0" id="type" name="type"
-                                                @if (isset($adminData['id'])) disabled="" @else required="" @endif>
+                                                @if ($adminData['id'] != '') disabled="" @else required="" @endif>
                                                 <option value="">Select type</option>
                                                 <option value="admin" @if ($adminData['type'] == 'admin') selected="" @endif>
                                                     Admin
@@ -76,37 +82,34 @@ use App\Models\Category;
                                         <label for="mobile" class="col-sm-3 col-form-label">Mobile No</label>
                                         <div class="col-sm-10">
                                             <input type="text" name="mobile" class="form-control rounded-0" id="mobile"
-                                                placeholder="Enter mobile no"
-                                                value="{{ old('mobile', $adminData['mobile']) }}">
+                                                placeholder="Enter mobile no" @if (!empty($adminData['mobile']))
+                                            value="{{ $adminData['mobile'] }}"
+                                        @else
+                                            value="{{ old('mobile') }}"
+                                            @endif>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="password" class="col-sm-3 col-form-label">Password</label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="password" class="form-control rounded-0" id="password"
-                                                @if (!empty($adminData['password']))
+                                            <input placeholder="Enter password" type="password" name="password"
+                                                class="form-control rounded-0" id="password">
+                                            {{-- <input placeholder="Enter password" type="password" name="password"
+                                                class="form-control rounded-0" id="password" @if (!empty($adminData['password']))
                                             value="{{ $adminData['password'] }}"
                                         @else
                                             value="{{ old('password') }}"
-                                            @endif placeholder="Enter password">
-                                            {{-- <input type="text" name="password" class="form-control rounded-0" id="password"
-                                                value="{{ old('password', $adminData['password']) }}"
-                                                placeholder="Enter password"> --}}
+                                            @endif> --}}
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-sm-8">
                                             <label for="password" class="col-sm-3 col-form-label">Photo</label>
                                             <input type="file" name="image" accept="image/*">
-                                            {{-- <div class="custom-file">
-																								<label class="custom-file-label" for="customFile">Choose Photo</label>
-                                                <input type="file" class="custom-file-input" id="customFile" name="image"
-                                                    accept="image/*">
-                                            </div> --}}
                                             @if (!empty($adminData['image']))
                                                 <img style="width: 80px; height: 80px; margin-top:5px;"
                                                     class="rounded float-right"
-                                                    src="{{ url('storage/admin/' . $adminData['image']) }}"
+                                                    src="{{ url('uploads/admin_photos/' . $adminData['image']) }}"
                                                     alt="{{ $adminData['image'] }}">
                                                 <input type="hidden" name="current_image"
                                                     value="{{ $adminData['image'] }}">
@@ -131,4 +134,48 @@ use App\Models\Category;
         </section>
         <!-- /.content -->
     </div>
+@endsection
+@section('scripts')
+    <script type="text/javascript">
+        //Jquery ready function
+        $(document).ready(function() {
+            $('#admin_form').validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true,
+                    },
+                    password: {
+                        required: true,
+                        minlength: 5
+                    },
+                    terms: {
+                        required: true
+                    },
+                },
+                messages: {
+                    email: {
+                        required: "Please enter a email address",
+                        email: "Please enter a vaild email address"
+                    },
+                    password: {
+                        required: "Please provide a password",
+                        minlength: "Your password must be at least 5 characters long"
+                    },
+                    terms: "Please accept our terms"
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        });
+    </script>
 @endsection

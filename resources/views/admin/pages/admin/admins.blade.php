@@ -7,6 +7,7 @@
         a {
             color: #5da1eb;
         }
+
     </style>
 @endsection
 @section('content')
@@ -56,7 +57,7 @@
                                     <tbody>
                                         @if (count($admins))
                                             @foreach ($admins as $key => $admin)
-                                                <tr>
+                                                <tr id="admin_id{{ $admin['id'] }}">
                                                     <td>{{ ++$key }}</td>
                                                     <td>
                                                         {{ $admin['name'] }}
@@ -64,7 +65,7 @@
                                                     <td>{{ $admin['mobile'] }}</td>
                                                     <td>{{ $admin['type'] }}</td>
                                                     <td><img class="img-circle" width="60px"
-                                                            src="{{ asset('storage/admin/' . $admin['image']) }}"
+                                                            src="{{ asset('uploads/admin_photos/' . $admin['image']) }}"
                                                             alt="{{ $admin['name'] }}" title="{{ $admin['name'] }}">
                                                     </td>
                                                     <td>

@@ -83,7 +83,7 @@
                                             @if (!@empty(Auth::guard('admin')->user()->image))
                                                 <img style="width: 80px; height: 80px; margin-top:5px;"
                                                     class="rounded float-right"
-                                                    src="{{ url('storage/admin/' . Auth::guard('admin')->user()->image) }}"
+                                                    src="{{ url('uploads/admin_photos/' . Auth::guard('admin')->user()->image) }}"
                                                     alt="Admin Image">
                                                 <input type="hidden" name="current_image"
                                                     value="{{ !empty(Auth::guard('admin')->user()->image) }}">

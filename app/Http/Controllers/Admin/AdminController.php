@@ -133,20 +133,33 @@ class AdminController extends Controller
 		if ($request->isMethod('POST')) {
 			$data = $request->all();
 			//Upload profile image
-			if ($request->has('image')) {
+			//if ($request->has('image')) {
+			//	$image = $request->file('image');
+			//	$currentDate = Carbon::now()->toDateString();
+			//	$imageName = $currentDate . '-' . rand(1, 100) . '.' . $image->getClientOriginalExtension();
+			//	if (!Storage::disk('public')->exists('admin')) {
+			//		Storage::disk('public')->makeDirectory('admin');
+			//	}
+			//	$postImage = Image::make($image)->resize(150, 150)->save(storage_path('admin'));
+			//	Storage::disk('public')->put('admin/' . $imageName, $postImage);
+			//} elseif (!empty($data['current_image'])) {
+			//	$imageName = $data['current_image'];
+			//} else {
+			//	$imageName = "default.png";
+			//}
+			if ($request->hasfile('image')) {
 				$image = $request->file('image');
-				$currentDate = Carbon::now()->toDateString();
-				$imageName = $currentDate . '-' . rand(1, 100) . '.' . $image->getClientOriginalExtension();
-				if (!Storage::disk('public')->exists('admin')) {
-					Storage::disk('public')->makeDirectory('admin');
+				if ($image->isValid()) {
+					$imageName  = time() . '.' . $image->getClientOriginalExtension();
+					$admin_image_path = 'uploads/admin_photos/' . $imageName;
+					Image::make($image)->resize(100, 100)->save($admin_image_path);
 				}
-				$postImage = Image::make($image)->resize(150, 150)->save(storage_path('admin'));
-				Storage::disk('public')->put('admin/' . $imageName, $postImage);
-			} elseif (!empty($data['current_image'])) {
-				$imageName = $data['current_image'];
+			} else if (!empty($data['current_image'])) {
+				$imageName = $data['current_image'];;
 			} else {
 				$imageName = "default.png";
 			}
+
 			Admin::where('email', Auth::guard('admin')->user()->email)->update([
 				'name' => $data['name'],
 				'mobile' => $data['mobile'],
@@ -167,7 +180,7 @@ class AdminController extends Controller
 	{
 		if ($id == "") {
 			// Add Coupon Code
-			$adminData = new Admin();
+			$adminData = new Admin;
 			$title = "Add Admin/Subadmin User";
 			$buttonText = "Save";
 			$message = "User saved successfully!";
@@ -180,7 +193,6 @@ class AdminController extends Controller
 		}
 		if ($request->isMethod('post')) {
 			$data = $request->all();
-			//dd($data);
 			//Check admin/subadmin user is exist
 			if ($id == "") {
 				$adminCount = Admin::where('email', $data['email'])->count();
@@ -189,30 +201,28 @@ class AdminController extends Controller
 					return redirect()->with('error', 'Admin/Subadmin user already exist!!');
 				}
 			}
-			$rules = [
-				'name' => 'required|max:255|regex:/^[a-zA-ZÑñ\s]+$/',
-				'mobile' => 'required|numeric',
-				'image' => 'required'
-			];
-			$customMessage = [
-				'name.required' => 'Name is required',
-				'name.regex' => 'Valid name is required',
-				'mobile.required' => 'Mobile is required',
-				'image.required' => 'Valid Image is required'
-			];
-			$this->validate($request, $rules, $customMessage);
+			//$rules = [
+			//	'name' => 'required|max:255|regex:/^[a-zA-ZÑñ\s]+$/',
+			//	'mobile' => 'required|numeric',
+			//	'image' => 'required'
+			//];
+			//$customMessage = [
+			//	'name.required' => 'Name is required',
+			//	'name.regex' => 'Valid name is required',
+			//	'mobile.required' => 'Mobile is required',
+			//	'image.required' => 'Valid Image is required'
+			//];
+			//$this->validate($request, $rules, $customMessage);
 			//Upload profile image
-			if ($request->has('image')) {
+			if ($request->hasfile('image')) {
 				$image = $request->file('image');
-				$currentDate = Carbon::now()->toDateString();
-				$imageName = $currentDate . '-' . rand(1, 100) . '.' . $image->getClientOriginalExtension();
-				if (!Storage::disk('public')->exists('admin')) {
-					Storage::disk('public')->makeDirectory('admin');
+				if ($image->isValid()) {
+					$imageName  = time() . '.' . $image->getClientOriginalExtension();
+					$admin_image_path = 'uploads/admin_photos/' . $imageName;
+					Image::make($image)->resize(100, 100)->save($admin_image_path);
 				}
-				$postImage = Image::make($image)->resize(150, 150)->save(storage_path('admin'));
-				Storage::disk('public')->put('admin/' . $imageName, $postImage);
-			} elseif (!empty($data['current_image'])) {
-				$imageName = $data['current_image'];
+			} else if (!empty($data['current_image'])) {
+				$imageName = $data['current_image'];;
 			} else {
 				$imageName = "";
 			}
@@ -226,12 +236,13 @@ class AdminController extends Controller
 				$adminData->email = $data['email'];
 				$adminData->type = $data['type'];
 			}
-			if (!empty($data['password'])) {
+			if ($data['password'] != "") {
 				$adminData->password = bcrypt($data['password']);
 			}
 			$adminData->save();
 			return redirect('sadmin/admins')->with('success', $message);
 		}
+		//dd($adminData);
 		return view('admin.pages.admin.addEditAdmin', compact('title', 'buttonText', 'adminData', 'message'));
 	}
 	public function updateAdminsStatus(Request $request)
