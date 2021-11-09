@@ -13,7 +13,7 @@
 @section('content')
     <div class="content-wrapper">
         <!-- Content Header (admin header) -->
-        <brand class="content-header">
+        <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
@@ -27,9 +27,9 @@
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
-        </brand>
+        </div>
         <!-- Main content -->
-        <brand class="content">
+        <div class="content">
             <div class="container-fluid">
                 @include('admin.partials.message')
                 <div class="row">
@@ -116,7 +116,7 @@
                 <!-- /.row -->
             </div>
             <!-- /.container-fluid -->
-        </brand>
+        </div>
         <!-- /.content -->
     </div>
 @stop

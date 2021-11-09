@@ -133,20 +133,6 @@ class AdminController extends Controller
 		if ($request->isMethod('POST')) {
 			$data = $request->all();
 			//Upload profile image
-			//if ($request->has('image')) {
-			//	$image = $request->file('image');
-			//	$currentDate = Carbon::now()->toDateString();
-			//	$imageName = $currentDate . '-' . rand(1, 100) . '.' . $image->getClientOriginalExtension();
-			//	if (!Storage::disk('public')->exists('admin')) {
-			//		Storage::disk('public')->makeDirectory('admin');
-			//	}
-			//	$postImage = Image::make($image)->resize(150, 150)->save(storage_path('admin'));
-			//	Storage::disk('public')->put('admin/' . $imageName, $postImage);
-			//} elseif (!empty($data['current_image'])) {
-			//	$imageName = $data['current_image'];
-			//} else {
-			//	$imageName = "default.png";
-			//}
 			if ($request->hasfile('image')) {
 				$image = $request->file('image');
 				if ($image->isValid()) {
@@ -154,7 +140,7 @@ class AdminController extends Controller
 					$admin_image_path = 'uploads/admin_photos/' . $imageName;
 					Image::make($image)->resize(100, 100)->save($admin_image_path);
 				}
-			} else if (!empty($data['current_image'])) {
+			} elseif (!empty($data['current_image'])) {
 				$imageName = $data['current_image'];;
 			} else {
 				$imageName = "default.png";
@@ -201,18 +187,18 @@ class AdminController extends Controller
 					return redirect()->with('error', 'Admin/Subadmin user already exist!!');
 				}
 			}
-			//$rules = [
-			//	'name' => 'required|max:255|regex:/^[a-zA-ZÑñ\s]+$/',
-			//	'mobile' => 'required|numeric',
-			//	'image' => 'required'
-			//];
-			//$customMessage = [
-			//	'name.required' => 'Name is required',
-			//	'name.regex' => 'Valid name is required',
-			//	'mobile.required' => 'Mobile is required',
-			//	'image.required' => 'Valid Image is required'
-			//];
-			//$this->validate($request, $rules, $customMessage);
+			$rules = [
+				'name' => 'required',
+				'mobile' => 'required|numeric',
+				'image' => 'required'
+			];
+			$customMessages = [
+				'name.required' => 'Name is required',
+				'name.regex' => 'Valid name is required',
+				'mobile.required' => 'Mobile is required',
+				'image.required' => 'Valid Image is required'
+			];
+			$this->validate($request, $rules, $customMessages);
 			//Upload profile image
 			if ($request->hasfile('image')) {
 				$image = $request->file('image');
@@ -221,7 +207,7 @@ class AdminController extends Controller
 					$admin_image_path = 'uploads/admin_photos/' . $imageName;
 					Image::make($image)->resize(100, 100)->save($admin_image_path);
 				}
-			} else if (!empty($data['current_image'])) {
+			} elseif (!empty($data['current_image'])) {
 				$imageName = $data['current_image'];;
 			} else {
 				$imageName = "";
