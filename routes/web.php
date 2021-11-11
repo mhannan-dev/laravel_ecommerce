@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Admin\SeoController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CouponController;
@@ -136,6 +137,11 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
 		Route::get('products', [ProductController::class, 'products'])->name('sadmin.products');
 		Route::resource('product', '\App\Http\Controllers\Admin\ProductController')->except('index');
 		Route::post('update-product-status', [ProductController::class, 'update_product_status']);
+		//Brand
+        Route::get('brands', [BrandController::class, 'brands'])->name('sadmin.brands');
+		Route::match(['get', 'post'], '/add-edit-brand/{id?}', [BrandController::class, 'addEditBrand']);
+		Route::delete('delete-brand/{id}', [BrandController::class, 'deleteBrand']);
+		Route::post('update-brand-status', [BrandController::class, 'update_brand_status']);
 		//Images
 		Route::match(['get', 'post'], '/add-product-image/{id}', [ProductController::class, 'add_images']);
 		Route::get('delete-product-image/{id}', [ProductController::class, 'deleteImage']);
@@ -172,8 +178,9 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
 		Route::get('seo-data', [SeoController::class, 'seoData'])->name('siteSeo');
 		Route::match(['get', 'post'], 'add-edit-seoData/{id?}', [SeoController::class, 'addEditSeoData']);
 		// Admin/Subadmins route
-		Route::get('admins', [AdminController::class, 'adminSubAdmins']);
+		Route::get('admin-subadmins', [AdminController::class, 'adminSubAdmins']);
 		Route::match(['get', 'post'], 'add-edit-admin/{id?}', [AdminController::class, 'addEditAdminSubadmin']);
+		Route::match(['get', 'post'], 'update-user-role/{id?}', [AdminController::class, 'updateRole']);
 		Route::post('update-admin-status', [AdminController::class, 'updateAdminsStatus']);
 		Route::delete('delete-admin/{id}', [AdminController::class, 'deleteAdmin']);
 	});

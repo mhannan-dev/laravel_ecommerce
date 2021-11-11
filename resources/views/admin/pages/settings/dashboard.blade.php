@@ -26,6 +26,7 @@
                         </ol>
                     </div>
                 </div>
+                @include('admin.partials.message')
             </div><!-- /.container-fluid -->
         </section>
         <!-- Main content -->

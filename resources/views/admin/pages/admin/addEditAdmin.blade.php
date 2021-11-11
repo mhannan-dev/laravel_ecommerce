@@ -67,14 +67,14 @@ use App\Models\Category;
                                             <select class="form-control rounded-0" id="type" name="type"
                                                 @if ($adminData['id'] != '') disabled="" @else required="" @endif>
                                                 <option value="">Select type</option>
-                                                <option value="admin" @if ($adminData['type'] == 'admin') selected="" @endif>
-                                                    Admin
+                                                <option value="superAdmin" @if ($adminData['type'] == 'superAdmin') selected="" @endif>
+                                                    Super Admin
                                                 </option>
-                                                <option value="sub-admin" @if ($adminData['type'] == 'sub-admin') selected @endif>
+                                                <option value="subAdmin" @if ($adminData['type'] == 'subAdmin') selected @endif>
                                                     Sub-Admin
                                                 </option>
-                                                <option value="operator" @if ($adminData['type'] == 'operator') selected @endif>
-                                                    Operator
+                                                <option value="admin" @if ($adminData['type'] == 'admin') selected @endif>
+                                                    Admin
                                                 </option>
                                             </select>
                                         </div>
@@ -140,55 +140,55 @@ use App\Models\Category;
     <script type="text/javascript">
         //Jquery ready function
         $(document).ready(function() {
-            //$('#admin_form').validate({
-            //    rules: {
-            //        name: {
-            //            required: true,
-            //            name: true
-            //        },
-            //        email: {
-            //            required: true,
-            //            email: true,
-            //        },
-            //        mobile: {
-            //            required: true,
-            //            minlength: 10
-            //        },
-            //        password: {
-            //            required: true,
-            //            minlength: 5
-            //        }
-            //    },
-            //    messages: {
-            //        name: {
-            //            required: "Please enter a name",
-            //            name: "Please enter a name"
-            //        },
-            //        email: {
-            //            required: "Please enter a email address",
-            //            email: "Please enter a vaild email address"
-            //        },
-            //        password: {
-            //            required: "Please provide a password",
-            //            minlength: "Your password must be at least 5 characters long"
-            //        },
-            //        mobile: {
-            //            required: "Please provide mobile number",
-            //            minlength: "Your mobile number must be at least 10"
-            //        }
-            //    },
-            //    errorElement: 'span',
-            //    errorPlacement: function(error, element) {
-            //        error.addClass('invalid-feedback');
-            //        element.closest('.form-group').append(error);
-            //    },
-            //    highlight: function(element, errorClass, validClass) {
-            //        $(element).addClass('is-invalid');
-            //    },
-            //    unhighlight: function(element, errorClass, validClass) {
-            //        $(element).removeClass('is-invalid');
-            //    }
-            //});
+           $('#admin_form').validate({
+               rules: {
+                   name: {
+                       required: true,
+                       name: true
+                   },
+                   email: {
+                       required: true,
+                       email: true,
+                   },
+                   mobile: {
+                       required: true,
+                       minlength: 10
+                   },
+                   password: {
+                       required: true,
+                       minlength: 5
+                   }
+               },
+               messages: {
+                   name: {
+                       required: "Please enter a name",
+                       name: "Please enter a name"
+                   },
+                   email: {
+                       required: "Please enter a email address",
+                       email: "Please enter a vaild email address"
+                   },
+                   password: {
+                       required: "Please provide a password",
+                       minlength: "Your password must be at least 5 characters long"
+                   },
+                   mobile: {
+                       required: "Please provide mobile number",
+                       minlength: "Your mobile number must be at least 10"
+                   }
+               },
+               errorElement: 'span',
+               errorPlacement: function(error, element) {
+                   error.addClass('invalid-feedback');
+                   element.closest('.form-group').append(error);
+               },
+               highlight: function(element, errorClass, validClass) {
+                   $(element).addClass('is-invalid');
+               },
+               unhighlight: function(element, errorClass, validClass) {
+                   $(element).removeClass('is-invalid');
+               }
+           });
         });
     </script>
 @endsection

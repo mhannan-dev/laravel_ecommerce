@@ -144,17 +144,34 @@
                                 <p>Pages</p>
                             </a>
                         </li>
+
+                        @if (Auth::guard('admin')->user()->type == "superAdmin" || Auth::guard('admin')->user()->type == "admin")
                         @if (Session::get('page') == 'admins')
                             <?php $active = 'active'; ?>
                         @else
                             <?php $active = ''; ?>
                         @endif
                         <li class="nav-item">
-                            <a href="{{ url('sadmin/admins') }}" class="nav-link {{ $active }}">
+                            <a href="{{ url('sadmin/admin-subadmins') }}" class="nav-link {{ $active }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Admin/Subadmins</p>
                             </a>
                         </li>
+
+                        @endif
+                        @if (Session::get('page') == 'brands')
+                            <?php $active = 'active'; ?>
+                        @else
+                            <?php $active = ''; ?>
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{ url('sadmin/brands')}}" class="nav-link {{ $active }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Brands</p>
+                            </a>
+                        </li>
+
+
                         @if (Session::get('page') == 'sections')
                             <?php $active = 'active'; ?>
                         @else
