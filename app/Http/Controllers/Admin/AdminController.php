@@ -165,6 +165,7 @@ class AdminController extends Controller
     }
     public function addEditAdminSubadmin(Request $request, $id = null)
     {
+        Session::put('page','admins');
         if ($id == "") {
             // Add Coupon Code
             $adminData = new Admin;
@@ -235,21 +236,22 @@ class AdminController extends Controller
     }
     public function updateRole(Request $request, $id)
     {
+        Session::put('page','role_update');
         if ($request->isMethod('post')) {
             $data = $request->all();
+            //dd($data);
             unset($data['_token']);
             //Delete previous roles
             AdminRole::where('admin_id',$id)->delete();
             //Update newe roles
             foreach ($data as $key => $value) {
                 //View checking
-                //dd($value['view']);
                 if(isset($value['view'])) {
                     $view = $value['view'];
                 } else {
                     $view = 0;
                 }
-                //Edit checking
+                //Edit and view checking
                 if(isset($value['edit'])) {
                     $edit = $value['edit'];
                 } else {
@@ -266,9 +268,10 @@ class AdminController extends Controller
             return redirect()->back()->with('success','Roles updated succfully');
         }
         $adminDetails = Admin::where('id', $id)->select('id', 'email', 'name')->first()->toArray();
+        $adminRoles = AdminRole::where('admin_id', $id)->get()->toArray();
         $title = "Update " . ($adminDetails['name']) . " Role and permission";
         //dd($adminDetails);
-        return view('admin.pages.admin.update_role', compact('title', 'adminDetails'));
+        return view('admin.pages.admin.update_role', compact('title', 'adminDetails','adminRoles'));
     }
     public function updateAdminsStatus(Request $request)
     {
