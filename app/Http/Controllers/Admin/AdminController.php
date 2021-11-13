@@ -6,6 +6,7 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\AdminRole;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -154,7 +155,7 @@ class AdminController extends Controller
     }
     public function adminSubAdmins()
     {
-        if(Auth::guard('admin')->user()->type == "subAdmin"){
+        if (Auth::guard('admin')->user()->type == "subAdmin") {
             return redirect('sadmin/dashboard')->with('error', 'This feature is restricted!!');
         }
         $data['title'] = "Admin";
@@ -232,13 +233,42 @@ class AdminController extends Controller
         //dd($adminData);
         return view('admin.pages.admin.addEditAdmin', compact('title', 'buttonText', 'adminData', 'message'));
     }
-    public function updateRole($id)
+    public function updateRole(Request $request, $id)
     {
-        $title = "Update Admin-SubAdmin Roles and Permission";
-        $adminDetails = Admin::where('id',$id)->select('id','email')->first()->toArray();
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            unset($data['_token']);
+            //Delete previous roles
+            AdminRole::where('admin_id',$id)->delete();
+            //Update newe roles
+            foreach ($data as $key => $value) {
+                //View checking
+                //dd($value['view']);
+                if(isset($value['view'])) {
+                    $view = $value['view'];
+                } else {
+                    $view = 0;
+                }
+                //Edit checking
+                if(isset($value['edit'])) {
+                    $edit = $value['edit'];
+                } else {
+                    $edit = 0;
+                }
+                //Full access checking
+                if(isset($value['full'])) {
+                    $full = $value['full'];
+                } else {
+                    $full = 0;
+                }
+                AdminRole::where('admin_id',$id)->insert(['admin_id'=>$id,'module'=>$key,'view_access'=>$view,'edit_access'=>$edit,'full_access'=>$full]);
+            }
+            return redirect()->back()->with('success','Roles updated succfully');
+        }
+        $adminDetails = Admin::where('id', $id)->select('id', 'email', 'name')->first()->toArray();
+        $title = "Update " . ($adminDetails['name']) . " Role and permission";
         //dd($adminDetails);
-        return view('admin.pages.admin.update_role',compact('title','adminDetails'));
-
+        return view('admin.pages.admin.update_role', compact('title', 'adminDetails'));
     }
     public function updateAdminsStatus(Request $request)
     {
