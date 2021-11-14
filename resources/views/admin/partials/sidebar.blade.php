@@ -116,6 +116,17 @@
                                 <p>Update Information</p>
                             </a>
                         </li>
+                        @if (Session::get('page') == 'other_setting')
+                            <?php $active = 'active'; ?>
+                        @else
+                            <?php $active = ''; ?>
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{ url('sadmin/other-setting') }}" class="nav-link {{ $active }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Other Setting</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 {{-- Catalogues --}}

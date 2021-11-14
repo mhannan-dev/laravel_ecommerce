@@ -19,6 +19,7 @@ class ShippingCharge extends Model
     {
         $shippingDetails = ShippingCharge::where('country_name', $country)->first();
         //$shippingDetails = json_decode(json_encode($shippingDetails), true);
+        //dd($shippingDetails);
         if ($total_weight > 0) {
             if ($total_weight > 0 && $total_weight <= 500) {
                 $shipping_charges = $shippingDetails->till_500gm ?? '';

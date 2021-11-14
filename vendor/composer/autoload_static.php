@@ -637,6 +637,7 @@ class ComposerStaticInit40f86f2d699c9e96a0760dccd83d3f9c
         'App\\Models\\OrderLog' => __DIR__ . '/../..' . '/app/Models/OrderLog.php',
         'App\\Models\\OrderProduct' => __DIR__ . '/../..' . '/app/Models/OrderProduct.php',
         'App\\Models\\OrderStatus' => __DIR__ . '/../..' . '/app/Models/OrderStatus.php',
+        'App\\Models\\OtherSettings' => __DIR__ . '/../..' . '/app/Models/OtherSettings.php',
         'App\\Models\\PrePaidZipCode' => __DIR__ . '/../..' . '/app/Models/PrePaidZipCode.php',
         'App\\Models\\Product' => __DIR__ . '/../..' . '/app/Models/Product.php',
         'App\\Models\\ProductAttribute' => __DIR__ . '/../..' . '/app/Models/ProductAttribute.php',

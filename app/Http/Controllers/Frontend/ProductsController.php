@@ -15,6 +15,7 @@ use App\Models\DeliveryAddress;
 use App\Models\ProductAttribute;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\OtherSettings;
 use App\Models\ShippingCharge;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -395,13 +396,15 @@ class ProductsController extends Controller
 			$total_price = $total_price + $attrPrice['final_price'] * $item['quantity'];
 		}
 		//Check minimum purchase amount
-		if ($total_price < 500) {
-			$message = "Minimum cart amount must be BDT. 500. Please add some product";
+        $checkMinVal = OtherSettings::where('id',1)->select('min_value','max_value')->first()->toArray();
+        //dd($checkMinVal['min_value']);
+		if ($total_price < $checkMinVal['min_value']) {
+			$message = "Mininum cart amount is ". $checkMinVal['min_value'];
 			return redirect()->back()->with('error', $message);
 		}
 		//Check max purchase amount
-		if ($total_price > 50000) {
-			$message = "Maximum cart amount is 50000. Please place order less than 50000 BDT.";
+		if ($total_price > $checkMinVal['max_value']) {
+			$message = "Maximum cart amount is ".$checkMinVal['max_value'];
 			return redirect()->back()->with('error', $message);
 		}
 		//die;
@@ -475,7 +478,8 @@ class ProductsController extends Controller
 			//Get  Shipping Charges get by counrtyr
 			$shipping_charges = ShippingCharge::getShippingCharges($total_weight, $delivery_address['country']);
 			//Calculate grand total price
-			$grand_total = $total_price + $shipping_charges - Session::get('couponAmount');
+			//echo $grand_total = $total_price + $shipping_charges - Session::get('couponAmount'); die;
+            $grand_total = ((int)$total_price + (int)$shipping_charges)- Session::get('couponAmount');
 			//Put grand_total in session
 			Session::put('grand_total', $grand_total);
 			DB::beginTransaction();

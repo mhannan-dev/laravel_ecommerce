@@ -116,6 +116,8 @@ Route::prefix('sadmin')->namespace('Admin')->group(function () {
 		Route::post('check-current-pwd', [AdminController::class, 'check_current_pwd']);
 		Route::post('update-current-pwd', [AdminController::class, 'update_current_pwd']);
 		Route::match(['get', 'post'], '/profile-update', [AdminController::class, 'profile_update']);
+		Route::get('other-setting', [AdminController::class, 'otherSetting']);
+		Route::match(['get', 'post'], '/add-edit-other-setting/{id?}', [AdminController::class, 'addEditOtherSetting']);
 		Route::get('logout',  [AdminController::class, 'logout']);
 		//Section
 		Route::get('sections', [SectionController::class, 'sections'])->name('sections.index');

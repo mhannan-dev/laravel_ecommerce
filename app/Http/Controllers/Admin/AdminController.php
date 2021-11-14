@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Admin;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\AdminRole;
+use App\Models\OtherSettings;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -36,6 +37,73 @@ class AdminController extends Controller
         $data['adminDetails'] = Admin::where('email', Auth::guard('admin')->user()->email)->first();
         return view('admin.pages.settings.settings', $data);
     }
+    public function otherSetting()
+    {
+        Session::put('page', 'other_setting');
+        $data['title'] = "Minumum and maximum cart values";
+        $data['minMaxCartVal'] = OtherSettings::select('id', 'min_value', 'max_value')->orderBy('created_at', 'desc')->get()->toArray();
+
+        return view('admin.pages.settings.other_setting', $data);
+    }
+    // public function addEditOtherSetting(Request $request, $id = null)
+    // {
+    //     $title = "Other settings";
+    //     if ($id == "") {
+    //         $minMaxCartVal = new OtherSettings;
+    //         $buttonText = "Save";
+    //         $message = "Settings successfull";
+    //     } else {
+
+    //         $minMaxCartVal = OtherSettings::find($id);
+    //         //dd($minMaxCartVal);
+    //         $buttonText = "Update";
+    //         $message = "Settings updated successfull";
+    //     }
+    //     if ($request->isMethod('post')) {
+    //         $data = $request->all();
+    //         //Validation rules
+    //         $rules = [
+    //             'min_value' => 'required',
+    //             'max_value' => 'required',
+    //         ];
+    //         //Validation message
+    //         $customMessage = [
+    //             'min_value.required' => 'Min value is required',
+    //             'max_value.email' => 'Max value is required',
+    //         ];
+    //         $this->validate($request, $rules, $customMessage);
+
+    //         $minMaxCartVal->min_value = $data['min_value'];
+    //         $minMaxCartVal->max_value = $data['max_value'];
+    //         $minMaxCartVal->save();
+    //         return redirect('sadmin/otherSetting')->with('success', $message);
+    //     }
+    //     return view('admin.pages.settings.addEditOtherSetting', compact('minMaxCartVal', 'buttonText', 'message'));
+
+    // }
+    public function addEditOtherSetting(Request $request, $id = null)
+    {
+        Session::put('page', 'other_setting');
+        if ($id == "") {
+            $minMaxCartVal = new OtherSettings();
+            $buttonText = "Save";
+            $message = "Minimun maximum price created successfully";
+        } else {
+            $minMaxCartVal = OtherSettings::find($id);
+            $buttonText = "Update";
+            $message = "Minimun maximum price updated successfully";
+        }
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            //dd($data);
+            $minMaxCartVal->min_value = $data['min_value'];
+            $minMaxCartVal->max_value = $data['max_value'];
+            $minMaxCartVal->save();
+            return redirect('sadmin/other-setting')->with('success', $message);
+        }
+        //dd($adminData);
+        return view('admin.pages.settings.addEditOtherSetting', compact('minMaxCartVal', 'buttonText', 'message'));
+    }
     /**
      * Admin Form
      *
@@ -55,13 +123,13 @@ class AdminController extends Controller
             //Validation rules
             $rules = [
                 'email' => 'required',
-                'password' => 'required'
+                'password' => 'required',
             ];
             //Validation message
             $customMessage = [
                 'email.required' => 'Email is required',
                 'email.email' => 'Valid Email is required',
-                'password.required' => 'Password is required'
+                'password.required' => 'Password is required',
             ];
             $this->validate($request, $rules, $customMessage);
             if (Auth::guard('admin')->attempt(['email' => $data['email'], 'status' => 1, 'password' => $data['password']])) {
@@ -134,12 +202,12 @@ class AdminController extends Controller
             if ($request->hasfile('image')) {
                 $image = $request->file('image');
                 if ($image->isValid()) {
-                    $imageName  = time() . '.' . $image->getClientOriginalExtension();
+                    $imageName = time() . '.' . $image->getClientOriginalExtension();
                     $admin_image_path = 'uploads/admin_photos/' . $imageName;
                     Image::make($image)->resize(100, 100)->save($admin_image_path);
                 }
             } elseif (!empty($data['current_image'])) {
-                $imageName = $data['current_image'];;
+                $imageName = $data['current_image'];
             } else {
                 $imageName = "default.png";
             }
@@ -147,7 +215,7 @@ class AdminController extends Controller
             Admin::where('email', Auth::guard('admin')->user()->email)->update([
                 'name' => $data['name'],
                 'mobile' => $data['mobile'],
-                'image' => $imageName
+                'image' => $imageName,
             ]);
             return redirect()->back()->with('success', 'Profile updated successfully!!');
         }
@@ -165,7 +233,7 @@ class AdminController extends Controller
     }
     public function addEditAdminSubadmin(Request $request, $id = null)
     {
-        Session::put('page','admins');
+        Session::put('page', 'admins');
         if ($id == "") {
             // Add Coupon Code
             $adminData = new Admin;
@@ -189,29 +257,16 @@ class AdminController extends Controller
                     return redirect()->with('error', 'Admin/Subadmin user already exist!!');
                 }
             }
-            // $rules = [
-            // 	'name' => 'required',
-            // 	'mobile' => 'required|numeric',
-            // 	'image' => 'required'
-            // ];
-            // $customMessages = [
-            // 	'name.required' => 'Name is required',
-            // 	'name.regex' => 'Valid name is required',
-            // 	'mobile.required' => 'Mobile is required',
-            // 	'image.required' => 'Valid Image is required'
-            // ];
-            // $this->validate($request, $rules, $customMessages);
-
             //Upload profile image
             if ($request->hasfile('image')) {
                 $image = $request->file('image');
                 if ($image->isValid()) {
-                    $imageName  = time() . '.' . $image->getClientOriginalExtension();
+                    $imageName = time() . '.' . $image->getClientOriginalExtension();
                     $admin_image_path = 'uploads/admin_photos/' . $imageName;
                     Image::make($image)->resize(100, 100)->save($admin_image_path);
                 }
             } elseif (!empty($data['current_image'])) {
-                $imageName = $data['current_image'];;
+                $imageName = $data['current_image'];
             } else {
                 $imageName = "";
             }
@@ -236,42 +291,42 @@ class AdminController extends Controller
     }
     public function updateRole(Request $request, $id)
     {
-        Session::put('page','role_update');
+        Session::put('page', 'role_update');
         if ($request->isMethod('post')) {
             $data = $request->all();
             //dd($data);
             unset($data['_token']);
             //Delete previous roles
-            AdminRole::where('admin_id',$id)->delete();
+            AdminRole::where('admin_id', $id)->delete();
             //Update newe roles
             foreach ($data as $key => $value) {
                 //View checking
-                if(isset($value['view'])) {
+                if (isset($value['view'])) {
                     $view = $value['view'];
                 } else {
                     $view = 0;
                 }
                 //Edit and view checking
-                if(isset($value['edit'])) {
+                if (isset($value['edit'])) {
                     $edit = $value['edit'];
                 } else {
                     $edit = 0;
                 }
                 //Full access checking
-                if(isset($value['full'])) {
+                if (isset($value['full'])) {
                     $full = $value['full'];
                 } else {
                     $full = 0;
                 }
-                AdminRole::where('admin_id',$id)->insert(['admin_id'=>$id,'module'=>$key,'view_access'=>$view,'edit_access'=>$edit,'full_access'=>$full]);
+                AdminRole::where('admin_id', $id)->insert(['admin_id' => $id, 'module' => $key, 'view_access' => $view, 'edit_access' => $edit, 'full_access' => $full]);
             }
-            return redirect()->back()->with('success','Roles updated succfully');
+            return redirect()->back()->with('success', 'Roles updated succfully');
         }
         $adminDetails = Admin::where('id', $id)->select('id', 'email', 'name')->first()->toArray();
         $adminRoles = AdminRole::where('admin_id', $id)->get()->toArray();
         $title = "Update " . ($adminDetails['name']) . " Role and permission";
         //dd($adminDetails);
-        return view('admin.pages.admin.update_role', compact('title', 'adminDetails','adminRoles'));
+        return view('admin.pages.admin.update_role', compact('title', 'adminDetails', 'adminRoles'));
     }
     public function updateAdminsStatus(Request $request)
     {
@@ -283,7 +338,7 @@ class AdminController extends Controller
                 $status = 1;
             }
             Admin::where('id', $data['admin_id'])->update(['status' => $status]);
-            return  response()->json(['status' => $status, 'admin_id' => $data['admin_id']]);
+            return response()->json(['status' => $status, 'admin_id' => $data['admin_id']]);
         }
     }
     public function deleteAdmin($id)
