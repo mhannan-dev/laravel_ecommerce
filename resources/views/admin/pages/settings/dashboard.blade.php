@@ -7,6 +7,7 @@
         a {
             color: #5da1eb;
         }
+
     </style>
 @endsection
 @section('content')
@@ -29,78 +30,67 @@
                 @include('admin.partials.message')
             </div><!-- /.container-fluid -->
         </section>
-        <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
+                <!-- Small boxes (Stat box) -->
                 <div class="row">
-                    <div class="col-12">
-                        <!-- /.card -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">DataTable with default features</h3>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <table id="example1" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Rendering engine</th>
-                                            <th>Browser</th>
-                                            <th>Platform(s)</th>
-                                            <th>Engine version</th>
-                                            <th>CSS grade</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Trident</td>
-                                            <td>Internet
-                                                Explorer 4.0
-                                            </td>
-                                            <td>Win 95+</td>
-                                            <td> 4</td>
-                                            <td>X</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Trident</td>
-                                            <td>Internet
-                                                Explorer 5.0
-                                            </td>
-                                            <td>Win 95+</td>
-                                            <td>5</td>
-                                            <td>C</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Trident</td>
-                                            <td>Internet
-                                                Explorer 5.5
-                                            </td>
-                                            <td>Win 95+</td>
-                                            <td>5.5</td>
-                                            <td>A</td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Rendering engine</th>
-                                            <th>Browser</th>
-                                            <th>Platform(s)</th>
-                                            <th>Engine version</th>
-                                            <th>CSS grade</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <!-- /.card-body -->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box">
+                          <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+
+                          <div class="info-box-content">
+                            <span class="info-box-text">CPU Traffic</span>
+                            <span class="info-box-number">
+                              10
+                              <small>%</small>
+                            </span>
+                          </div>
+                          <!-- /.info-box-content -->
                         </div>
-                        <!-- /.card -->
-                    </div>
-                    <!-- /.col -->
+                        <!-- /.info-box -->
+                      </div>
+                    <!-- ./col -->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box mb-3">
+                          <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+
+                          <div class="info-box-content">
+                            <span class="info-box-text">Likes</span>
+                            <span class="info-box-number">41,410</span>
+                          </div>
+                          <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                      </div>
+                    <!-- ./col -->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box mb-3">
+                          <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+                          <div class="info-box-content">
+                            <span class="info-box-text">Sales</span>
+                            <span class="info-box-number">760</span>
+                          </div>
+                          <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box mb-3">
+                          <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+
+                          <div class="info-box-content">
+                            <span class="info-box-text">New Members</span>
+                            <span class="info-box-number">2,000</span>
+                          </div>
+                          <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                      </div>
                 </div>
                 <!-- /.row -->
-            </div>
-            <!-- /.container-fluid -->
+
+            </div><!-- /.container-fluid -->
         </section>
-        <!-- /.content -->
     </div>
 @endsection

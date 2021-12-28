@@ -256,7 +256,9 @@ class ProductController extends Controller
 				unlink($medium_image_path);
 				unlink($small_image_path);
 				return redirect()->route('sadmin.products')->with('Your product has been deleted!!');
-			}
+			} else{
+                $product->delete();
+            }
 		} catch (\Throwable $th) {
 			//dd($th);
 			return redirect()->back('sadmin.products')->with('success', 'Your product not deleted!!');
@@ -335,7 +337,7 @@ class ProductController extends Controller
 	{
 		if ($request->isMethod('post')) {
 			$data = $request->all();
-			
+
 			foreach ($data['attrId'] as $key => $value) {
 				if (!empty($value)) {
 					ProductAttribute::where(

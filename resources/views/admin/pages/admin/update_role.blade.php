@@ -47,6 +47,7 @@
                                 action="{{ url('sadmin/update-user-role', $adminDetails['id']) }}" method="post">
                                 @csrf
                                 <div class="col-md-6">
+                                    
                                     @if (!empty($adminRoles))
                                         @foreach ($adminRoles as $role)
                                             {{-- Keep selected category permission --}}

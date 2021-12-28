@@ -6,8 +6,10 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Section;
 use App\Models\Category;
 
+use App\Models\AdminRole;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -17,8 +19,6 @@ use App\Http\Requests\Admin\CategoryRequest;
 class CategoryController extends Controller
 {
 
-
-
     /**
      * Display a listing of the resource.
      *
@@ -27,9 +27,18 @@ class CategoryController extends Controller
     public function categories()
     {
         Session::put('page', 'categories');
-        $data['title'] = "Category";
-        $data['categories'] = Category::with(['section', 'parent_category'])->get();
-        return view('admin.pages.category.categories', $data);
+        $title = "Category";
+        $categories = Category::with(['section', 'parent_category'])->get();
+        //Set admin and subadmin permission for Category
+        $categoryModuleCount = AdminRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'categories'])->count();
+        if ($categoryModuleCount == 0) {
+            return redirect('sadmin/dashboard')->with('error','This feateure is restricted for you');
+        } else {
+            $categoryModule = AdminRole::where(['admin_id'=>Auth::guard('admin')->user()->id,'module'=>'categories'])->first()->toArray();
+            //dd($catetegoyModule);
+        }
+
+        return view('admin.pages.category.categories', compact('categoryModule','categories','title'));
     }
     /**
      * Show the form for creating a new resource.

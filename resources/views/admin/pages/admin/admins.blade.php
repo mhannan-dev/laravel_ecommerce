@@ -47,6 +47,7 @@ Manage - CMS
                                         <th>SL</th>
                                         <th>Name</th>
                                         <th>Mobile</th>
+                                        <th>Email</th>
                                         <th>Type</th>
                                         <th>Image</th>
                                         <th>Status</th>
@@ -61,6 +62,7 @@ Manage - CMS
                                         <td>
                                             {{ $admin['name'] }}
                                         </td>
+                                        <td>{{ $admin['email'] }}</td>
                                         <td>{{ $admin['mobile'] }}</td>
                                         <td>{{ $admin['type'] }}</td>
                                         <td><img class="img-circle" width="60px"
